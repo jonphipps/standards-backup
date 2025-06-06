@@ -1,6 +1,6 @@
-/standards/isbdm/** @RG-ISBDM-editors
+/standards/ISBDM/** @RG-ISBDM-editors
 /standards/fr/** @RG-FR-editors
 /standards/unimarc/** @RG-UNIMARC-editors
-/standards/lrm/** @RG-LRM-editors
-/standards/lrm/** @RG-LRM-editors
+/standards/LRM/** @RG-LRM-editors
 /standards/muldicat/** @RG-MULDICAT-editors
+/standards/isbd/** @RG-ISBD-editors
