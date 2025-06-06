@@ -1,0 +1,9 @@
+# node / pnpm
+node_modules/
+.pnpm-store/
+# editors
+.vscode/
+.idea/
+# build artefacts
+build/
+dist/

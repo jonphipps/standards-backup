@@ -1,0 +1,8 @@
+{
+  "name": "IFLA Standards Dev",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22-bookworm",
+  "postCreateCommand": "corepack enable && pnpm install --frozen-lockfile",
+  "customizations": {
+    "vscode": { "settings": { "files.eol": "\n" } }
+  }
+}

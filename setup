@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+# ------------------------------------------------------------------
+# scaffold-standards-dev.sh
+#
+# Usage:
+#   mkdir standards-dev && cd standards-dev
+#   bash /path/to/scaffold-standards-dev.sh
+#
+# Prereqs:
+#   • git  • corepack (bundled with Node ≥ 16)  • pnpm (via corepack)
+#   • jq   • docker (optional, for local vocab stack)
+# ------------------------------------------------------------------
+set -euo pipefail
+
+ROOT=$(pwd)
+echo "Scaffolding monorepo in $ROOT …"
+
+cat >pnpm-workspace.yaml <<'EOF'
+packages:
+  - "packages/*"
+  - "standards/*"
+EOF
+
+cat >.npmrc <<'EOF'
+auto-install-peers = true
+shamefully-hoist   = true
+shared-workspace-lockfile = true
+EOF
+
+# --- 4. Devcontainer (Codespaces / VS Code) -----------------------------------
+mkdir .devcontainer
+cat >.devcontainer/devcontainer.json <<'EOF'
+{
+  "name": "IFLA Standards Dev",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22-bookworm",
+  "postCreateCommand": "corepack enable && pnpm install --frozen-lockfile",
+  "customizations": {
+    "vscode": { "settings": { "files.eol": "\n" } }
+  }
+}
+EOF
+
+# --- 5. GitHub workflows skeleton ---------------------------------------------
+mkdir -p .github/workflows
+cat >.github/workflows/ci-preview.yml <<'EOF'
+name: build-preview
+on: [push, pull_request]
+permissions: {contents: write}
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - run: pnpm install --frozen-lockfile
+      - name: Build all docs
+        run: BASE_URL="/standards-dev/" pnpm -r build
+      - name: Deploy to gh-pages
+        if: github.ref == 'refs/heads/main'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: build
+EOF
+
+# --- 6. Basic package skeletons ------------------------------------------------
+mkdir -p packages/theme/src
+echo "export const placeholder = true;" >packages/theme/src/index.ts
+printf '{\n  "name":"@ifla/theme","version":"0.0.0","private":true,"main":"src/index.ts"}\n' >packages/theme/package.json
+
+# --- 7. Tool placeholders ------------------------------------------------------
+mkdir -p tools/sheet-sync
+echo "// TODO: sheet-sync CLI" >tools/sheet-sync/index.ts
+printf '{\n  "name":"sheet-sync","private":true,"bin":"index.ts"}\n' >tools/sheet-sync/package.json
+
+# --- 8. Standards folder -------------------------------------------------------
+mkdir -p standards
+# (Optionally scaffold first standard with the create script if present)
+if command -v pnpm &>/dev/null && [ -f scripts/create-ifla-standard.ts ]; then
+  pnpm dlx ts-node scripts/create-ifla-standard.ts isbdm --name "ISBDM" --skip-github
+fi
+
+# --- 9. Initial commit ---------------------------------------------------------
+git add -A
+git commit -m "chore: bootstrap standards-dev monorepo" -q
+echo "✅  Scaffold complete – initial commit made."
+echo "Next:"
+echo "  • pnpm install"
+echo "  • pnpm -r build   # to test Docusaurus builds"
