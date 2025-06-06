@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 /**
  * Copy a global DCTAP profile into a standard so editors can tweak it.
- * Usage: pnpm profile-copy isbdm elementset
+ * Usage: pnpm profile-copy ISBDM elementset
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';

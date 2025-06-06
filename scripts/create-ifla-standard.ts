@@ -38,7 +38,7 @@ const __dirname = path.dirname(__filename);
 
 program
   .name('create-ifla-standard')
-  .argument('<code>', 'lower‑case short code, e.g. isbdm')
+  .argument('<code>', 'lower‑case short code, e.g. ISBDM')
   .option('-n, --name <title>', 'Human‑readable title')
   .option('--skip-github', 'Skip GitHub API calls (offline)')
   .parse(process.argv);

@@ -3,7 +3,7 @@
 # Quick‑launch a browser tab set with all core resources for a given IFLA standard.
 #
 # Usage:
-#   ./scripts/open-dashboard.zsh isbdm
+#   ./scripts/open-dashboard.zsh ISBDM
 #
 # Prerequisites:
 #   • macOS (uses the `open` command) – swap for `xdg-open` on Linux.
