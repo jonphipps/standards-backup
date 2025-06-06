@@ -1,0 +1,1 @@
+- remember that we're using pnpm in this project

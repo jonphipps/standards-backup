@@ -23,12 +23,12 @@
  * Built for ESM ("type":"module" in package.json).  Run through tsx or ts-node.
  */
 
-import { promises as fs } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import process from 'process';
-import assert from 'node:assert/strict';
-import { execSync } from 'child_process';
+import { promises as fs } from 'node:fs';
+import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import * as process from 'node:process';
+import { strict as assert } from 'node:assert';
+import { execSync } from 'node:child_process';
 import { program } from 'commander';
 import chalk from 'chalk';
 import fetch from 'node-fetch';
@@ -75,7 +75,7 @@ async function updateCodeowners() {
   try {
     await fs.appendFile(ownersFile, pathEntry);
     console.log(chalk.green('✔ Updated CODEOWNERS'));
-  } catch (e) {
+  } catch {
     console.warn(chalk.yellow('⚠ Could not update CODEOWNERS (file missing?)'));
   }
 }
@@ -102,7 +102,7 @@ async function createProjectBoard() {
     console.warn(chalk.yellow(`⚠ GitHub project creation failed: ${res.statusText}`));
     return;
   }
-  const data: any = await res.json();
+  const data = await res.json() as { html_url: string };
   const url = data.html_url;
   // write to .config/project.json
   await fs.mkdir(path.join(ROOT, '.config'), { recursive: true });
@@ -115,7 +115,7 @@ async function gitAdd() {
     execSync(`git add ${ROOT} .github/CODEOWNERS`, { stdio: 'inherit' });
     execSync(`git commit -m "feat(${code}): scaffold ${TITLE}"`, { stdio: 'inherit' });
     console.log(chalk.green('✔ Initial commit staged (remember to push)'));
-  } catch (e) {
+  } catch {
     console.warn(chalk.yellow('⚠ Git commit failed – is this inside a git repo?'));}
 }
 
