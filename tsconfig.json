@@ -5,7 +5,17 @@
     "moduleResolution": "bundler",
     "lib": ["ES2022"],
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
+    // --- JSX ---
+    "jsx": "react-jsx", // For React 17+ (including React 19) new JSX transform
+    "jsxImportSource": "react", // Often default but good to be explicit
+
+    // --- Emit ---
+    "noEmit": true, // Docusaurus (via Webpack/Babel) handles the build output
+
+    // --- Interoperability ---
+    "esModuleInterop": true, // Allows default imports from commonjs modules
+    "allowSyntheticDefaultImports": true, // Works with esModuleInterop
+
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
@@ -16,14 +26,37 @@
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./",
-    "types": ["node"]
+    "types": [
+    "node"
+      "docusaurus-plugin-sass",
+      "@docusaurus/theme-classic",
+      "@docusaurus/types"
+    ],
+    //paths and aliases
+    "baseUrl": ".",
+
+    "paths": {
+      "@site/plugins/*": ["./plugins/*"],
+      "@site/*": ["./*"], // Allows @site/src/... to resolve from the project root
+      "@docusaurus/*": ["./node_modules/@docusaurus/core/lib/client/exports/*"],
+      "@theme/*": [
+        "./src/theme/*", // For your user-swizzled components in src/theme
+        "./.docusaurus/theme-fallback/*" // For default theme components or unswizzled components
+      ]
+      // Add any other custom aliases you might have
+    }
   },
   "include": [
+    "src", // Your main source code (components, pages, MDX, etc.)
+    ".docusaurus", // Docusaurus generated files, including type declarations
     "**/*.ts",
     "**/*.tsx"
+    "*.d.ts", // Global type declaration files (like the one for global MDX components)
+    "plugins" // If you have custom local plugins with TypeScript
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "build",
+    "coverage"
   ]
 }

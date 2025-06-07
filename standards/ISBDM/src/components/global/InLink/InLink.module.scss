@@ -1,0 +1,48 @@
+// InLink.module.scss
+
+.inLink {
+  // Use inline-block to allow wrapping while maintaining inline flow
+  display: inline-block;
+  background-color: #ffd6cc;
+  border: 1px solid #000000;
+  border-radius: 0.3rem;
+  color: #000000;
+  padding: 0.1rem 0.3rem;
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
+  // Allow text to wrap naturally at zero-width spaces and when overflowing
+  white-space: normal;
+  // Break long words if they still overflow after breaking at zero-width spaces
+  overflow-wrap: break-word;
+  word-break: break-word;
+  // Prevent breaking within short segments
+  hyphens: none;
+  // Ensure the link can shrink to fit its container
+  max-width: 100%;
+  // Preserve line breaks at zero-width spaces
+  word-wrap: break-word;
+  
+  &:hover {
+    background-color: #e62e00;
+    color: #ffffff;
+    text-decoration: none;
+  }
+  
+  &:focus {
+    outline: 2px solid var(--ifm-color-primary);
+    outline-offset: 2px;
+  }
+  
+  // Maintain dark mode compatibility
+  :global([data-theme='dark']) & {
+    background-color: #4a3833 !important;
+    border-color: #8b6959 !important;
+    color: #ffd6cc !important;
+    
+    &:hover {
+      background-color: #ff6b3d !important;
+      color: #ffffff !important;
+      border-color: #ff6b3d !important;
+    }
+  }
+}
