@@ -172,8 +172,14 @@ export default function ElementReference({
     willBeRemovedInVersion = "",
   } = adaptedFrontMatter.RDF;
 
-  const { colorMode } = useColorMode();
-  const isDarkTheme = colorMode === 'dark';
+  let isDarkTheme = false;
+  try {
+    const { colorMode } = useColorMode();
+    isDarkTheme = colorMode === 'dark';
+  } catch (error) {
+    // Fallback to light theme if colorMode is not available
+    isDarkTheme = false;
+  }
 
   // Generate JSON-LD
   const jsonLD = generateJsonLD(adaptedFrontMatter.RDF);

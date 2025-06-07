@@ -1,148 +1,167 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
-import type * as Preset from '@docusaurus/preset-classic';
+import { createIFLAConfig, VOCABULARY_DEFAULTS } from '@ifla/theme/config';
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
+const baseConfig = createIFLAConfig({
+  title: 'IFLA ISBDM',
+  tagline: 'International Standard Bibliographic Description (Manifestation)',
+  url: 'https://iflastandards.github.io',
+  baseUrl: process.env.BASE_URL || '/ISBDM/',
+  organizationName: 'iflastandards',
+  projectName: 'ISBDM',
+  githubUrl: 'https://github.com/iflastandards/ISBDM',
+  vocabularyDefaults: VOCABULARY_DEFAULTS.ISBDM,
+});
 
-const config: Config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
-  favicon: 'img/favicon.ico',
-
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
-  future: {
-    v4: true, // Improve compatibility with the upcoming Docusaurus v4
-  },
-
-  // Set the production url of your site here
-  url: 'https://your-docusaurus-site.example.com',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
-
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
-
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
-  },
-
-  presets: [
-    [
-      'classic',
-      {
-        docs: {
-          sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-        },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-          // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
-        theme: {
-          customCss: './src/css/custom.css',
-        },
-      } satisfies Preset.Options,
-    ],
-  ],
-
+// Customize the base config for ISBDM-specific needs
+const config = {
+  ...baseConfig,
+  
+  // Override the navbar with ISBDM-specific navigation
   themeConfig: {
-    // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    ...baseConfig.themeConfig,
     navbar: {
-      title: 'My Site',
+      title: 'ISBDM',
       logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
+        alt: 'IFLA Logo',
+        src: 'img/logo-ifla_black.png',
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          type: 'dropdown',
+          label: 'Instructions',
           position: 'left',
-          label: 'Tutorial',
+          items: [
+            {
+              type: 'doc',
+              docId: 'intro/index',
+              label: 'Introduction',
+            },
+            {
+              type: 'doc',
+              docId: 'assess/index',
+              label: 'Assessment',
+            },
+             {
+              type: 'doc',
+              docId: 'glossary/index',
+              label: 'Glossary',
+            },
+            {
+              type: 'doc',
+              docId: 'fullex/index',
+              label: 'Examples',
+            },
+          ],
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/facebook/docusaurus',
-          label: 'GitHub',
+          type: 'dropdown',
+          label: 'Elements',
+          position: 'left',
+          items: [
+            {
+              type: 'doc',
+              docId: 'statements/index',
+              label: 'Statements',
+            },
+            {
+              type: 'doc',
+              docId: 'notes/index',
+              label: 'Notes',
+            },
+            {
+              type: 'doc',
+              docId: 'attributes/index',
+              label: 'Attributes',
+            },
+            {
+              type: 'doc',
+              docId: 'relationships/index',
+              label: 'Relationships',
+            },
+          ],
+        },
+        {
+          type: 'dropdown',
+          position: 'left',
+          label: 'Values',
+          items: [
+            {
+              type: 'doc',
+              docId: 'ves/index',
+              label: 'Value Vocabularies',
+            },
+            {
+              type: 'doc',
+              docId: 'ses/index',
+              label: 'String Encodings Schemes',
+            },
+          ]
+        },
+        {
+          type: 'dropdown',
+          label: 'About',
+          position: 'right',
+          items: [
+            {
+              type: 'doc',
+              docId: 'about/index',
+              label: 'About ISBDM',
+            },
+            {
+              type: 'doc',
+              docId: 'about/docusaurus-for-ifla',
+              label: 'Modern Documentation Platform',
+            },
+          ],
+        },
+        {
+          label: 'Resources',
+          position: 'right',
+          type: 'dropdown',
+          items: [
+            {
+              label: 'RDF Downloads',
+              href: '/rdf/',
+            },
+            {
+              label: 'Vocabulary Server',
+              href: 'https://iflastandards.info/',
+            },
+            {
+              label: 'IFLA Website',
+              href: 'https://www.ifla.org/',
+            },
+            {
+              label: 'GitHub Repository',
+              href: 'https://github.com/iflastandards/standards-dev',
+            },
+            {
+              label: 'Portal',
+              href: '/portal/',
+            },
+          ],
+        },
+        {to: '/blog', label: 'Blog', position: 'right'},
+        {
+          type: 'docsVersionDropdown',
           position: 'right',
         },
-      ],
-    },
-    footer: {
-      style: 'dark',
-      links: [
         {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Tutorial',
-              to: '/docs/intro',
-            },
-          ],
+          type: 'localeDropdown',
+          position: 'right',
         },
         {
-          title: 'Community',
-          items: [
-            {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'X',
-              href: 'https://x.com/docusaurus',
-            },
-          ],
+          type: 'search',
+          position: 'right',
         },
         {
-          title: 'More',
-          items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
-            },
-          ],
+          href: 'https://github.com/iflastandards/ISBDM',
+          position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
     },
-    prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
-    },
-  } satisfies Preset.ThemeConfig,
+  },
 };
 
 export default config;
