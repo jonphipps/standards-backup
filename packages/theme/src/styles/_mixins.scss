@@ -1,0 +1,319 @@
+// IFLA Theme Mixins
+@import 'variables';
+
+// Responsive breakpoints
+@mixin ifla-media-up($breakpoint) {
+  @if $breakpoint == sm {
+    @media (min-width: $ifla-breakpoint-sm) { @content; }
+  } @else if $breakpoint == md {
+    @media (min-width: $ifla-breakpoint-md) { @content; }
+  } @else if $breakpoint == lg {
+    @media (min-width: $ifla-breakpoint-lg) { @content; }
+  } @else if $breakpoint == xl {
+    @media (min-width: $ifla-breakpoint-xl) { @content; }
+  } @else if $breakpoint == xxl {
+    @media (min-width: $ifla-breakpoint-xxl) { @content; }
+  }
+}
+
+@mixin ifla-media-down($breakpoint) {
+  @if $breakpoint == sm {
+    @media (max-width: #{$ifla-breakpoint-sm - 1px}) { @content; }
+  } @else if $breakpoint == md {
+    @media (max-width: #{$ifla-breakpoint-md - 1px}) { @content; }
+  } @else if $breakpoint == lg {
+    @media (max-width: #{$ifla-breakpoint-lg - 1px}) { @content; }
+  } @else if $breakpoint == xl {
+    @media (max-width: #{$ifla-breakpoint-xl - 1px}) { @content; }
+  } @else if $breakpoint == xxl {
+    @media (max-width: #{$ifla-breakpoint-xxl - 1px}) { @content; }
+  }
+}
+
+// IFLA button styles
+@mixin ifla-button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $ifla-spacing-sm $ifla-spacing-md;
+  border: 1px solid transparent;
+  border-radius: $ifla-border-radius-md;
+  font-family: $ifla-font-family-base;
+  font-size: $ifla-font-size-base;
+  font-weight: 500;
+  line-height: $ifla-line-height-sm;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all $ifla-transition-base;
+  user-select: none;
+  
+  &:focus {
+    outline: 2px solid $ifla-gold;
+    outline-offset: 2px;
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+@mixin ifla-button-primary {
+  @include ifla-button-base;
+  background-color: $ifla-blue;
+  border-color: $ifla-blue;
+  color: white;
+  
+  &:hover:not(:disabled) {
+    background-color: $ifla-blue-dark;
+    border-color: $ifla-blue-dark;
+    color: white;
+  }
+}
+
+@mixin ifla-button-secondary {
+  @include ifla-button-base;
+  background-color: transparent;
+  border-color: $ifla-blue;
+  color: $ifla-blue;
+  
+  &:hover:not(:disabled) {
+    background-color: $ifla-blue;
+    color: white;
+  }
+}
+
+// IFLA link styles
+@mixin ifla-link-inline {
+  background-color: $ifla-stip-link-bg !important;
+  border-radius: $ifla-border-radius-sm;
+  color: #000000 !important;
+  padding: 0.1rem 0.3rem;
+  text-decoration: none;
+  border: 1px solid #eea897;
+  transition: all $ifla-transition-base;
+  display: inline;
+  word-break: break-word;
+
+  &:hover {
+    background-color: #e62e00 !important;
+    color: #ffffff !important;
+    border-color: #e62e00;
+    text-decoration: none;
+  }
+
+  &:focus {
+    outline: 2px solid $ifla-gold;
+    outline-offset: 2px;
+  }
+}
+
+@mixin ifla-link-outline {
+  background-color: $ifla-guide-link-bg !important;
+  border: 1px solid #000000;
+  border-radius: $ifla-border-radius-sm;
+  color: #000000 !important;
+  padding: 0.1rem 0.3rem;
+  text-decoration: none;
+  transition: all $ifla-transition-base;
+  display: inline;
+  word-break: break-word;
+
+  &:hover {
+    background-color: #0000ff !important;
+    color: #ffffff !important;
+    border-color: #0000ff;
+    text-decoration: none;
+  }
+
+  &:focus {
+    outline: 2px solid $ifla-gold;
+    outline-offset: 2px;
+  }
+}
+
+// Example block styles
+@mixin ifla-example-block-base {
+  border-radius: $ifla-border-radius-md;
+  margin-bottom: $ifla-spacing-sm;
+  padding: $ifla-spacing-md;
+}
+
+@mixin ifla-example-block-guide {
+  @include ifla-example-block-base;
+  background-color: $ifla-guide-bg !important;
+  border: 1px solid $ifla-guide-border;
+}
+
+@mixin ifla-example-block-stip {
+  @include ifla-example-block-base;
+  background-color: $ifla-stip-bg !important;
+  border: 1px solid $ifla-stip-border;
+}
+
+// Dark mode variants
+@mixin ifla-dark-example-block-guide {
+  @include ifla-example-block-base;
+  background-color: $ifla-dark-guide-bg !important;
+  border: 1px solid $ifla-dark-guide-border;
+  color: #e0e0e0;
+}
+
+@mixin ifla-dark-example-block-stip {
+  @include ifla-example-block-base;
+  background-color: $ifla-dark-stip-bg !important;
+  border: 1px solid $ifla-dark-stip-border;
+  color: #e0e0e0;
+}
+
+// Sidebar styling
+@mixin ifla-sidebar-level($level, $color, $indent: 16px) {
+  .menu__link {
+    margin-left: #{$level * $indent};
+    background: linear-gradient(90deg, #{$color} 0%, #{$color} 3px, transparent 3px);
+    color: #{$color} !important;
+    font-weight: if($level == 1, 600, if($level == 2, 500, 400));
+    border-left: 3px solid var(--ifm-color-emphasis-200);
+    padding-left: 12px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-top: -5px;
+    margin-bottom: -5px;
+    transition: all $ifla-transition-base;
+    border-radius: 4px;
+    
+    @if $level >= 4 {
+      font-style: italic;
+    }
+    
+    @if $level >= 5 {
+      font-size: 0.9em;
+    }
+
+    &:hover {
+      background: linear-gradient(90deg, #{$color} 0%, #{$color} 3px, rgba(#{color.channel($color, "red", $space: rgb)}, #{color.channel($color, "green", $space: rgb)}, #{color.channel($color, "blue", $space: rgb)}, 0.1) 3px);
+      transform: translateX(2px);
+      border-left-color: #{$color};
+    }
+
+    &:focus {
+      outline: 2px solid $ifla-gold;
+      outline-offset: 2px;
+    }
+    
+    &--active {
+      background: linear-gradient(90deg, #{$ifla-gold} 0%, #{$ifla-gold} 4px, #fff9e6 4px) !important;
+      color: #{$ifla-navy} !important;
+      font-weight: 700 !important;
+      border-left: 4px solid #{$ifla-gold} !important;
+      transform: none;
+    }
+  }
+}
+
+// Table styles
+@mixin ifla-table-base {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--ifm-background-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: $ifla-border-radius-md;
+  overflow: hidden;
+  
+  thead {
+    background-color: var(--ifm-color-emphasis-100);
+    
+    th {
+      padding: $ifla-spacing-md;
+      text-align: left;
+      font-weight: 600;
+      color: var(--ifm-color-content);
+      border-bottom: 2px solid var(--ifm-color-emphasis-300);
+    }
+  }
+  
+  tbody {
+    tr {
+      border-bottom: 1px solid var(--ifm-color-emphasis-200);
+      
+      &:hover {
+        background-color: var(--ifm-color-emphasis-100);
+      }
+      
+      td {
+        padding: $ifla-spacing-md;
+        vertical-align: top;
+        color: var(--ifm-color-content);
+      }
+    }
+  }
+}
+
+// Form elements
+@mixin ifla-input-base {
+  padding: $ifla-spacing-sm $ifla-spacing-md;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: $ifla-border-radius-md;
+  font-size: $ifla-font-size-base;
+  background-color: var(--ifla-background-color);
+  color: var(--ifla-color-content);
+  transition: border-color $ifla-transition-base, box-shadow $ifla-transition-base;
+  
+  &:focus {
+    outline: none;
+    border-color: $ifla-blue;
+    box-shadow: 0 0 0 2px rgba(#{red($ifla-blue)}, #{green($ifla-blue)}, #{blue($ifla-blue)}, 0.2);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Utility mixins
+@mixin ifla-visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+@mixin ifla-clearfix {
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin ifla-text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Accessibility mixins
+@mixin ifla-reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+@mixin ifla-high-contrast {
+  @media (prefers-contrast: high) {
+    @content;
+  }
+}
+
+@mixin ifla-focus-visible {
+  &:focus-visible {
+    outline: 2px solid $ifla-gold;
+    outline-offset: 2px;
+  }
+}

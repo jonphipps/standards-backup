@@ -1,0 +1,243 @@
+// VocabularyTable component styles
+.vocabularyTable {
+  margin: 2rem 0;
+  
+  .title {
+    margin-bottom: 1rem;
+    color: var(--ifm-color-content);
+  }
+  
+  .filterContainer {
+    margin-bottom: 1rem;
+    
+    .filterInput {
+      width: 100%;
+      max-width: 400px;
+      padding: 0.5rem;
+      border: 1px solid var(--ifm-color-emphasis-300);
+      border-radius: var(--ifm-border-radius);
+      font-size: 1rem;
+      background-color: var(--ifm-background-color);
+      color: var(--ifm-color-content);
+      
+      &:focus {
+        outline: none;
+        border-color: var(--ifm-color-primary);
+        box-shadow: 0 0 0 2px rgba(var(--ifm-color-primary-rgb), 0.2);
+      }
+    }
+  }
+  
+  .tableContainer {
+    overflow-x: auto;
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: var(--ifm-border-radius);
+    
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: var(--ifm-background-color);
+      
+      thead {
+        background-color: var(--ifm-color-emphasis-100);
+        
+        th {
+          padding: 1rem;
+          text-align: left;
+          font-weight: 600;
+          color: var(--ifm-color-content);
+          border-bottom: 2px solid var(--ifm-color-emphasis-300);
+          position: relative;
+          
+          &.sortable {
+            cursor: pointer;
+            user-select: none;
+            
+            &:hover {
+              background-color: var(--ifm-color-emphasis-200);
+            }
+          }
+          
+          .sortIndicator {
+            margin-left: 0.5rem;
+            font-weight: normal;
+          }
+        }
+      }
+      
+      tbody {
+        tr {
+          border-bottom: 1px solid var(--ifm-color-emphasis-200);
+          
+          &:hover {
+            background-color: var(--ifm-color-emphasis-100);
+          }
+          
+          td {
+            padding: 1rem;
+            vertical-align: top;
+            color: var(--ifm-color-content);
+            
+            &.termCell {
+              font-weight: 500;
+              min-width: 200px;
+              
+              .altLabel {
+                font-size: 0.9rem;
+                color: var(--ifm-color-content-secondary);
+                margin-top: 0.25rem;
+                font-weight: normal;
+              }
+            }
+            
+            &.definitionCell {
+              max-width: 400px;
+              
+              .scopeNote {
+                margin-top: 0.5rem;
+                font-size: 0.9rem;
+                color: var(--ifm-color-content-secondary);
+              }
+            }
+            
+            &.uriCell {
+              font-family: var(--ifm-font-family-monospace);
+              font-size: 0.9rem;
+              word-break: break-all;
+              min-width: 300px;
+              
+              code {
+                background: none;
+                padding: 0;
+                color: var(--ifm-color-primary);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .loading {
+    text-align: center;
+    padding: 2rem;
+    color: var(--ifm-color-content-secondary);
+    font-style: italic;
+  }
+  
+  .noResults {
+    text-align: center;
+    padding: 2rem;
+    color: var(--ifm-color-content-secondary);
+    font-style: italic;
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: var(--ifm-border-radius);
+    margin-top: 1rem;
+  }
+  
+  .downloadSection {
+    margin-top: 1rem;
+    text-align: center;
+    
+    .downloadButton {
+      padding: 0.5rem 1rem;
+      background-color: var(--ifm-color-primary);
+      color: white;
+      border: none;
+      border-radius: var(--ifm-border-radius);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.2s ease;
+      
+      &:hover {
+        background-color: var(--ifm-color-primary-dark);
+      }
+    }
+  }
+  
+  // Compact mode
+  &.compact {
+    .tableContainer .table {
+      thead th,
+      tbody td {
+        padding: 0.5rem;
+      }
+    }
+  }
+}
+
+// Dark mode styles
+[data-theme='dark'] {
+  .vocabularyTable {
+    .filterContainer .filterInput {
+      background-color: var(--ifm-background-surface-color);
+      border-color: var(--ifm-color-emphasis-300);
+      color: var(--ifm-color-content);
+    }
+    
+    .tableContainer {
+      border-color: var(--ifm-color-emphasis-300);
+      
+      .table {
+        background-color: var(--ifm-background-surface-color);
+        
+        thead {
+          background-color: var(--ifm-color-emphasis-200);
+          
+          th {
+            border-bottom-color: var(--ifm-color-emphasis-300);
+            
+            &.sortable:hover {
+              background-color: var(--ifm-color-emphasis-300);
+            }
+          }
+        }
+        
+        tbody tr {
+          border-bottom-color: var(--ifm-color-emphasis-200);
+          
+          &:hover {
+            background-color: var(--ifm-color-emphasis-200);
+          }
+        }
+      }
+    }
+    
+    .noResults {
+      border-color: var(--ifm-color-emphasis-300);
+      background-color: var(--ifm-background-surface-color);
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .vocabularyTable {
+    .tableContainer {
+      .table {
+        tbody td {
+          &.uriCell {
+            min-width: 200px;
+            font-size: 0.8rem;
+          }
+          
+          &.definitionCell {
+            max-width: 250px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .vocabularyTable {
+    .tableContainer .table {
+      thead th,
+      tbody td {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+/* SeeAlso component styles */
+.seeAlso {
+  display: inline-block;
+  font-style: italic;
+  color: var(--ifm-color-content-secondary);
+  margin: 0.5rem 0;
+}
+
+.seeAlso strong {
+  font-weight: 600;
+  color: var(--ifm-color-content);
+}
+
+/* Dark mode styles */
+[data-theme='dark'] .seeAlso {
+  color: var(--ifm-color-content-secondary);
+}
+
+[data-theme='dark'] .seeAlso strong {
+  color: var(--ifm-color-content);
+}

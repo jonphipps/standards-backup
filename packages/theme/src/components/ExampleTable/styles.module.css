@@ -1,0 +1,215 @@
+/* ExampleTable component styles */
+.exampleTable {
+  margin: 1.5rem 0;
+  border-radius: var(--ifm-border-radius);
+  overflow: hidden;
+}
+
+.exampleTable .trigger {
+  width: 100%;
+  background-color: #cce0ff;
+  border: 1px solid #000000;
+  border-radius: 0.5rem;
+  color: #000000;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.exampleTable .trigger:hover {
+  background-color: #b8d6ff;
+}
+
+.exampleTable .trigger:focus {
+  outline: 2px solid var(--ifla-gold, #fdb913);
+  outline-offset: 2px;
+}
+
+.exampleTable .trigger .title {
+  flex: 1;
+}
+
+.exampleTable .trigger .icon {
+  transition: transform 0.2s ease;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
+
+.exampleTable .trigger .icon.open {
+  transform: rotate(180deg);
+}
+
+.exampleTable .content {
+  background-color: #cce0ff;
+  border: 1px solid #000000;
+  border-top: none;
+  border-radius: 0 0 0.5rem 0.5rem;
+  padding: 1rem;
+  margin-top: -1px; /* Overlap with trigger border */
+  color: #000000;
+}
+
+/* Style content elements */
+.exampleTable .content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.exampleTable .content table th,
+.exampleTable .content table td {
+  border: 1px solid #333;
+  padding: 0.5rem;
+  text-align: left;
+  color: #000000;
+  font-size: 0.9rem;
+}
+
+.exampleTable .content table th {
+  background-color: #b8d6ff;
+  font-weight: 600;
+}
+
+.exampleTable .content p {
+  color: #000000;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.exampleTable .content p:last-child {
+  margin-bottom: 0;
+}
+
+.exampleTable .content em,
+.exampleTable .content .editComment {
+  color: #336699 !important;
+  font-weight: 600;
+  font-style: italic;
+}
+
+/* Links inside examples */
+.exampleTable .content a {
+  background-color: #ffd6cc !important;
+  border-radius: 0.3rem;
+  color: #000000 !important;
+  padding: 0.1rem 0.3rem;
+  text-decoration: none;
+  border: 1px solid #eea897;
+}
+
+.exampleTable .content a:hover {
+  background-color: #e62e00 !important;
+  color: #ffffff !important;
+  border-color: #e62e00;
+}
+
+/* Non-collapsible variant */
+.exampleTable.nonCollapsible .header {
+  background-color: #cce0ff;
+  border: 1px solid #000000;
+  border-radius: 0.5rem 0.5rem 0 0;
+  padding: 0.75rem 1rem;
+}
+
+.exampleTable.nonCollapsible .header .title {
+  margin: 0;
+  color: #000000;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.exampleTable.nonCollapsible .content {
+  border-top: 1px solid #000000;
+  border-radius: 0 0 0.5rem 0.5rem;
+  margin-top: 0;
+}
+
+/* Dark mode styles */
+[data-theme='dark'] .exampleTable .trigger {
+  background-color: #2a3a52 !important;
+  border-color: #4a5a72;
+  color: #e0e0e0 !important;
+}
+
+[data-theme='dark'] .exampleTable .trigger:hover {
+  background-color: #3a4a62 !important;
+}
+
+[data-theme='dark'] .exampleTable .content {
+  background-color: #2a3a52 !important;
+  border-color: #4a5a72;
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .exampleTable .content table th {
+  background-color: #3a4a62;
+  color: #e0e0e0;
+  border-color: #4a5a72;
+}
+
+[data-theme='dark'] .exampleTable .content table td {
+  color: #e0e0e0;
+  border-color: #4a5a72;
+}
+
+[data-theme='dark'] .exampleTable .content p {
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .exampleTable .content em,
+[data-theme='dark'] .exampleTable .content .editComment {
+  color: #6ba3f0 !important;
+}
+
+[data-theme='dark'] .exampleTable .content a {
+  background-color: #4a3833 !important;
+  border-color: #6a5843;
+  color: #ffd6cc !important;
+}
+
+[data-theme='dark'] .exampleTable .content a:hover {
+  background-color: #ff6b3d !important;
+  color: #ffffff !important;
+  border-color: #ff6b3d;
+}
+
+[data-theme='dark'] .exampleTable.nonCollapsible .header {
+  background-color: #2a3a52 !important;
+  border-color: #4a5a72;
+}
+
+[data-theme='dark'] .exampleTable.nonCollapsible .header .title {
+  color: #e0e0e0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .exampleTable .trigger {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.95rem;
+  }
+  
+  .exampleTable .content {
+    padding: 0.8rem;
+  }
+  
+  .exampleTable .content table th,
+  .exampleTable .content table td {
+    padding: 0.4rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .exampleTable .trigger .icon {
+    transition: none;
+  }
+}

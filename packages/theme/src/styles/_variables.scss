@@ -1,0 +1,116 @@
+// IFLA Theme Variables
+// Based on successful ISBDM implementation
+
+// IFLA Brand Colors
+$ifla-navy: #002147;
+$ifla-blue: #1a4480;
+$ifla-gold: #fdb913;
+$ifla-light-blue: #4a90e2;
+$ifla-grey: #666666;
+
+// Extended color palette
+$ifla-blue-dark: #164070;
+$ifla-blue-darker: #143b68;
+$ifla-blue-darkest: #103056;
+$ifla-blue-light: #1e4c90;
+$ifla-blue-lighter: #2051a0;
+$ifla-blue-lightest: #2458b0;
+
+// Dark theme variants
+$ifla-dark-primary: #4a90e2;
+$ifla-dark-primary-dark: #3a80d2;
+$ifla-dark-primary-darker: #3070c2;
+$ifla-dark-primary-darkest: #2560b2;
+$ifla-dark-primary-light: #5aa0f2;
+$ifla-dark-primary-lighter: #6ab0ff;
+$ifla-dark-primary-lightest: #7ac0ff;
+
+// Semantic colors
+$ifla-success: #059669;
+$ifla-warning: #d97706;
+$ifla-error: #dc2626;
+$ifla-info: $ifla-light-blue;
+
+// Example block colors
+$ifla-guide-bg: #e6f0ff;
+$ifla-guide-border: #c4d7f4;
+$ifla-guide-link-bg: #cce0ff;
+
+$ifla-stip-bg: #ffebe6;
+$ifla-stip-border: #ffc3b3;
+$ifla-stip-link-bg: #ffd6cc;
+
+// Dark mode example blocks
+$ifla-dark-guide-bg: #1a2332;
+$ifla-dark-guide-border: #2a3a52;
+$ifla-dark-guide-link-bg: #2a3a52;
+
+$ifla-dark-stip-bg: #332620;
+$ifla-dark-stip-border: #4a3833;
+$ifla-dark-stip-link-bg: #5a453a;
+
+// Typography
+$ifla-font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+$ifla-font-family-monospace: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+
+$ifla-font-size-base: 16px;
+$ifla-font-size-sm: 14px;
+$ifla-font-size-lg: 18px;
+$ifla-font-size-xl: 20px;
+
+$ifla-line-height-base: 1.6;
+$ifla-line-height-sm: 1.4;
+$ifla-line-height-lg: 1.8;
+
+// Spacing
+$ifla-spacing-xs: 0.25rem;
+$ifla-spacing-sm: 0.5rem;
+$ifla-spacing-md: 1rem;
+$ifla-spacing-lg: 1.5rem;
+$ifla-spacing-xl: 2rem;
+$ifla-spacing-xxl: 3rem;
+
+// Border radius
+$ifla-border-radius-sm: 0.25rem;
+$ifla-border-radius-md: 0.5rem;
+$ifla-border-radius-lg: 0.75rem;
+
+// Shadows
+$ifla-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$ifla-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$ifla-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+// Breakpoints
+$ifla-breakpoint-sm: 576px;
+$ifla-breakpoint-md: 768px;
+$ifla-breakpoint-lg: 992px;
+$ifla-breakpoint-xl: 1200px;
+$ifla-breakpoint-xxl: 1400px;
+
+// Z-index scale
+$ifla-z-dropdown: 1000;
+$ifla-z-sticky: 1020;
+$ifla-z-fixed: 1030;
+$ifla-z-modal-backdrop: 1040;
+$ifla-z-modal: 1050;
+$ifla-z-popover: 1060;
+$ifla-z-tooltip: 1070;
+
+// Sidebar colors for hierarchy
+$ifla-sidebar-level-1: $ifla-navy;
+$ifla-sidebar-level-2: $ifla-blue;
+$ifla-sidebar-level-3: #2d5a87;
+$ifla-sidebar-level-4: #4a6fa5;
+$ifla-sidebar-level-5: #1e3a63;
+
+// Dark mode sidebar colors
+$ifla-dark-sidebar-level-1: $ifla-dark-primary;
+$ifla-dark-sidebar-level-2: #6ba3f0;
+$ifla-dark-sidebar-level-3: #5a94d6;
+$ifla-dark-sidebar-level-4: #7ba7e8;
+$ifla-dark-sidebar-level-5: #4a7bc8;
+
+// Animation
+$ifla-transition-fast: 0.15s ease;
+$ifla-transition-base: 0.2s ease;
+$ifla-transition-slow: 0.3s ease;

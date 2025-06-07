@@ -1,2 +1,89 @@
 {
-  "name":"@ifla/theme","version":"0.0.0","private":true,"main":"src/index.ts"}
+  "name": "@ifla/theme",
+  "version": "1.0.0",
+  "description": "Comprehensive shared theme system for IFLA standard sites",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./components": {
+      "types": "./src/components/index.ts",
+      "default": "./src/components/index.ts"
+    },
+    "./styles": {
+      "default": "./src/styles/index.css"
+    },
+    "./config": {
+      "types": "./src/config/index.ts",
+      "default": "./src/config/index.ts"
+    },
+    "./utils": {
+      "types": "./src/utils/index.ts",
+      "default": "./src/utils/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src --ext .ts,.tsx",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "papaparse": "^5.4.1",
+    "react-transition-group": "^4.4.5",
+    "path-browserify": "^1.0.1",
+    "crypto-browserify": "^3.12.0",
+    "stream-browserify": "^3.0.0",
+    "util": "^0.12.5",
+    "os-browserify": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/papaparse": "^5.3.14",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/react-transition-group": "^4.4.10",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "eslint-plugin-react": "^7.33.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0",
+    "@docusaurus/core": "^3.0.0",
+    "@docusaurus/theme-classic": "^3.0.0",
+    "@docusaurus/theme-common": "^3.0.0",
+    "@docusaurus/module-type-aliases": "^3.0.0",
+    "@docusaurus/preset-classic": "^3.0.0",
+    "@docusaurus/plugin-client-redirects": "^3.0.0",
+    "@easyops-cn/docusaurus-search-local": "*",
+    "@mdx-js/react": "^3.0.0",
+    "prism-react-renderer": "^2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@easyops-cn/docusaurus-search-local": {
+      "optional": true
+    }
+  },
+  "keywords": [
+    "ifla",
+    "docusaurus",
+    "theme",
+    "library-standards",
+    "bibliographic",
+    "vocabulary",
+    "rdf"
+  ],
+  "author": "IFLA",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0"
+  }
+}
