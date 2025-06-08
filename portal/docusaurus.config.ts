@@ -64,11 +64,8 @@ const config: Config = {
     
     // Portal-specific navbar
     navbar: {
+      ...sharedThemeConfig.navbar,
       title: 'IFLA Standards',
-      logo: {
-        alt: 'IFLA Logo',
-        src: 'img/logo.svg',
-      },
       items: [
         {
           type: 'dropdown',
@@ -118,7 +115,7 @@ const config: Config = {
     
     // Portal-specific footer
     footer: {
-      style: 'dark',
+      ...sharedThemeConfig.footer,
       links: [
         {
           title: 'Standards',
@@ -138,19 +135,6 @@ const config: Config = {
           ],
         },
         {
-          title: 'Community',
-          items: [
-            {
-              label: 'IFLA',
-              href: 'https://www.ifla.org/',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/iflastandards/standards-dev',
-            },
-          ],
-        },
-        {
           title: 'More',
           items: [
             {
@@ -163,8 +147,8 @@ const config: Config = {
             },
           ],
         },
+        ...sharedThemeConfig.footer.links,
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} IFLA. Built with Docusaurus.`,
     },
   } satisfies Preset.ThemeConfig,
 };

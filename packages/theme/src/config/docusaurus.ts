@@ -29,6 +29,53 @@ export const sharedThemeConfig = {
     textColor: '#091E42',
     isCloseable: false,
   },
+  // Shared navbar logo configuration
+  navbar: {
+    logo: {
+      alt: 'IFLA Logo',
+      src: 'img/logo-ifla_black.png',
+    },
+  },
+  // Shared footer configuration with common links
+  footer: {
+    style: 'dark',
+    links: [
+      {
+        title: 'Community',
+        items: [
+          {
+            label: 'IFLA',
+            href: 'https://www.ifla.org/',
+          },
+          {
+            label: 'GitHub',
+            href: 'https://github.com/iflastandards/standards-dev',
+          },
+        ],
+      },
+      {
+        title: 'Resources',
+        items: [
+          {
+            label: 'Vocabulary Server',
+            href: 'https://iflastandards.info/',
+          },
+          {
+            label: 'Portal',
+            href: '/portal/',
+          },
+        ],
+      },
+    ],
+    copyright: `
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
+        <span>Copyright © ${new Date().getFullYear()} International Federation of Library Associations and Institutions (IFLA).</span>
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">
+          <img src="/img/cc0_by.png" alt="Badge for Creative Commons Attribution 4.0 International license" style="height: 20px;" />
+        </a>
+      </div>
+    `,
+  },
 };
 
 // Shared plugins - only truly universal ones
@@ -74,5 +121,5 @@ export const commonDefaults: Partial<Config> = {
   markdown: {
     mermaid: true,
   },
-  staticDirectories: ['static'],
+  staticDirectories: ['static', 'node_modules/@ifla/theme/static'],
 };

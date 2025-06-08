@@ -155,11 +155,8 @@ const config: Config = {
     
     // Site-specific navbar
     navbar: {
+      ...sharedThemeConfig.navbar,
       title: 'ISBDM',
-      logo: {
-        alt: 'IFLA Logo',
-        src: 'img/logo-ifla_black.png',
-      },
       items: [
         {
           type: 'dropdown',
@@ -295,7 +292,7 @@ const config: Config = {
     
     // Site-specific footer
     footer: {
-      style: 'dark',
+      ...sharedThemeConfig.footer,
       links: [
         {
           title: 'Documentation',
@@ -310,34 +307,8 @@ const config: Config = {
             },
           ],
         },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'IFLA',
-              href: 'https://www.ifla.org/',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/iflastandards/standards-dev',
-            },
-          ],
-        },
-        {
-          title: 'Resources',
-          items: [
-            {
-              label: 'Vocabulary Server',
-              href: 'https://iflastandards.info/',
-            },
-            {
-              label: 'Portal',
-              href: '/portal/',
-            },
-          ],
-        },
+        ...sharedThemeConfig.footer.links,
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} IFLA. Built with Docusaurus.`,
     },
   } satisfies Preset.ThemeConfig,
 };
