@@ -17,7 +17,7 @@ export default function DownloadPanel({
   jsonLdUrl,
   xmlUrl,
   className = '',
-}: DownloadPanelProps): JSX.Element {
+}: DownloadPanelProps): React.JSX.Element {
   return (
     <div className={clsx(styles.downloadPanel, className)}>
       <h2>Download Resources</h2>

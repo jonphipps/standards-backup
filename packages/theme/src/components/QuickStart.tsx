@@ -15,7 +15,7 @@ export default function QuickStart({
   elementsPath = '/docs/elements',
   examplesPath = '/docs/examples',
   className = '',
-}: QuickStartProps): JSX.Element {
+}: QuickStartProps): React.JSX.Element {
   return (
     <div className={clsx(styles.quickstartPanel, className)}>
       <h2>Quick Start for Cataloguers</h2>

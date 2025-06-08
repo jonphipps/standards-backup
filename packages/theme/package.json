@@ -2,27 +2,14 @@
   "name": "@ifla/theme",
   "version": "1.0.0",
   "private": true,
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
-    },
-    "./components": {
-      "types": "./src/components/index.ts",
-      "default": "./src/components/index.ts"
-    },
-    "./styles": {
-      "default": "./src/styles/index.css"
-    },
-    "./config": {
-      "types": "./src/config/index.ts",
-      "default": "./src/config/index.ts"
-    },
-    "./utils": {
-      "types": "./src/utils/index.ts",
-      "default": "./src/utils/index.ts"
-    }
+    ".": "./src/index.ts",
+    "./components": "./src/components/index.ts", 
+    "./config": "./src/config/index.ts",
+    "./utils": "./src/utils/index.ts",
+    "./styles": "./src/styles/index.css"
   }
 }

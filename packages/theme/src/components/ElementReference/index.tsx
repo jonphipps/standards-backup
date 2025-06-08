@@ -100,12 +100,12 @@ function adaptFrontMatter(frontMatter: any, elementDefaults: any): { RDF: RDFDat
 
 export default function ElementReference({
   frontMatter,
-}: ElementReferenceProps): JSX.Element {
+}: ElementReferenceProps): React.JSX.Element {
   // Get config from Docusaurus context
   const {siteConfig} = useDocusaurusContext();
   
   // Extract element defaults from config
-  const elementDefaults = siteConfig.customFields?.vocabularyDefaults?.elementDefaults || {
+  const elementDefaults = (siteConfig.customFields as any)?.vocabularyDefaults?.elementDefaults || {
     uri: "https://www.iflastandards.info/elements",
     prefix: "ifla",
     classPrefix: "C",
@@ -447,8 +447,8 @@ function generateRdfXml(rdfData: RDFData): string {
   } = rdfData;
 
   // Determine the proper type
-  let rdfXmlContent;
-  let propertyType;
+  let rdfXmlContent: string;
+  let propertyType: string;
   
   if (type?.toLowerCase().includes("class")) {
     // Special handling for Class type

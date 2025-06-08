@@ -218,5 +218,11 @@
   "engines": {
     "node": ">=18.0"
   },
-  "packageManager": "pnpm@9.0.5"
+  "packageManager": "pnpm@9.0.5",
+  "pnpm": {
+    "overrides": {
+      "@types/react": "^19.1.6",
+      "@types/react-dom": "^19.1.6"
+    }
+  }
 }
