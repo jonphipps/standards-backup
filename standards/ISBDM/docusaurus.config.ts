@@ -3,8 +3,12 @@ import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'IFLA ISBDM',
-  tagline: 'International Standard Bibliographic Description (Manifestation)',
+  future: {
+    experimental_faster: false,
+    v4: true,
+  },
+  title: 'ISBD for Manifestation',
+  tagline: 'International Standard Bibliographic Description for Manifestation',
   favicon: 'img/favicon.ico',
 
   url: 'https://iflastandards.github.io',
@@ -16,26 +20,67 @@ const config: Config = {
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
-  },
 
   customFields: {
     vocabularyDefaults: {
       prefix: "isbdm",
       startCounter: 1000,
       uriStyle: "numeric",
+      numberPrefix: "T", // Prefix for numeric URIs. Can be blank for no prefix.
       caseStyle: "kebab-case",
       showFilter: true,
       filterPlaceholder: "Filter vocabulary terms...",
       showTitle: false,
+      showURIs: true, // Whether to display URIs in the table, set to false for glossaries
+      showCSVErrors: false, // Whether to display CSV validation errors by default
+      profile: "isbdm-values-profile-revised.csv",
+      profileShapeId: "Concept",
       RDF: {
         "rdf:type": ["skos:ConceptScheme"]
+      },
+      // Common defaults for elements and defines the vocabulary properties
+      elementDefaults: {
+        uri: "https://www.iflastandards.info/ISBDM/elements",
+        classPrefix: "C", // Class Prefix for numeric URIs. Can be blank for no prefix.
+        propertyPrefix: "P", // Property Prefix for numeric URIs. Can be blank for no prefix.
+        profile: "isbdm-elements-profile.csv",
+        profileShapeId: "Element",
       }
     }
   },
 
+  // Even if you don't use internationalization, you can use this field to set
+  // useful metadata like html lang. For example, if your site is Chinese, you
+  // may want to replace "en" with "zh-Hans".
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+    localeConfigs: {
+      en: {
+        label: 'English',
+      },
+    },
+  },
+  plugins: [
+    'docusaurus-plugin-sass',
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        // This will be populated at build time
+        redirects: [],
+        createRedirects(existingPath) {
+          // Check if this is an element path that needs redirection
+          const elementMatch = existingPath.match(/^\/docs\/(attributes|statements|notes|relationships)\/(\d+)$/);
+          if (elementMatch) {
+            const elementId = elementMatch[2];
+            // Create redirect from old elements path
+            return [`/docs/elements/${elementId}`];
+          }
+          return undefined;
+        },
+      },
+    ],
+  ],
   presets: [
     [
       'classic',
@@ -45,10 +90,55 @@ const config: Config = {
           editUrl: 'https://github.com/iflastandards/ISBDM/tree/main/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
+	  versions: {
+            current: {
+              label: 'Latest',
+              path: '',
+            },
+          },
+          lastVersion: 'current',
+          onlyIncludeVersions: ['current'],
+          async sidebarItemsGenerator({defaultSidebarItemsGenerator, ...args}) {
+            const sidebarItems = await defaultSidebarItemsGenerator(args);
+
+            function filterIndexMdx(items) {
+              return items
+                  .filter(item => {
+                    // Filter out any doc items that represent index files
+                    if (item.type === 'doc') {
+                      // Check if the id ends with 'index' or contains '/index'
+                      const docId = item.id || item.docId || '';
+                      if (docId === 'index' || 
+                          docId.endsWith('/index') || 
+                          docId.split('/').pop() === 'index') {
+                        return false;
+                      }
+                    }
+                    return true;
+                  })
+                  .map(item => {
+                    // Recursively filter items within categories
+                    if (item.type === 'category' && item.items) {
+                      return {...item, items: filterIndexMdx(item.items)};
+                    }
+                    return item;
+                  });
+            }
+
+            return filterIndexMdx(sidebarItems);
+          }
         },
         blog: {
           showReadingTime: true,
+          feedOptions: {
+            type: ['rss', 'atom'],
+            xslt: true,
+          },
           editUrl: 'https://github.com/iflastandards/ISBDM/tree/main/',
+          // Useful options to enforce blogging best practices
+          onInlineTags: 'warn',
+          onInlineAuthors: 'warn',
+          onUntruncatedBlogPosts: 'warn',
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -56,25 +146,32 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-
-  plugins: [
-    'docusaurus-plugin-sass',
+  themes: [
     [
-      '@docusaurus/plugin-client-redirects',
+      require.resolve('@easyops-cn/docusaurus-search-local'),
       {
-        redirects: [
-          // Add redirects as needed
-        ],
+        hashed: true,
+        // language: ['en', 'fr', 'es', 'de'], // Optional: match your locales
+        indexBlog: false, // Optional: only index docs, not blog
+        // Add further options as needed
       },
     ],
   ],
-  
-  themeConfig: {
-    image: 'img/docusaurus-social-card.jpg',
-    prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
+    themeConfig: {
+    // Configure TOC to show up to 5 heading levels
+    docs: {
+      sidebar: {
+        hideable: true,
+        autoCollapseCategories: true,
+      },
+      versionPersistence: 'localStorage',
     },
+    tableOfContents: {
+      minHeadingLevel: 2,
+      maxHeadingLevel: 5,
+    },
+    // Replace with your project's social card
+    image: 'img/docusaurus-social-card.jpg',
     navbar: {
       title: 'ISBDM',
       logo: {
