@@ -1,23 +1,79 @@
-import { createIFLAConfig, VOCABULARY_DEFAULTS } from '@ifla/theme/config';
+import { themes as prismThemes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
+import type * as Preset from '@docusaurus/preset-classic';
 
-const baseConfig = createIFLAConfig({
+const config: Config = {
   title: 'IFLA ISBDM',
   tagline: 'International Standard Bibliographic Description (Manifestation)',
+  favicon: 'img/favicon.ico',
+
   url: 'https://iflastandards.github.io',
   baseUrl: process.env.BASE_URL || '/ISBDM/',
+
   organizationName: 'iflastandards',
   projectName: 'ISBDM',
-  githubUrl: 'https://github.com/iflastandards/ISBDM',
-  vocabularyDefaults: VOCABULARY_DEFAULTS.ISBDM,
-});
 
-// Customize the base config for ISBDM-specific needs
-const config = {
-  ...baseConfig,
+  onBrokenLinks: 'warn',
+  onBrokenMarkdownLinks: 'warn',
+
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+  },
+
+  customFields: {
+    vocabularyDefaults: {
+      prefix: "isbdm",
+      startCounter: 1000,
+      uriStyle: "numeric",
+      caseStyle: "kebab-case",
+      showFilter: true,
+      filterPlaceholder: "Filter vocabulary terms...",
+      showTitle: false,
+      RDF: {
+        "rdf:type": ["skos:ConceptScheme"]
+      }
+    }
+  },
+
+  presets: [
+    [
+      'classic',
+      {
+        docs: {
+          sidebarPath: './sidebars.ts',
+          editUrl: 'https://github.com/iflastandards/ISBDM/tree/main/',
+          showLastUpdateAuthor: true,
+          showLastUpdateTime: true,
+        },
+        blog: {
+          showReadingTime: true,
+          editUrl: 'https://github.com/iflastandards/ISBDM/tree/main/',
+        },
+        theme: {
+          customCss: './src/css/custom.css',
+        },
+      } satisfies Preset.Options,
+    ],
+  ],
+
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          // Add redirects as needed
+        ],
+      },
+    ],
+  ],
   
-  // Override the navbar with ISBDM-specific navigation
   themeConfig: {
-    ...baseConfig.themeConfig,
+    image: 'img/docusaurus-social-card.jpg',
+    prism: {
+      theme: prismThemes.github,
+      darkTheme: prismThemes.dracula,
+    },
     navbar: {
       title: 'ISBDM',
       logo: {
@@ -133,6 +189,7 @@ const config = {
             {
               label: 'GitHub Repository',
               href: 'https://github.com/iflastandards/standards-dev',
+              'aria-label': 'GitHub repository',
             },
             {
               label: 'Portal',
@@ -153,15 +210,54 @@ const config = {
           type: 'search',
           position: 'right',
         },
-        {
-          href: 'https://github.com/iflastandards/ISBDM',
-          position: 'right',
-          className: 'header-github-link',
-          'aria-label': 'GitHub repository',
-        },
       ],
     },
-  },
+    footer: {
+      style: 'dark',
+      links: [
+        {
+          title: 'Documentation',
+          items: [
+            {
+              label: 'Introduction',
+              to: '/docs/intro',
+            },
+            {
+              label: 'Elements',
+              to: '/docs/statements',
+            },
+          ],
+        },
+        {
+          title: 'Community',
+          items: [
+            {
+              label: 'IFLA',
+              href: 'https://www.ifla.org/',
+            },
+            {
+              label: 'GitHub',
+              href: 'https://github.com/iflastandards/standards-dev',
+            },
+          ],
+        },
+        {
+          title: 'Resources',
+          items: [
+            {
+              label: 'Vocabulary Server',
+              href: 'https://iflastandards.info/',
+            },
+            {
+              label: 'Portal',
+              href: '/portal/',
+            },
+          ],
+        },
+      ],
+      copyright: `Copyright © ${new Date().getFullYear()} IFLA. Built with Docusaurus.`,
+    },
+  } satisfies Preset.ThemeConfig,
 };
 
 export default config;
