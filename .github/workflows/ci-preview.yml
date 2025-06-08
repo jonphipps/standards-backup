@@ -1,5 +1,14 @@
 name: build-preview
-on: [push, pull_request]
+on: 
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      force_build_all:
+        description: 'Force build all sites'
+        required: false
+        default: 'true'
+        type: boolean
 permissions: {contents: write}
 jobs:
   site:

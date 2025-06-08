@@ -5,6 +5,22 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      force_build_all:
+        description: 'Force build all sites (portal + all standards)'
+        required: false
+        default: 'true'
+        type: boolean
+      force_build_portal:
+        description: 'Force build portal only'
+        required: false
+        default: 'false'
+        type: boolean
+      force_build_standards:
+        description: 'Force build specific standards (space-separated: ISBDM LRM fr isbd muldicat unimarc)'
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: read
@@ -48,7 +64,16 @@ jobs:
       - name: List standards to build
         id: list-standards
         run: |
-          if [ "${{ steps.changes.outputs.standards }}" = "true" ]; then
+          # Check for manual triggers with force options
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ "${{ github.event.inputs.force_build_all }}" = "true" ]; then
+              echo "standards=ISBDM LRM fr isbd muldicat unimarc" >> $GITHUB_OUTPUT
+            elif [ -n "${{ github.event.inputs.force_build_standards }}" ]; then
+              echo "standards=${{ github.event.inputs.force_build_standards }}" >> $GITHUB_OUTPUT
+            else
+              echo "standards=" >> $GITHUB_OUTPUT
+            fi
+          elif [ "${{ steps.changes.outputs.standards }}" = "true" ]; then
             # Get list of changed standards
             changed=$(git diff --name-only HEAD^ HEAD | grep '^standards/' | cut -d'/' -f2 | sort -u | tr '\n' ' ')
             if [ -n "$changed" ]; then
@@ -64,7 +89,7 @@ jobs:
   build-portal:
     runs-on: ubuntu-latest
     needs: detect-changes
-    if: needs.detect-changes.outputs.portal == 'true' || github.event_name == 'workflow_dispatch'
+    if: needs.detect-changes.outputs.portal == 'true' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.force_build_all == 'true' || github.event.inputs.force_build_portal == 'true'))
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -110,7 +135,7 @@ jobs:
   build-standards:
     runs-on: ubuntu-latest
     needs: detect-changes
-    if: needs.detect-changes.outputs.standards == 'true' || github.event_name == 'workflow_dispatch'
+    if: needs.detect-changes.outputs.standards == 'true' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.force_build_all == 'true' || github.event.inputs.force_build_standards != ''))
     strategy:
       matrix:
         standard: [ISBDM, LRM, fr, isbd, muldicat, unimarc]
@@ -122,7 +147,23 @@ jobs:
         id: should-build
         run: |
           standards_list="${{ needs.detect-changes.outputs.standards-list }}"
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [[ " $standards_list " =~ " ${{ matrix.standard }} " ]]; then
+          
+          # Check if this standard should be built
+          should_build=false
+          
+          # Manual dispatch with force options
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ "${{ github.event.inputs.force_build_all }}" = "true" ]; then
+              should_build=true
+            elif [[ " $standards_list " =~ " ${{ matrix.standard }} " ]]; then
+              should_build=true
+            fi
+          # Normal push with change detection
+          elif [[ " $standards_list " =~ " ${{ matrix.standard }} " ]]; then
+            should_build=true
+          fi
+          
+          if [ "$should_build" = "true" ]; then
             echo "build=true" >> $GITHUB_OUTPUT
           else
             echo "build=false" >> $GITHUB_OUTPUT
