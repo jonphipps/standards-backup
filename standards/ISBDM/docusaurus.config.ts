@@ -54,7 +54,7 @@ const config: Config = {
     },
   },
 
-  // Site-specific plugins (shared ones + redirects)
+  // Site-specific plugins (shared ones and redirects)
   plugins: [
     ...sharedPlugins,
     [
