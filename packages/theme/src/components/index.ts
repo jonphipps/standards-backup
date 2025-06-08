@@ -2,7 +2,12 @@
 
 // Core components
 export { default as ElementReference } from './ElementReference';
-export { default as VocabularyTable } from './VocabularyTable';
+export { 
+  VocabularyTable as default,
+  VocabularyTable,
+  CSVVocabulary,
+  VocabularyTableFromCSV
+} from './VocabularyTable';
 
 // Link components
 export { default as InLink } from './InLink';
@@ -19,10 +24,22 @@ export { default as ExampleTable } from './ExampleTable';
 export { default as DownloadPanel } from './DownloadPanel';
 export { default as QuickStart } from './QuickStart';
 
-// Re-export types
+// VocabularyTable utilities
+export {
+  getLocalizedText,
+  getAllLocalizedText,
+  parseCSVToConcepts,
+  createSlug,
+  extractAvailableLanguages,
+  generateTOCFromProps,
+  exportToCSV,
+  useCsvLoader,
+  useMultilingualText
+} from './VocabularyTable';
+
+// Re-export types from main types and VocabularyTable
 export type {
   ElementReferenceProps,
-  VocabularyTableProps,
   InLinkProps,
   OutLinkProps,
   SeeAlsoProps,
@@ -30,14 +47,19 @@ export type {
   UniqueProps,
   FigureProps,
   ExampleTableProps,
-  ConceptProps,
   RDFData,
+  IFLAThemeConfig,
+  VocabularyDefaults
+} from '../types';
+
+// Re-export VocabularyTable-specific types
+export type {
+  VocabularyTableProps,
+  ConceptProps,
   MultilingualText,
   LanguageConfig,
   CSVConceptRow,
   TOCItem,
   UriCaseStyle,
-  RDFMetadata,
-  IFLAThemeConfig,
-  VocabularyDefaults
-} from '../types';
+  RDFMetadata
+} from './VocabularyTable';

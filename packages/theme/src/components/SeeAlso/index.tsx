@@ -1,20 +1,41 @@
 import React from 'react';
 import clsx from 'clsx';
-import styles from './styles.module.css';
-import { SeeAlsoProps } from '../../types';
+import styles from './SeeAlso.module.scss';
+
+export interface SeeAlsoProps {
+  /**
+   * Content of the see also section
+   */
+  children: React.ReactNode;
+  
+  /**
+   * Additional CSS classes
+   */
+  className?: string;
+}
 
 /**
- * SeeAlso component for "See also" references with consistent styling
+ * SeeAlso component for related content references
+ * 
+ * Using div instead of p tag to prevent DOM nesting issues
+ * when component is used inside paragraphs
  */
 export const SeeAlso: React.FC<SeeAlsoProps> = ({
   children,
   className,
 }) => {
   return (
-    <span className={clsx('seeAlsoAdd', styles.seeAlso, className)}>
-      <strong>See also: </strong>
-      {children}
-    </span>
+    <div
+      className={clsx(
+        'seeAlso',
+        styles.seeAlso,
+        className
+      )}
+    >
+      <div className={styles.seeAlsoText}>
+        <i>See also</i>: {children}
+      </div>
+    </div>
   );
 };
 

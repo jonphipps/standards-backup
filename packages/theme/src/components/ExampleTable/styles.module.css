@@ -1,215 +1,103 @@
-/* ExampleTable component styles */
+/* Styles for the example table component */
+.tableContainer {
+  margin-bottom: 1.5rem;
+}
+
 .exampleTable {
-  margin: 1.5rem 0;
-  border-radius: var(--ifm-border-radius);
-  overflow: hidden;
-}
-
-.exampleTable .trigger {
-  width: 100%;
-  background-color: #cce0ff;
-  border: 1px solid #000000;
-  border-radius: 0.5rem;
-  color: #000000;
-  padding: 0.75rem 1rem;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all 0.2s ease;
-  text-align: left;
-}
-
-.exampleTable .trigger:hover {
-  background-color: #b8d6ff;
-}
-
-.exampleTable .trigger:focus {
-  outline: 2px solid var(--ifla-gold, #fdb913);
-  outline-offset: 2px;
-}
-
-.exampleTable .trigger .title {
-  flex: 1;
-}
-
-.exampleTable .trigger .icon {
-  transition: transform 0.2s ease;
-  font-size: 0.8rem;
-  margin-left: 0.5rem;
-}
-
-.exampleTable .trigger .icon.open {
-  transform: rotate(180deg);
-}
-
-.exampleTable .content {
-  background-color: #cce0ff;
-  border: 1px solid #000000;
-  border-top: none;
-  border-radius: 0 0 0.5rem 0.5rem;
-  padding: 1rem;
-  margin-top: -1px; /* Overlap with trigger border */
-  color: #000000;
-}
-
-/* Style content elements */
-.exampleTable .content table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  table-layout: fixed;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  /* Support for dark mode */
+}
+.exampleTable td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd;
+  vertical-align: top;
+}
+[data-theme=dark] .exampleTable td {
+  border-color: #444;
 }
 
-.exampleTable .content table th,
-.exampleTable .content table td {
-  border: 1px solid #333;
-  padding: 0.5rem;
-  text-align: left;
-  color: #000000;
-  font-size: 0.9rem;
+.elementColumn {
+  width: 30%;
 }
 
-.exampleTable .content table th {
-  background-color: #b8d6ff;
-  font-weight: 600;
+.valueColumn {
+  width: 60%;
 }
 
-.exampleTable .content p {
-  color: #000000;
-  margin-top: 0;
-  margin-bottom: 0.75rem;
-  line-height: 1.6;
+.detailColumn {
+  width: 10%;
+  text-align: center;
 }
 
-.exampleTable .content p:last-child {
-  margin-bottom: 0;
+.detailTrigger {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 2px 8px;
+  cursor: pointer;
+  font-weight: bold;
+  /* Support for dark mode */
+}
+[data-theme=dark] .detailTrigger {
+  background-color: #4a5568;
+  border-color: #718096;
+  color: #e2e8f0;
+}
+[data-theme=dark] .detailTrigger:hover {
+  background-color: #5a6578;
+  border-color: #8190a6;
 }
 
-.exampleTable .content em,
-.exampleTable .content .editComment {
-  color: #336699 !important;
-  font-weight: 600;
+.detailRow {
+  background-color: #f8f9fa;
+  /* Support for dark mode */
+}
+[data-theme=dark] .detailRow {
+  background-color: #2d2d2d;
+}
+
+.detailCell {
+  padding: 0 !important;
+  border-top: none !important;
+}
+
+.detailContent {
+  padding: 0.75rem 1.5rem;
   font-style: italic;
+  font-size: 0.9em;
+  color: #336699;
+  line-height: 1.4;
+  /* Support for dark mode */
+}
+[data-theme=dark] .detailContent {
+  color: #6699cc;
 }
 
-/* Links inside examples */
-.exampleTable .content a {
-  background-color: #ffd6cc !important;
-  border-radius: 0.3rem;
-  color: #000000 !important;
-  padding: 0.1rem 0.3rem;
-  text-decoration: none;
-  border: 1px solid #eea897;
+.caption {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.25rem;
+  font-style: italic;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  /* Improved background styling */
+  background-color: #f8f9fa;
+  border-left: 3px solid #ddd;
+  border-radius: 0 4px 4px 0;
+  /* Make the caption text wrap properly */
+  word-break: normal;
+  overflow-wrap: break-word;
+  /* Support for dark mode */
+}
+[data-theme=dark] .caption {
+  color: #aaa;
+  background-color: #2d2d2d;
+  border-left-color: #444;
 }
 
-.exampleTable .content a:hover {
-  background-color: #e62e00 !important;
-  color: #ffffff !important;
-  border-color: #e62e00;
-}
-
-/* Non-collapsible variant */
-.exampleTable.nonCollapsible .header {
-  background-color: #cce0ff;
-  border: 1px solid #000000;
-  border-radius: 0.5rem 0.5rem 0 0;
-  padding: 0.75rem 1rem;
-}
-
-.exampleTable.nonCollapsible .header .title {
-  margin: 0;
-  color: #000000;
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.exampleTable.nonCollapsible .content {
-  border-top: 1px solid #000000;
-  border-radius: 0 0 0.5rem 0.5rem;
-  margin-top: 0;
-}
-
-/* Dark mode styles */
-[data-theme='dark'] .exampleTable .trigger {
-  background-color: #2a3a52 !important;
-  border-color: #4a5a72;
-  color: #e0e0e0 !important;
-}
-
-[data-theme='dark'] .exampleTable .trigger:hover {
-  background-color: #3a4a62 !important;
-}
-
-[data-theme='dark'] .exampleTable .content {
-  background-color: #2a3a52 !important;
-  border-color: #4a5a72;
-  color: #e0e0e0;
-}
-
-[data-theme='dark'] .exampleTable .content table th {
-  background-color: #3a4a62;
-  color: #e0e0e0;
-  border-color: #4a5a72;
-}
-
-[data-theme='dark'] .exampleTable .content table td {
-  color: #e0e0e0;
-  border-color: #4a5a72;
-}
-
-[data-theme='dark'] .exampleTable .content p {
-  color: #e0e0e0;
-}
-
-[data-theme='dark'] .exampleTable .content em,
-[data-theme='dark'] .exampleTable .content .editComment {
-  color: #6ba3f0 !important;
-}
-
-[data-theme='dark'] .exampleTable .content a {
-  background-color: #4a3833 !important;
-  border-color: #6a5843;
-  color: #ffd6cc !important;
-}
-
-[data-theme='dark'] .exampleTable .content a:hover {
-  background-color: #ff6b3d !important;
-  color: #ffffff !important;
-  border-color: #ff6b3d;
-}
-
-[data-theme='dark'] .exampleTable.nonCollapsible .header {
-  background-color: #2a3a52 !important;
-  border-color: #4a5a72;
-}
-
-[data-theme='dark'] .exampleTable.nonCollapsible .header .title {
-  color: #e0e0e0;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .exampleTable .trigger {
-    padding: 0.6rem 0.8rem;
-    font-size: 0.95rem;
-  }
-  
-  .exampleTable .content {
-    padding: 0.8rem;
-  }
-  
-  .exampleTable .content table th,
-  .exampleTable .content table td {
-    padding: 0.4rem;
-    font-size: 0.85rem;
-  }
-}
-
-/* Accessibility improvements */
-@media (prefers-reduced-motion: reduce) {
-  .exampleTable .trigger .icon {
-    transition: none;
-  }
-}
+/*# sourceMappingURL=styles.module.css.map */

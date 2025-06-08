@@ -6,8 +6,44 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import styles from './styles.module.css';
-import { ElementReferenceProps, RDFData, ElementSubType, ElementSuperType } from '../../types';
+import styles from './styles.module.scss';
+
+interface ElementSubType {
+  uri: string;
+  url: string;
+  label: string;
+}
+
+interface ElementSuperType {
+  uri: string;
+  url: string;
+  label: string;
+}
+
+interface RDFData {
+  language?: string;
+  label: string;
+  definition: string;
+  scopeNote?: string;
+  domain?: string;
+  range?: string;
+  elementSubType?: ElementSubType[];
+  elementSuperType?: ElementSuperType[];
+  uri?: string;
+  type?: string;
+  status?: string;
+  isDefinedBy?: string;
+  subPropertyOf?: string[];
+  equivalentProperty?: string[];
+  inverseOf?: string[];
+  deprecated?: boolean;
+  deprecatedInVersion?: string;
+  willBeRemovedInVersion?: string;
+}
+
+interface ElementReferenceProps {
+  frontMatter: any; // Accept any frontmatter structure
+}
 
 // Adapter function to convert from new frontmatter structure to component-expected structure
 function adaptFrontMatter(frontMatter: any, elementDefaults: any): { RDF: RDFData } {
@@ -100,14 +136,14 @@ function adaptFrontMatter(frontMatter: any, elementDefaults: any): { RDF: RDFDat
 
 export default function ElementReference({
   frontMatter,
-}: ElementReferenceProps): React.JSX.Element {
+}: ElementReferenceProps): JSX.Element {
   // Get config from Docusaurus context
   const {siteConfig} = useDocusaurusContext();
   
   // Extract element defaults from config
-  const elementDefaults = (siteConfig.customFields as any)?.vocabularyDefaults?.elementDefaults || {
-    uri: "https://www.iflastandards.info/elements",
-    prefix: "ifla",
+  const elementDefaults = siteConfig.customFields?.elementDefaults || {
+    uri: "https://www.iflastandards.info/ISBDM/elements",
+    prefix: "isbdm",
     classPrefix: "C",
     propertyPrefix: "P",
   };
@@ -136,14 +172,8 @@ export default function ElementReference({
     willBeRemovedInVersion = "",
   } = adaptedFrontMatter.RDF;
 
-  let isDarkTheme = false;
-  try {
-    const { colorMode } = useColorMode();
-    isDarkTheme = colorMode === 'dark';
-  } catch (error) {
-    // Fallback to light theme if colorMode is not available
-    isDarkTheme = false;
-  }
+  const { colorMode } = useColorMode();
+  const isDarkTheme = colorMode === 'dark';
 
   // Generate JSON-LD
   const jsonLD = generateJsonLD(adaptedFrontMatter.RDF);
@@ -238,6 +268,8 @@ export default function ElementReference({
                 <div className={styles.value}>{status}</div>
               </div>
             )}
+            {/* Removed isDefinedBy from table */}
+            {/* Removed subPropertyOf from table */}
             {equivalentProperty && equivalentProperty.length > 0 && (
               <div className={styles.row}>
                 <div className={styles.label}>Equivalent Property</div>
@@ -312,6 +344,7 @@ function generateJsonLD(rdfData: RDFData): string {
       "skos": "http://www.w3.org/2004/02/skos/core#",
       "dcterms": "http://purl.org/dc/terms/",
       "ifla": "http://iflastandards.info/ns/isbd/terms/",
+      "isbdm": "http://iflastandards.info/ns/isbdm/elements/"
     },
     "@graph": [
       {
@@ -329,9 +362,10 @@ function generateJsonLD(rdfData: RDFData): string {
         },
         ...(domain ? {
           "domain": {
-            "@id": `${isDefinedBy}${domain}`
+            "@id": `http://iflastandards.info/ns/isbdm/elements/${domain}`
           }
         } : {}),
+        /* Removed upper_value from JSON-LD output */
         ...(subPropertyOf && subPropertyOf.length > 0 ? {
           "subPropertyOf": {
             "@id": subPropertyOf[0]
@@ -339,7 +373,7 @@ function generateJsonLD(rdfData: RDFData): string {
         } : {}),
         "isDefinedBy": {
           "@id": isDefinedBy,
-          "label": "IFLA Elements"
+          "label": "ISBD Manifestation elements"
         },
         "status": {
           "label": status
@@ -377,6 +411,7 @@ function generateTurtle(rdfData: RDFData): string {
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix isbdm: <http://iflastandards.info/ns/isbdm/elements/> .
 @prefix ifla: <http://iflastandards.info/ns/isbd/terms/> .
 `;
 
@@ -395,7 +430,7 @@ function generateTurtle(rdfData: RDFData): string {
   rdfs:comment "${definition}"@${language} ;`;
 
   if (domain) {
-    turtleContent += `\n  rdfs:domain <${isDefinedBy}${domain}> ;`;
+    turtleContent += `\n  rdfs:domain isbdm:${domain} ;`;
   }
 
   if (subPropertyOf && subPropertyOf.length > 0) {
@@ -447,8 +482,8 @@ function generateRdfXml(rdfData: RDFData): string {
   } = rdfData;
 
   // Determine the proper type
-  let rdfXmlContent: string;
-  let propertyType: string;
+  let rdfXmlContent;
+  let propertyType;
   
   if (type?.toLowerCase().includes("class")) {
     // Special handling for Class type
@@ -458,6 +493,7 @@ function generateRdfXml(rdfData: RDFData): string {
   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
   xmlns:owl="http://www.w3.org/2002/07/owl#"
   xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:isbdm="http://iflastandards.info/ns/isbdm/elements/"
   xmlns:ifla="http://iflastandards.info/ns/isbd/terms/">
 
   <rdfs:Class rdf:about="${uri}">
@@ -474,6 +510,7 @@ function generateRdfXml(rdfData: RDFData): string {
   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
   xmlns:owl="http://www.w3.org/2002/07/owl#"
   xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:isbdm="http://iflastandards.info/ns/isbdm/elements/"
   xmlns:ifla="http://iflastandards.info/ns/isbd/terms/">
 
   <rdf:Property rdf:about="${uri}">
@@ -483,7 +520,7 @@ function generateRdfXml(rdfData: RDFData): string {
   }
 
   if (domain) {
-    rdfXmlContent += `\n    <rdfs:domain rdf:resource="${isDefinedBy}${domain}"/>`;
+    rdfXmlContent += `\n    <rdfs:domain rdf:resource="http://iflastandards.info/ns/isbdm/elements/${domain}"/>`;
   }
 
   if (subPropertyOf && subPropertyOf.length > 0) {

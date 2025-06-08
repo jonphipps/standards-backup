@@ -1,129 +1,160 @@
-/* ElementReference component styles */
 .elementReference {
   margin-bottom: 2rem;
 }
-
+.elementReference h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+}
 .elementReference .deprecationWarning {
-  background-color: var(--ifm-color-warning-contrast-background);
-  border: 1px solid var(--ifm-color-warning);
-  border-radius: var(--ifm-border-radius);
-  padding: 1rem;
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  border-radius: 0.25rem;
+  padding: 0.75rem 1.25rem;
   margin-bottom: 1rem;
 }
-
 .elementReference .deprecationWarning p {
   margin: 0;
-  color: var(--ifm-color-warning-dark);
-  font-weight: 600;
 }
-
+.elementReference .deprecationWarning strong {
+  font-weight: 700;
+}
+.elementReference .errorMessage {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 0.25rem;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+}
+.elementReference .errorMessage p {
+  margin: 0;
+}
+.elementReference .errorMessage p:first-child {
+  margin-bottom: 0.5rem;
+}
+.elementReference .errorMessage strong {
+  font-weight: 700;
+}
 .elementReference .referenceTable {
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: var(--ifm-border-radius);
+  padding: 0;
+  margin-bottom: 1.5rem;
+  border-radius: 0.25rem;
   overflow: hidden;
 }
-
 .elementReference .referenceTable .row {
   display: flex;
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  border: 1px solid var(--ifm-toc-border-color);
 }
-
-.elementReference .referenceTable .row:last-child {
+.elementReference .referenceTable .row:not(:last-child) {
   border-bottom: none;
 }
-
 .elementReference .referenceTable .row .label {
-  flex: 0 0 200px;
-  padding: 0.75rem 1rem;
-  background-color: var(--ifm-color-emphasis-100);
-  border-right: 1px solid var(--ifm-color-emphasis-200);
-  font-weight: 600;
-  color: var(--ifm-color-content-secondary);
+  width: 30%;
+  border-right: 1px solid var(--ifm-toc-border-color);
+  padding: 0.5rem;
+  font-style: italic;
+  background-color: var(--ifm-table-head-background);
 }
-
 .elementReference .referenceTable .row .value {
-  flex: 1;
-  padding: 0.75rem 1rem;
-  background-color: var(--ifm-background-color);
-  color: var(--ifm-color-content);
+  width: 70%;
+  padding: 0.5rem;
+}
+.elementReference .elementLinks {
+  display: flex;
+  flex-direction: column;
+}
+.elementReference .elementLinks .elementLink {
+  text-decoration: none;
+  margin: 0.1rem 0;
+  padding: 0.1rem;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.elementReference .elementLinks .elementLink:hover {
+  background-color: #e62e00;
+  color: #ffffff;
+}
+.elementReference .attributeValueTable {
+  border: 1px solid var(--ifm-toc-border-color);
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+.elementReference .attributeValueTable .attributeRow {
+  display: flex;
+  padding: 0.5rem;
+}
+.elementReference .attributeValueTable .attributeRow:not(:last-child) {
+  border-bottom: 1px solid var(--ifm-toc-border-color);
+}
+.elementReference .attributeValueTable .attributeRow .attribute {
+  width: 30%;
+  padding-right: 1rem;
+}
+.elementReference .attributeValueTable .attributeRow .attributeValue {
+  width: 70%;
   word-break: break-word;
 }
 
-.elementReference .referenceTable .row .value .elementLinks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+[data-theme=dark] .elementReference h2 {
+  color: var(--ifm-heading-color);
 }
-
-.elementReference .referenceTable .row .value .elementLinks .elementLink {
-  display: inline-block;
-  padding: 0.25rem 0.5rem;
-  background-color: var(--ifm-color-primary-lightest);
-  color: var(--ifm-color-primary-darkest);
-  text-decoration: none;
-  border-radius: 4px;
-  font-size: 0.875rem;
-  transition: background-color 0.2s ease;
+[data-theme=dark] .elementReference .deprecationWarning {
+  background-color: rgba(255, 243, 205, 0.1);
+  color: #ffeeba;
+  border-color: rgba(255, 238, 186, 0.2);
 }
-
-.elementReference .referenceTable .row .value .elementLinks .elementLink:hover {
-  background-color: var(--ifm-color-primary-light);
-  color: var(--ifm-color-primary-darkest);
-  text-decoration: none;
+[data-theme=dark] .elementReference .errorMessage {
+  background-color: rgba(248, 215, 218, 0.1);
+  color: #f5c6cb;
+  border-color: rgba(245, 198, 203, 0.2);
 }
-
-/* Dark mode adjustments */
-[data-theme='dark'] .elementReference .deprecationWarning {
-  background-color: rgba(255, 193, 7, 0.1);
-  border-color: var(--ifm-color-warning);
-}
-
-[data-theme='dark'] .elementReference .deprecationWarning p {
-  color: var(--ifm-color-warning);
-}
-
-[data-theme='dark'] .elementReference .referenceTable {
+[data-theme=dark] .elementReference .referenceTable .row {
   border-color: var(--ifm-color-emphasis-300);
 }
-
-[data-theme='dark'] .elementReference .referenceTable .row {
-  border-bottom-color: var(--ifm-color-emphasis-200);
-}
-
-[data-theme='dark'] .elementReference .referenceTable .row .label {
+[data-theme=dark] .elementReference .referenceTable .row .label {
   background-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-content);
   border-right-color: var(--ifm-color-emphasis-300);
+}
+[data-theme=dark] .elementReference .referenceTable .row .value {
+  background-color: var(--ifm-background-color);
+  color: var(--ifm-color-content);
+}
+[data-theme=dark] .elementReference .elementLinks .elementLink {
+  color: var(--ifm-link-color);
+}
+[data-theme=dark] .elementReference .elementLinks .elementLink:hover {
+  background-color: #ff6b3d;
+  color: #ffffff;
+}
+[data-theme=dark] .elementReference .attributeValueTable {
+  border-color: var(--ifm-color-emphasis-300);
+}
+[data-theme=dark] .elementReference .attributeValueTable .attributeRow {
+  border-bottom-color: var(--ifm-color-emphasis-300);
+}
+[data-theme=dark] .elementReference .attributeValueTable .attributeRow .attribute {
   color: var(--ifm-color-content-secondary);
 }
-
-[data-theme='dark'] .elementReference .referenceTable .row .value {
-  background-color: var(--ifm-background-surface-color);
+[data-theme=dark] .elementReference .attributeValueTable .attributeRow .attributeValue {
   color: var(--ifm-color-content);
 }
 
-[data-theme='dark'] .elementReference .referenceTable .row .value .elementLinks .elementLink {
-  background-color: var(--ifm-color-primary-dark);
-  color: var(--ifm-color-primary-lightest);
+:global([data-theme="dark"]) .elementReference :global(.tabs__item) {
+  color: var(--ifm-tabs-color);
+}
+:global([data-theme="dark"]) .elementReference :global(.tabs__item):hover {
+  background-color: var(--ifm-hover-overlay);
+}
+:global([data-theme="dark"]) .elementReference :global(.tabs__item):global(.tabs__item--active) {
+  color: var(--ifm-tabs-color-active);
+}
+:global([data-theme="dark"]) .elementReference :global(pre) {
+  background-color: var(--ifm-code-background);
 }
 
-[data-theme='dark'] .elementReference .referenceTable .row .value .elementLinks .elementLink:hover {
-  background-color: var(--ifm-color-primary);
-  color: var(--ifm-color-primary-lightest);
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .elementReference .referenceTable .row {
-    flex-direction: column;
-  }
-  
-  .elementReference .referenceTable .row .label {
-    flex: none;
-    border-right: none;
-    border-bottom: 1px solid var(--ifm-color-emphasis-200);
-  }
-  
-  .elementReference .referenceTable .row .value {
-    flex: none;
-  }
-}
+/*# sourceMappingURL=styles.module.css.map */

@@ -2,8 +2,30 @@ import React, { useMemo } from 'react';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import clsx from 'clsx';
-import styles from './styles.module.css';
-import { InLinkProps } from '../../types';
+import styles from './InLink.module.scss';
+
+export interface InLinkProps {
+  /**
+   * URL to link to - will be processed through useBaseUrl
+   */
+  href: string;
+  
+  /**
+   * Link content
+   */
+  children: React.ReactNode;
+  
+  /**
+   * CSS class name
+   */
+  className?: string;
+  
+  /**
+   * Enable smart wrapping before parentheses
+   * @default true
+   */
+  smartWrap?: boolean;
+}
 
 /**
  * Processes text to add zero-width spaces before parentheses for smart wrapping

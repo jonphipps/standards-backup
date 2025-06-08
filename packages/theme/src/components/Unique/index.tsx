@@ -1,18 +1,43 @@
 import React from 'react';
 import clsx from 'clsx';
-import styles from './styles.module.css';
-import { UniqueProps } from '../../types';
+import styles from './Unique.module.scss';
+
+export interface UniqueProps {
+  /**
+   * Symbol to display (default is "1")
+   */
+  symbol?: string;
+  
+  /**
+   * Text for the tooltip
+   */
+  tooltipText?: string;
+  
+  /**
+   * Additional CSS classes
+   */
+  className?: string;
+}
 
 /**
- * Unique component to highlight unique or special information
+ * Unique component for indicating unique elements in documentation
  */
 export const Unique: React.FC<UniqueProps> = ({
-  children,
+  symbol = '1',
+  tooltipText = 'Unique',
   className,
 }) => {
   return (
-    <span className={clsx(styles.unique, className)}>
-      {children}
+    <span
+      className={clsx(
+        'unique',
+        styles.unique,
+        className
+      )}
+      title={tooltipText}
+      aria-label={tooltipText}
+    >
+      {symbol}
     </span>
   );
 };
