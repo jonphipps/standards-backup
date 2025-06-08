@@ -350,7 +350,7 @@ jobs:
                 </div>
             </body>
             </html>
-            EOF
+EOF
           fi
         
       - name: Setup Pages
