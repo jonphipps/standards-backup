@@ -148,7 +148,7 @@ const config: Config = {
   ],
   themes: [
     [
-      require.resolve('@easyops-cn/docusaurus-search-local'),
+      '@easyops-cn/docusaurus-search-local',
       {
         hashed: true,
         // language: ['en', 'fr', 'es', 'de'], // Optional: match your locales

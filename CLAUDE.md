@@ -74,3 +74,6 @@
 - No advantage to separate package.json, tsconfig, etc.
 - Content is the only distinguishing factor between sites
 - Editors portal is the only distinct site, hosting tools for workflow management and access
+
+## Development Gotchas
+- we can't fix javascript or typescript errors by adding "type":"module" to package.json. It breaks docusaurus browser execution
