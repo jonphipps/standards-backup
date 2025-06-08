@@ -27,7 +27,7 @@
     }
   },
   "scripts": {
-    "build": "echo 'Skipping TypeScript build due to React 19 compatibility issues'",
+    "build": "tsc",
     "dev": "tsc --watch",
     "lint": "eslint src --ext .ts,.tsx",
     "type-check": "tsc --noEmit"
@@ -44,8 +44,8 @@
   },
   "devDependencies": {
     "@types/papaparse": "^5.3.14",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
+    "@types/react": "^18.2.79",
+    "@types/react-dom": "^18.2.25",
     "@types/react-transition-group": "^4.4.10",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
