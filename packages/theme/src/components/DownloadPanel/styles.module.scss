@@ -1,0 +1,53 @@
+.downloadPanel {
+  background: var(--ifm-card-background-color);
+  border-radius: var(--ifm-card-border-radius);
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: var(--ifm-global-shadow-lw);
+
+  h2 {
+    margin-top: 0;
+    color: var(--ifm-heading-color);
+  }
+}
+
+.downloadSections {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.downloadSection {
+  flex: 1;
+  min-width: 280px;
+
+  h3 {
+    color: var(--ifm-heading-color);
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: var(--ifm-color-emphasis-700);
+    margin-bottom: 1rem;
+  }
+}
+
+.downloadButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .button {
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .downloadSections {
+    flex-direction: column;
+  }
+  
+  .downloadSection {
+    min-width: auto;
+  }
+}

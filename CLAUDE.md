@@ -77,3 +77,6 @@
 
 ## Development Gotchas
 - we can't fix javascript or typescript errors by adding "type":"module" to package.json. It breaks docusaurus browser execution
+
+## Component Development Guidelines
+- always use sass for styles. Components should be created in folders named for the component and the component code should be in index.tsx and styles in styles.module.scss

@@ -18,24 +18,13 @@ export { default as SeeAlso } from './SeeAlso';
 export { default as Mandatory } from './Mandatory';
 export { default as Unique } from './Unique';
 export { default as Figure } from './Figure';
-export { default as ExampleTable } from './ExampleTable';
+export { ExampleTable } from './ExampleTable';
 
 // Legacy exports for backward compatibility
 export { default as DownloadPanel } from './DownloadPanel';
 export { default as QuickStart } from './QuickStart';
 
-// VocabularyTable utilities
-export {
-  getLocalizedText,
-  getAllLocalizedText,
-  parseCSVToConcepts,
-  createSlug,
-  extractAvailableLanguages,
-  generateTOCFromProps,
-  exportToCSV,
-  useCsvLoader,
-  useMultilingualText
-} from './VocabularyTable';
+// Note: VocabularyTable utilities are available from @ifla/theme/utils and @ifla/theme/hooks
 
 // Re-export types from main types and VocabularyTable
 export type {

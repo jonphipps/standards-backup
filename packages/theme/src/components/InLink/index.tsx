@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import clsx from 'clsx';
-import styles from './InLink.module.scss';
+import styles from './styles.module.scss';
 
 export interface InLinkProps {
   /**

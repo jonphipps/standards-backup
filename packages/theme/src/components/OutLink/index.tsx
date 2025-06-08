@@ -1,7 +1,7 @@
 import React from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import clsx from 'clsx';
-import styles from './OutLink.module.scss';
+import styles from './styles.module.scss';
 
 export interface OutLinkProps {
   /**

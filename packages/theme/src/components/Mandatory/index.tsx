@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import styles from './Mandatory.module.scss';
+import styles from './styles.module.scss';
 
 export interface MandatoryProps {
   /** URL for more info; defaults to the intro page */
