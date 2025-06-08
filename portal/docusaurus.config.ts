@@ -1,15 +1,172 @@
-import { createIFLAConfig, VOCABULARY_DEFAULTS } from '@ifla/theme/config';
+import type { Config } from '@docusaurus/types';
+import type * as Preset from '@docusaurus/preset-classic';
+import { 
+  sharedThemeConfig, 
+  sharedPlugins, 
+  sharedThemes, 
+  commonDefaults 
+} from '@ifla/theme/config';
 
-const config = createIFLAConfig({
+const config: Config = {
+  ...commonDefaults,
+  
   title: 'IFLA Standards Portal',
-  tagline: 'International Federation of Library Associations and Institutions Standards',
-  url: 'https://iflastandards.github.io',
-  baseUrl: process.env.BASE_URL || '/portal/',
-  organizationName: 'iflastandards',
+  tagline: 'International Federation of Library Associations and Institutions',
+  baseUrl: process.env.BASE_URL || '/',
   projectName: 'standards-portal',
-  githubUrl: 'https://github.com/iflastandards/standards-dev',
-  vocabularyDefaults: VOCABULARY_DEFAULTS.GENERIC,
-  onBrokenLinks: 'warn', // Change from 'throw' to 'warn' to allow builds with broken links
-});
+
+  // Portal-specific i18n
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+    localeConfigs: {
+      en: {
+        label: 'English',
+      },
+    },
+  },
+
+  // Portal-specific plugins
+  plugins: [
+    ...sharedPlugins,
+  ],
+
+  // Portal-specific presets
+  presets: [
+    [
+      'classic',
+      {
+        docs: {
+          sidebarPath: './sidebars.ts',
+          editUrl: 'https://github.com/iflastandards/standards-dev/tree/main/portal/',
+        },
+        blog: {
+          showReadingTime: true,
+          feedOptions: {
+            type: ['rss', 'atom'],
+            xslt: true,
+          },
+          editUrl: 'https://github.com/iflastandards/standards-dev/tree/main/portal/',
+        },
+        theme: {
+          customCss: './src/css/custom.css',
+        },
+      } satisfies Preset.Options,
+    ],
+  ],
+
+  // Shared themes
+  themes: sharedThemes,
+
+  // Portal-specific theme config
+  themeConfig: {
+    ...sharedThemeConfig,
+    
+    // Portal-specific navbar
+    navbar: {
+      title: 'IFLA Standards',
+      logo: {
+        alt: 'IFLA Logo',
+        src: 'img/logo.svg',
+      },
+      items: [
+        {
+          type: 'dropdown',
+          label: 'Standards',
+          position: 'left',
+          items: [
+            {
+              label: 'ISBDM',
+              href: './ISBDM/',
+            },
+            {
+              label: 'LRM',
+              href: './LRM/',
+            },
+            {
+              label: 'FR',
+              href: './fr/',
+            },
+            {
+              label: 'ISBD',
+              href: './isbd/',
+            },
+            {
+              label: 'MulDiCat',
+              href: './muldicat/',
+            },
+            {
+              label: 'UNIMARC',
+              href: './unimarc/',
+            },
+          ],
+        },
+        {
+          type: 'doc',
+          docId: 'index',
+          position: 'left',
+          label: 'Documentation',
+        },
+        {to: '/blog', label: 'Blog', position: 'left'},
+        {
+          href: 'https://github.com/iflastandards/standards-dev',
+          label: 'GitHub',
+          position: 'right',
+        },
+      ],
+    },
+    
+    // Portal-specific footer
+    footer: {
+      style: 'dark',
+      links: [
+        {
+          title: 'Standards',
+          items: [
+            {
+              label: 'ISBDM',
+              href: './ISBDM/',
+            },
+            {
+              label: 'LRM',
+              href: './LRM/',
+            },
+            {
+              label: 'ISBD',
+              href: './isbd/',
+            },
+          ],
+        },
+        {
+          title: 'Community',
+          items: [
+            {
+              label: 'IFLA',
+              href: 'https://www.ifla.org/',
+            },
+            {
+              label: 'GitHub',
+              href: 'https://github.com/iflastandards/standards-dev',
+            },
+          ],
+        },
+        {
+          title: 'More',
+          items: [
+            {
+              label: 'Blog',
+              to: '/blog',
+            },
+            {
+              label: 'Documentation',
+              to: '/docs',
+            },
+          ],
+        },
+      ],
+      copyright: `Copyright © ${new Date().getFullYear()} IFLA. Built with Docusaurus.`,
+    },
+  } satisfies Preset.ThemeConfig,
+};
 
 export default config;

@@ -95,8 +95,7 @@ jobs:
         run: pnpm install --frozen-lockfile
         
       - name: Build portal
-        run: pnpm run build
-        working-directory: portal
+        run: pnpm exec docusaurus build portal
         env:
           BASE_URL: /standards-dev/
           NODE_ENV: production
@@ -161,8 +160,7 @@ jobs:
         
       - name: Build ${{ matrix.standard }}
         if: steps.should-build.outputs.build == 'true'
-        run: pnpm run build
-        working-directory: standards/${{ matrix.standard }}
+        run: pnpm exec docusaurus build standards/${{ matrix.standard }}
         env:
           BASE_URL: /standards-dev/${{ matrix.standard }}/
           NODE_ENV: production
