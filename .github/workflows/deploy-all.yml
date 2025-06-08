@@ -243,114 +243,114 @@ jobs:
         if: needs.build-standards.result == 'success'
         run: |
           if [ -d "deployment/ISBDM" ] || [ -d "deployment/LRM" ] || [ -d "deployment/fr" ] || [ -d "deployment/isbd" ] || [ -d "deployment/muldicat" ] || [ -d "deployment/unimarc" ]; then
-            cat > deployment/standards.html << 'EOF'
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>IFLA Standards</title>
-                <meta charset="utf-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-                <style>
-                    body {
-                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                        max-width: 800px;
-                        margin: 0 auto;
-                        padding: 2rem;
-                        background: #f5f5f5;
-                    }
-                    .container {
-                        background: white;
-                        padding: 2rem;
-                        border-radius: 8px;
-                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                    }
-                    h1 { 
-                        color: #333; 
-                        margin-bottom: 0.5rem;
-                    }
-                    .subtitle {
-                        color: #666;
-                        margin-bottom: 2rem;
-                    }
-                    ul { 
-                        list-style: none; 
-                        padding: 0; 
-                    }
-                    li { 
-                        margin: 1rem 0; 
-                    }
-                    a {
-                        display: block;
-                        padding: 1rem;
-                        background: #f8f9fa;
-                        color: #0066cc;
-                        text-decoration: none;
-                        border-radius: 4px;
-                        border: 1px solid #e9ecef;
-                        transition: all 0.2s;
-                    }
-                    a:hover { 
-                        background: #e9ecef;
-                        border-color: #dee2e6;
-                        transform: translateX(4px);
-                    }
-                    .standard-name {
-                        font-weight: 600;
-                        display: block;
-                        margin-bottom: 0.25rem;
-                    }
-                    .standard-desc {
-                        font-size: 0.875rem;
-                        color: #666;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="container">
-                    <h1>IFLA Standards Documentation</h1>
-                    <p class="subtitle">International Federation of Library Associations and Institutions</p>
-                    <ul>
-                        <li>
-                            <a href="./ISBDM/">
-                                <span class="standard-name">ISBDM</span>
-                                <span class="standard-desc">International Standard Bibliographic Description for Manifestations</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="./LRM/">
-                                <span class="standard-name">LRM</span>
-                                <span class="standard-desc">Library Reference Model</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="./fr/">
-                                <span class="standard-name">FR</span>
-                                <span class="standard-desc">Functional Requirements</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="./isbd/">
-                                <span class="standard-name">ISBD</span>
-                                <span class="standard-desc">International Standard Bibliographic Description</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="./muldicat/">
-                                <span class="standard-name">MulDiCat</span>
-                                <span class="standard-desc">Multilingual Dictionary of Cataloguing Terms</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="./unimarc/">
-                                <span class="standard-name">UNIMARC</span>
-                                <span class="standard-desc">Universal Machine-Readable Cataloguing</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </body>
-            </html>
-EOF
+            cat > deployment/standards.html << 'INDEXEOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>IFLA Standards</title>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+              <style>
+                  body {
+                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                      max-width: 800px;
+                      margin: 0 auto;
+                      padding: 2rem;
+                      background: #f5f5f5;
+                  }
+                  .container {
+                      background: white;
+                      padding: 2rem;
+                      border-radius: 8px;
+                      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                  }
+                  h1 { 
+                      color: #333; 
+                      margin-bottom: 0.5rem;
+                  }
+                  .subtitle {
+                      color: #666;
+                      margin-bottom: 2rem;
+                  }
+                  ul { 
+                      list-style: none; 
+                      padding: 0; 
+                  }
+                  li { 
+                      margin: 1rem 0; 
+                  }
+                  a {
+                      display: block;
+                      padding: 1rem;
+                      background: #f8f9fa;
+                      color: #0066cc;
+                      text-decoration: none;
+                      border-radius: 4px;
+                      border: 1px solid #e9ecef;
+                      transition: all 0.2s;
+                  }
+                  a:hover { 
+                      background: #e9ecef;
+                      border-color: #dee2e6;
+                      transform: translateX(4px);
+                  }
+                  .standard-name {
+                      font-weight: 600;
+                      display: block;
+                      margin-bottom: 0.25rem;
+                  }
+                  .standard-desc {
+                      font-size: 0.875rem;
+                      color: #666;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1>IFLA Standards Documentation</h1>
+                  <p class="subtitle">International Federation of Library Associations and Institutions</p>
+                  <ul>
+                      <li>
+                          <a href="./ISBDM/">
+                              <span class="standard-name">ISBDM</span>
+                              <span class="standard-desc">International Standard Bibliographic Description for Manifestations</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="./LRM/">
+                              <span class="standard-name">LRM</span>
+                              <span class="standard-desc">Library Reference Model</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="./fr/">
+                              <span class="standard-name">FR</span>
+                              <span class="standard-desc">Functional Requirements</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="./isbd/">
+                              <span class="standard-name">ISBD</span>
+                              <span class="standard-desc">International Standard Bibliographic Description</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="./muldicat/">
+                              <span class="standard-name">MulDiCat</span>
+                              <span class="standard-desc">Multilingual Dictionary of Cataloguing Terms</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="./unimarc/">
+                              <span class="standard-name">UNIMARC</span>
+                              <span class="standard-desc">Universal Machine-Readable Cataloguing</span>
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+          </body>
+          </html>
+          INDEXEOF
           fi
         
       - name: Setup Pages
