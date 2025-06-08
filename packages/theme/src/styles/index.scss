@@ -6,21 +6,22 @@
 
 /* CSS Custom Properties for Docusaurus integration */
 :root {
-  /* IFLA Standard Colors */
-  --ifla-navy: #{$ifla-navy};
-  --ifla-blue: #{$ifla-blue};
-  --ifla-gold: #{$ifla-gold};
-  --ifla-light-blue: #{$ifla-light-blue};
+  /* IFLA Standard Colors - Updated to match ifla.org */
+  --ifla-green-dark: #{$ifla-green-dark};
+  --ifla-green: #{$ifla-green};
+  --ifla-green-light: #{$ifla-green-light};
+  --ifla-teal: #{$ifla-teal};
+  --ifla-magenta: #{$ifla-magenta};
   --ifla-grey: #{$ifla-grey};
   
-  /* Primary color set to IFLA blue */
-  --ifm-color-primary: #{$ifla-blue};
-  --ifm-color-primary-dark: #{$ifla-blue-dark};
-  --ifm-color-primary-darker: #{$ifla-blue-darker};
-  --ifm-color-primary-darkest: #{$ifla-blue-darkest};
-  --ifm-color-primary-light: #{$ifla-blue-light};
-  --ifm-color-primary-lighter: #{$ifla-blue-lighter};
-  --ifm-color-primary-lightest: #{$ifla-blue-lightest};
+  /* Primary color set to IFLA green */
+  --ifm-color-primary: #{$ifla-green};
+  --ifm-color-primary-dark: #{$ifla-green-dark};
+  --ifm-color-primary-darker: #{$ifla-green-darker};
+  --ifm-color-primary-darkest: #{$ifla-green-darkest};
+  --ifm-color-primary-light: #{$ifla-green-light};
+  --ifm-color-primary-lighter: #{$ifla-green-lighter};
+  --ifm-color-primary-lightest: #{$ifla-green-lightest};
   
   /* Typography */
   --ifm-font-family-base: #{$ifla-font-family-base};
@@ -539,7 +540,7 @@ h2 {
 }
 
 [data-theme='dark'] .navbar__items--right .react-toggle-track-check {
-  color: $ifla-gold !important;
+  color: $ifla-magenta !important;
 }
 
 [data-theme='light'] .navbar__items--right .react-toggle-track-x {
@@ -564,11 +565,11 @@ h2 {
 }
 
 .navbar__items--right .react-toggle:hover .react-toggle-track {
-  box-shadow: 0 0 0 3px rgba(#{red($ifla-gold)}, #{green($ifla-gold)}, #{blue($ifla-gold)}, 0.2) !important;
+  box-shadow: 0 0 0 3px rgba(#{red($ifla-magenta)}, #{green($ifla-magenta)}, #{blue($ifla-magenta)}, 0.2) !important;
 }
 
 .navbar__items--right .react-toggle:focus-within .react-toggle-track {
-  box-shadow: 0 0 0 3px rgba(#{red($ifla-gold)}, #{green($ifla-gold)}, #{blue($ifla-gold)}, 0.4) !important;
+  box-shadow: 0 0 0 3px rgba(#{red($ifla-magenta)}, #{green($ifla-magenta)}, #{blue($ifla-magenta)}, 0.4) !important;
 }
 
 /* Utility classes */
