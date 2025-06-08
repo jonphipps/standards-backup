@@ -90,7 +90,7 @@ const config: Config = {
           editUrl: 'https://github.com/iflastandards/ISBDM/tree/main/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
-	  versions: {
+          versions: {
             current: {
               label: 'Latest',
               path: '',
@@ -354,6 +354,10 @@ const config: Config = {
         },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} IFLA. Built with Docusaurus.`,
+    },
+    prism: {
+      theme: prismThemes.github,
+      darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
 };
