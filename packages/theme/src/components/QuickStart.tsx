@@ -1,5 +1,7 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
+import clsx from 'clsx';
+import styles from './QuickStart.module.css';
 
 interface QuickStartProps {
   introductionPath?: string;
@@ -15,58 +17,26 @@ export default function QuickStart({
   className = '',
 }: QuickStartProps): JSX.Element {
   return (
-    <div className={`quickstart-panel ${className}`}>
+    <div className={clsx(styles.quickstartPanel, className)}>
       <h2>Quick Start for Cataloguers</h2>
       <p>Get started with the key sections of this standard:</p>
-      <div className="quickstart-links">
+      <div className={styles.quickstartLinks}>
         <Link
-          className="button button--primary button--lg quickstart-link"
+          className={clsx('button', 'button--primary', 'button--lg', styles.quickstartLink)}
           to={introductionPath}>
           📖 Introduction
         </Link>
         <Link
-          className="button button--secondary button--lg quickstart-link"
+          className={clsx('button', 'button--secondary', 'button--lg', styles.quickstartLink)}
           to={elementsPath}>
           🔧 Elements
         </Link>
         <Link
-          className="button button--secondary button--lg quickstart-link"
+          className={clsx('button', 'button--secondary', 'button--lg', styles.quickstartLink)}
           to={examplesPath}>
           💡 Examples
         </Link>
       </div>
-      <style jsx>{`
-        .quickstart-panel {
-          background: var(--ifm-card-background-color);
-          border-radius: var(--ifm-card-border-radius);
-          padding: 2rem;
-          margin: 2rem 0;
-          box-shadow: var(--ifm-global-shadow-lw);
-        }
-        .quickstart-panel h2 {
-          margin-top: 0;
-          color: var(--ifm-heading-color);
-        }
-        .quickstart-links {
-          display: flex;
-          gap: 1rem;
-          flex-wrap: wrap;
-          margin-top: 1.5rem;
-        }
-        .quickstart-link {
-          flex: 1;
-          min-width: 200px;
-          text-align: center;
-        }
-        @media (max-width: 768px) {
-          .quickstart-links {
-            flex-direction: column;
-          }
-          .quickstart-link {
-            width: 100%;
-          }
-        }
-      `}</style>
     </div>
   );
 }

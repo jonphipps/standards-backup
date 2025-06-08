@@ -20,14 +20,13 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "jsx": "react-jsx",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./",
     "types": [
-    "node"
+      "node",
       "docusaurus-plugin-sass",
       "@docusaurus/theme-classic",
       "@docusaurus/types"
@@ -50,7 +49,7 @@
     "src", // Your main source code (components, pages, MDX, etc.)
     ".docusaurus", // Docusaurus generated files, including type declarations
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
     "*.d.ts", // Global type declaration files (like the one for global MDX components)
     "plugins" // If you have custom local plugins with TypeScript
   ],

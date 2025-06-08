@@ -123,7 +123,7 @@ export function parseCSVToConcepts(
       changeNote: parseMultilingualField(row.changeNote),
       editorialNote: parseMultilingualField(row.editorialNote),
       historyNote: parseMultilingualField(row.historyNote),
-      deprecated: row.deprecated === 'true' || row.deprecated === true,
+      deprecated: row.deprecated === 'true' || row.deprecated === 'TRUE' || row.deprecated === true,
       inScheme: parseArrayField(row.inScheme),
       topConceptOf: parseArrayField(row.topConceptOf),
       scheme: row.scheme,

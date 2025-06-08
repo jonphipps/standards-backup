@@ -106,7 +106,7 @@ export function createIFLAConfig(
         '@docusaurus/plugin-client-redirects',
         {
           redirects: [],
-          createRedirects(existingPath) {
+          createRedirects(existingPath: string) {
             // Handle element redirects - can be customized per site
             const elementMatch = existingPath.match(/^\/docs\/(attributes|statements|notes|relationships)\/(\d+)$/);
             if (elementMatch) {
@@ -173,9 +173,9 @@ export function createIFLAConfig(
             async sidebarItemsGenerator({defaultSidebarItemsGenerator, ...args}) {
               const sidebarItems = await defaultSidebarItemsGenerator(args);
 
-              function filterIndexMdx(items) {
+              function filterIndexMdx(items: any[]): any[] {
                 return items
-                    .filter(item => {
+                    .filter((item: any) => {
                       if (item.type === 'doc') {
                         const docId = item.id || item.docId || '';
                         if (docId === 'index' || 
@@ -186,7 +186,7 @@ export function createIFLAConfig(
                       }
                       return true;
                     })
-                    .map(item => {
+                    .map((item: any) => {
                       if (item.type === 'category' && item.items) {
                         return {...item, items: filterIndexMdx(item.items)};
                       }
@@ -311,7 +311,7 @@ export function createIFLAConfig(
           },
           ...(githubUrl ? [{
             href: githubUrl,
-            position: 'right',
+            position: 'right' as const,
             className: 'header-github-link',
             'aria-label': 'GitHub repository',
           }] : []),
