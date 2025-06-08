@@ -74,27 +74,27 @@ const config: Config = {
           items: [
             {
               label: 'ISBDM',
-              href: './ISBDM/',
+              href: '/ISBDM/',
             },
             {
               label: 'LRM',
-              href: './LRM/',
+              href: '/LRM/',
             },
             {
               label: 'FR',
-              href: './fr/',
+              href: '/fr/',
             },
             {
               label: 'ISBD',
-              href: './isbd/',
+              href: '/isbd/',
             },
             {
               label: 'MulDiCat',
-              href: './muldicat/',
+              href: '/muldicat/',
             },
             {
               label: 'UNIMARC',
-              href: './unimarc/',
+              href: '/unimarc/',
             },
           ],
         },
@@ -122,15 +122,15 @@ const config: Config = {
           items: [
             {
               label: 'ISBDM',
-              href: './ISBDM/',
+              href: '/ISBDM/',
             },
             {
               label: 'LRM',
-              href: './LRM/',
+              href: '/LRM/',
             },
             {
               label: 'ISBD',
-              href: './isbd/',
+              href: '/isbd/',
             },
           ],
         },
