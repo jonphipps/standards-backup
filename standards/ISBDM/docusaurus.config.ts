@@ -253,7 +253,7 @@ const config: Config = {
           items: [
             {
               label: 'RDF Downloads',
-              href: '/rdf/',
+              href: './rdf/',
             },
             {
               label: 'Vocabulary Server',
@@ -270,7 +270,7 @@ const config: Config = {
             },
             {
               label: 'Portal',
-              href: '/portal/',
+              href: process.env.NODE_ENV === 'production' ? '../portal/' : '/portal/',
             },
           ],
         },

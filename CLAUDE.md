@@ -1,5 +1,6 @@
 - remember that we're using pnpm in this project
 - this is the command to build a single standards: pnpm build standards/{name}
+- NEVER hard code navigation links. Always use links that can resolve regardless of base url
 
 # IFLA Standards Development Project Context
 

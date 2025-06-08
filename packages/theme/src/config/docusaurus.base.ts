@@ -282,10 +282,6 @@ export function createIFLAConfig(
             type: 'dropdown',
             items: [
               {
-                label: 'RDF Downloads',
-                href: '/rdf/',
-              },
-              {
                 label: 'Vocabulary Server',
                 href: 'https://iflastandards.info/',
               },
@@ -347,7 +343,7 @@ export function createIFLAConfig(
               },
               {
                 label: 'Portal',
-                href: '/portal/',
+                href: process.env.NODE_ENV === 'production' ? '../portal/' : '/portal/',
               },
             ],
           },
