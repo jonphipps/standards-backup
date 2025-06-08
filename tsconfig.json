@@ -41,13 +41,24 @@
       "@theme/*": [
         "./src/theme/*", // For your user-swizzled components in src/theme
         "./.docusaurus/theme-fallback/*" // For default theme components or unswizzled components
-      ]
-      // Add any other custom aliases you might have
+      ],
+      "@ifla/theme": ["./packages/theme/src/index.ts"],
+      "@ifla/theme/*": ["./packages/theme/src/*"],
+      "@ifla/theme/components": ["./packages/theme/src/components/index.ts"],
+      "@ifla/theme/components/*": ["./packages/theme/src/components/*"],
+      "@ifla/theme/config": ["./packages/theme/src/config/index.ts"],
+      "@ifla/theme/config/*": ["./packages/theme/src/config/*"],
+      "@ifla/theme/utils": ["./packages/theme/src/utils/index.ts"],
+      "@ifla/theme/utils/*": ["./packages/theme/src/utils/*"],
+      "@ifla/theme/styles": ["./packages/theme/src/styles/index.css"]
     }
   },
   "include": [
     "src", // Your main source code (components, pages, MDX, etc.)
     ".docusaurus", // Docusaurus generated files, including type declarations
+    "packages", // Include theme package
+    "portal/src",
+    "standards/*/src",
     "**/*.ts",
     "**/*.tsx",
     "*.d.ts", // Global type declaration files (like the one for global MDX components)

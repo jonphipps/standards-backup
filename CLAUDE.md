@@ -68,3 +68,9 @@
 - Other standards are scaffolded and ready for content
 - Portal includes manage buttons that will trigger GitHub Actions
 - All sites use shared @ifla/theme package for components
+
+## Project Configuration Approach
+- All sites need to use the same configuration, same Docusaurus, same components, same theme, same colors
+- No advantage to separate package.json, tsconfig, etc.
+- Content is the only distinguishing factor between sites
+- Editors portal is the only distinct site, hosting tools for workflow management and access
