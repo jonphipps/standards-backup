@@ -41,6 +41,10 @@ export type {
   VocabularyDefaults
 } from '../types';
 
+// Export component-specific types
+export type { DownloadPanelProps } from './DownloadPanel';
+export type { QuickStartProps } from './QuickStart';
+
 // Re-export VocabularyTable-specific types
 export type {
   VocabularyTableProps,
