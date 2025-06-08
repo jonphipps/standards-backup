@@ -13,8 +13,61 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - name: Build all docs
-        run: BASE_URL="/standards-dev/" pnpm -r build
+      
+      - name: Build portal
+        run: pnpm exec docusaurus build portal
+        env:
+          BASE_URL: /standards-dev/portal/
+          NODE_ENV: production
+          
+      - name: Build ISBDM
+        run: pnpm exec docusaurus build standards/ISBDM
+        env:
+          BASE_URL: /standards-dev/ISBDM/
+          NODE_ENV: production
+          
+      - name: Build LRM
+        run: pnpm exec docusaurus build standards/LRM
+        env:
+          BASE_URL: /standards-dev/LRM/
+          NODE_ENV: production
+          
+      - name: Build ISBD
+        run: pnpm exec docusaurus build standards/isbd
+        env:
+          BASE_URL: /standards-dev/isbd/
+          NODE_ENV: production
+          
+      - name: Build FR
+        run: pnpm exec docusaurus build standards/fr
+        env:
+          BASE_URL: /standards-dev/fr/
+          NODE_ENV: production
+          
+      - name: Build MulDiCat
+        run: pnpm exec docusaurus build standards/muldicat
+        env:
+          BASE_URL: /standards-dev/muldicat/
+          NODE_ENV: production
+          
+      - name: Build UNIMARC
+        run: pnpm exec docusaurus build standards/unimarc
+        env:
+          BASE_URL: /standards-dev/unimarc/
+          NODE_ENV: production
+          
+      - name: Combine builds
+        run: |
+          mkdir -p build
+          cp -r portal/build/* build/
+          mkdir -p build/portal && cp -r portal/build/* build/portal/
+          mkdir -p build/ISBDM && cp -r standards/ISBDM/build/* build/ISBDM/
+          mkdir -p build/LRM && cp -r standards/LRM/build/* build/LRM/
+          mkdir -p build/isbd && cp -r standards/isbd/build/* build/isbd/
+          mkdir -p build/fr && cp -r standards/fr/build/* build/fr/
+          mkdir -p build/muldicat && cp -r standards/muldicat/build/* build/muldicat/
+          mkdir -p build/unimarc && cp -r standards/unimarc/build/* build/unimarc/
+          
       - name: Deploy to gh-pages
         if: github.ref == 'refs/heads/main'
         uses: JamesIves/github-pages-deploy-action@v4
