@@ -1,25 +1,19 @@
-import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import { 
+  sharedThemeConfig, 
+  sharedPlugins, 
+  sharedThemes, 
+  commonDefaults 
+} from '@ifla/theme/config';
 
 const config: Config = {
-  future: {
-    experimental_faster: false,
-    v4: true,
-  },
+  ...commonDefaults,
+  
   title: 'ISBD for Manifestation',
   tagline: 'International Standard Bibliographic Description for Manifestation',
-  favicon: 'img/favicon.ico',
-
-  url: 'https://iflastandards.github.io',
   baseUrl: process.env.BASE_URL || '/ISBDM/',
-
-  organizationName: 'iflastandards',
   projectName: 'ISBDM',
-
-  onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
-
 
   customFields: {
     vocabularyDefaults: {
@@ -49,9 +43,7 @@ const config: Config = {
     }
   },
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
+  // Site-specific i18n
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -61,19 +53,19 @@ const config: Config = {
       },
     },
   },
+
+  // Site-specific plugins (shared ones + redirects)
   plugins: [
-    'docusaurus-plugin-sass',
+    ...sharedPlugins,
     [
       '@docusaurus/plugin-client-redirects',
       {
-        // This will be populated at build time
         redirects: [],
         createRedirects(existingPath) {
           // Check if this is an element path that needs redirection
           const elementMatch = existingPath.match(/^\/docs\/(attributes|statements|notes|relationships)\/(\d+)$/);
           if (elementMatch) {
             const elementId = elementMatch[2];
-            // Create redirect from old elements path
             return [`/docs/elements/${elementId}`];
           }
           return undefined;
@@ -81,6 +73,8 @@ const config: Config = {
       },
     ],
   ],
+
+  // Site-specific presets
   presets: [
     [
       'classic',
@@ -104,9 +98,7 @@ const config: Config = {
             function filterIndexMdx(items) {
               return items
                   .filter(item => {
-                    // Filter out any doc items that represent index files
                     if (item.type === 'doc') {
-                      // Check if the id ends with 'index' or contains '/index'
                       const docId = item.id || item.docId || '';
                       if (docId === 'index' || 
                           docId.endsWith('/index') || 
@@ -117,7 +109,6 @@ const config: Config = {
                     return true;
                   })
                   .map(item => {
-                    // Recursively filter items within categories
                     if (item.type === 'category' && item.items) {
                       return {...item, items: filterIndexMdx(item.items)};
                     }
@@ -135,7 +126,6 @@ const config: Config = {
             xslt: true,
           },
           editUrl: 'https://github.com/iflastandards/ISBDM/tree/main/',
-          // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
@@ -146,19 +136,15 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-  themes: [
-    [
-      '@easyops-cn/docusaurus-search-local',
-      {
-        hashed: true,
-        // language: ['en', 'fr', 'es', 'de'], // Optional: match your locales
-        indexBlog: false, // Optional: only index docs, not blog
-        // Add further options as needed
-      },
-    ],
-  ],
-    themeConfig: {
-    // Configure TOC to show up to 5 heading levels
+
+  // Shared themes
+  themes: sharedThemes,
+
+  // Site-specific theme config with shared elements
+  themeConfig: {
+    ...sharedThemeConfig,
+    
+    // Site-specific docs config
     docs: {
       sidebar: {
         hideable: true,
@@ -166,12 +152,8 @@ const config: Config = {
       },
       versionPersistence: 'localStorage',
     },
-    tableOfContents: {
-      minHeadingLevel: 2,
-      maxHeadingLevel: 5,
-    },
-    // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    
+    // Site-specific navbar
     navbar: {
       title: 'ISBDM',
       logo: {
@@ -310,6 +292,8 @@ const config: Config = {
         },
       ],
     },
+    
+    // Site-specific footer
     footer: {
       style: 'dark',
       links: [
@@ -354,10 +338,6 @@ const config: Config = {
         },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} IFLA. Built with Docusaurus.`,
-    },
-    prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
 };

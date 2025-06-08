@@ -6,6 +6,13 @@ export {
 } from './docusaurus.base';
 
 export { 
+  sharedThemeConfig,
+  sharedPlugins,
+  sharedThemes,
+  commonDefaults
+} from './docusaurus';
+
+export { 
   default as defaultSidebars,
   applySidebarLevels,
   createIFLASidebar,
