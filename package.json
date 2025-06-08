@@ -52,7 +52,8 @@
     "profile-copy": "tsx tools/profile-copy.ts",
     "rdf:folder-to-csv": "tsx scripts/rdf-folder-to-csv.ts",
     "check:languages": "tsx scripts/check-missing-languages.ts",
-    "check:languages:help": "tsx scripts/check-missing-languages.ts --help"
+    "check:languages:help": "tsx scripts/check-missing-languages.ts --help",
+    "start:all": "concurrently \"cd portal && pnpm start --port 3000\" \"cd standards/ISBDM && pnpm start --port 3001\" \"cd standards/LRM && pnpm start --port 3002\" \"cd standards/fr && pnpm start --port 3003\" \"cd standards/isbd && pnpm start --port 3004\" \"cd standards/muldicat && pnpm start --port 3005\" \"cd standards/unimarc && pnpm start --port 3006\""
   },
   "keywords": [],
   "author": "",
@@ -94,6 +95,7 @@
     "cheerio": "^1.0.0",
     "clsx": "^2.1.1",
     "commander": "^14.0.0",
+    "concurrently": "^9.1.2",
     "eslint": "^8.57.1",
     "eslint-plugin-mdx": "^3.4.2",
     "gray-matter": "^4.0.3",

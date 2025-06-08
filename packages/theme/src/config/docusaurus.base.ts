@@ -101,7 +101,7 @@ export function createIFLAConfig(
 
     // Standard plugins
     plugins: [
-      // 'docusaurus-plugin-sass', // Temporarily disabled due to compilation issues
+      'docusaurus-plugin-sass',
       [
         '@docusaurus/plugin-client-redirects',
         {
