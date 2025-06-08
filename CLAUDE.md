@@ -1,4 +1,5 @@
 - remember that we're using pnpm in this project
+- this is the command to build a single standards: pnpm build standards/{name}
 
 # IFLA Standards Development Project Context
 

@@ -121,5 +121,5 @@ export const commonDefaults: Partial<Config> = {
   markdown: {
     mermaid: true,
   },
-  staticDirectories: ['static', 'node_modules/@ifla/theme/static'],
+  staticDirectories: ['static', '../packages/theme/static'],
 };

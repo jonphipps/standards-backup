@@ -60,6 +60,9 @@ export function createIFLAConfig(
     onBrokenLinks: 'warn',
     onBrokenMarkdownLinks: 'warn',
 
+    // Static directories - theme static first to ensure shared assets take precedence
+    staticDirectories: ['../../packages/theme/static', 'static'],
+
     // Custom fields for IFLA components
     customFields: {
       vocabularyDefaults: vocabularyDefaults || {
@@ -318,10 +321,45 @@ export function createIFLAConfig(
         ],
       },
 
-      // Footer configuration
+      // Footer configuration - use shared footer from theme
       footer: {
         style: 'dark',
-        copyright: `Copyright © ${new Date().getFullYear()} International Federation of Library Associations and Institutions (IFLA).`,
+        links: [
+          {
+            title: 'Community',
+            items: [
+              {
+                label: 'IFLA',
+                href: 'https://www.ifla.org/',
+              },
+              {
+                label: 'GitHub',
+                href: 'https://github.com/iflastandards/standards-dev',
+              },
+            ],
+          },
+          {
+            title: 'Resources',
+            items: [
+              {
+                label: 'Vocabulary Server',
+                href: 'https://iflastandards.info/',
+              },
+              {
+                label: 'Portal',
+                href: '/portal/',
+              },
+            ],
+          },
+        ],
+        copyright: `
+          <div style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
+            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">
+              <img src="img/cc0_by.png" alt="Badge for Creative Commons Attribution 4.0 International license" style="height: 20px;" />
+            </a>
+            <span>Copyright © ${new Date().getFullYear()} International Federation of Library Associations and Institutions (IFLA).</span>
+          </div>
+        `,
       },
 
       // Color mode configuration
