@@ -4,9 +4,10 @@ import {
   sharedThemeConfig, 
   sharedPlugins, 
   sharedThemes, 
-  commonDefaults,
-  siteUrls
+  commonDefaults
 } from '@ifla/theme/config';
+// Import siteUrls directly from server-side config (not bundled for browser)
+import { siteUrls } from '@ifla/theme/config/docusaurus';
 
 const config: Config = {
   ...commonDefaults,
