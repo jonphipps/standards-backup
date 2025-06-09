@@ -114,6 +114,7 @@ export const commonDefaults: Partial<Config> = {
   favicon: 'img/favicon.ico',
   url: 'https://iflastandards.github.io',
   organizationName: 'iflastandards',
+  trailingSlash: true,
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   onBrokenAnchors: 'warn',

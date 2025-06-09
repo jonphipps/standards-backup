@@ -56,7 +56,7 @@ export function createIFLAConfig(
     // GitHub pages deployment config
     organizationName,
     projectName,
-    trailingSlash: false,
+    trailingSlash: true,
     onBrokenLinks: 'warn',
     onBrokenMarkdownLinks: 'warn',
 
