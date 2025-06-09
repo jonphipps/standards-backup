@@ -8,7 +8,7 @@
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "clear": "docusaurus clear",
-    "clear:all": "rm -rf standards/*/.docusaurus portal/.docusaurus",
+    "clear:all": "rm -rf standards/*/.docusaurus portal/.docusaurus standards/*/build portal/build",
     "serve": "docusaurus serve",
     "scaffold": "tsx scripts/create-ifla-standard.ts",
     "write-translations": "docusaurus write-translations",
