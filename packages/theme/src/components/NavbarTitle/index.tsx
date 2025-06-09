@@ -12,8 +12,8 @@ export default function NavbarTitle(): JSX.Element {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
-  const portalLink = `${url}/portal/`;
-  const logoSrc = useBaseUrl('img/logo-ifla_black.png');
+  const portalLink = '/portal/';
+  const logoSrc = '/portal/img/logo-ifla_black.png';
   
   // Define all standards in alphabetical order
   const standards = [
