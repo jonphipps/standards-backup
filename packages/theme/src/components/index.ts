@@ -20,8 +20,6 @@ export { default as Unique } from './Unique';
 export { default as Figure } from './Figure';
 export { ExampleTable } from './ExampleTable';
 
-// Navigation components
-export { default as NavbarTitle } from './NavbarTitle';
 
 // Legacy exports for backward compatibility
 export { default as DownloadPanel } from './DownloadPanel';
