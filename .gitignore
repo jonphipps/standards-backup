@@ -1,4 +1,3 @@
-# node / pnpm
 node_modules/
 .pnpm-store/
 # editors
@@ -8,3 +7,4 @@ node_modules/
 build/
 dist/
 .env
+/tmp/
