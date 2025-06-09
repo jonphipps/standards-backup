@@ -1,13 +1,16 @@
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import dotenv from 'dotenv';
+dotenv.config();
 import { 
   sharedThemeConfig, 
   sharedPlugins, 
   sharedThemes, 
-  commonDefaults
+  commonDefaults,
+  getSiteUrls
 } from '@ifla/theme/config';
-// Import siteUrls directly from server-side config (not bundled for browser)
-import { siteUrls } from '@ifla/theme/config/docusaurus';
+
+const siteUrls = getSiteUrls(process.env);
 
 const config: Config = {
   ...commonDefaults,
