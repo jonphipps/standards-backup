@@ -122,5 +122,5 @@ export const commonDefaults: Partial<Config> = {
   markdown: {
     mermaid: true,
   },
-  staticDirectories: ['static', '../packages/theme/static'],
+  staticDirectories: ['static', '../../packages/theme/static'],
 };
