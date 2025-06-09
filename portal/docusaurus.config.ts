@@ -14,6 +14,7 @@ const config: Config = {
   tagline: 'International Federation of Library Associations and Institutions',
   baseUrl: process.env.BASE_URL || '/',
   projectName: 'standards-portal',
+  staticDirectories: ['static', '../../packages/theme/static'],
 
   // Portal-specific i18n
   i18n: {
