@@ -9,7 +9,8 @@ export {
   sharedThemeConfig,
   sharedPlugins,
   sharedThemes,
-  commonDefaults
+  commonDefaults,
+  siteUrls
 } from './docusaurus';
 
 export { 

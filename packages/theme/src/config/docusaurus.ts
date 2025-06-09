@@ -1,6 +1,16 @@
 import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
+import dotenv from 'dotenv'; dotenv.config();
 
+export const siteUrls = {
+  portal: process.env.PORTAL_URL,
+  isbdm: process.env.ISBDM_URL,
+  lrm: process.env.LRM_URL,
+  fr: process.env.FR_URL,
+  isbd: process.env.ISBD_URL,
+  muldicat: process.env.MULDICAT_URL,
+  unimarc: process.env.UNIMARC_URL,
+};
 // Shared theme configuration - only truly global items
 export const sharedThemeConfig = {
   // Global prism themes for code highlighting

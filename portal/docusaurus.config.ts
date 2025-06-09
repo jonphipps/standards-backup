@@ -4,7 +4,8 @@ import {
   sharedThemeConfig, 
   sharedPlugins, 
   sharedThemes, 
-  commonDefaults 
+  commonDefaults,
+  siteUrls
 } from '@ifla/theme/config';
 
 const config: Config = {
@@ -14,7 +15,7 @@ const config: Config = {
   tagline: 'International Federation of Library Associations and Institutions',
   baseUrl: process.env.BASE_URL || '/',
   projectName: 'standards-portal',
-  staticDirectories: ['static', '../../packages/theme/static'],
+  staticDirectories: ['static', '../packages/theme/static'],
 
   // Portal-specific i18n
   i18n: {
@@ -75,27 +76,27 @@ const config: Config = {
           items: [
             {
               label: 'ISBDM',
-              href: '/ISBDM/',
+              href: siteUrls.isbdm || '/ISBDM/',
             },
             {
               label: 'LRM',
-              href: '/LRM/',
+              href: siteUrls.lrm || '/LRM/',
             },
             {
               label: 'FR',
-              href: '/fr/',
+              href: siteUrls.fr || '/fr/',
             },
             {
               label: 'ISBD',
-              href: '/isbd/',
+              href: siteUrls.isbd || '/isbd/',
             },
             {
               label: 'MulDiCat',
-              href: '/muldicat/',
+              href: siteUrls.muldicat || '/muldicat/',
             },
             {
               label: 'UNIMARC',
-              href: '/unimarc/',
+              href: siteUrls.unimarc || '/unimarc/',
             },
           ],
         },
