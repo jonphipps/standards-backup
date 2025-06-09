@@ -69,14 +69,14 @@ export const sharedThemeConfig = {
     ],
     copyright: `
       <div style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
-        <span>Copyright © ${new Date().getFullYear()} International Federation of Library Associations and Institutions (IFLA).</span>
+        <span>Copyright ${new Date().getFullYear()} International Federation of Library Associations and Institutions (IFLA).</span>
         <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">
           <img src="/img/cc0_by.png" alt="Badge for Creative Commons Attribution 4.0 International license" style="height: 20px;" />
         </a>
       </div>
     `,
   },
-};
+} as const;
 
 // Shared plugins - only truly universal ones
 export const sharedPlugins = [

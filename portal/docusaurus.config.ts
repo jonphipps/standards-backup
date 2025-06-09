@@ -14,6 +14,7 @@ const siteUrls = getSiteUrls(process.env);
 
 const config: Config = {
   ...commonDefaults,
+  url: siteUrls.portal || commonDefaults.url!,
   
   title: 'IFLA Standards Portal',
   tagline: 'International Federation of Library Associations and Institutions',
@@ -121,7 +122,8 @@ const config: Config = {
     
     // Portal-specific footer
     footer: {
-      ...sharedThemeConfig.footer,
+      style: sharedThemeConfig.footer.style,
+      copyright: sharedThemeConfig.footer.copyright,
       links: [
         {
           title: 'Standards',
