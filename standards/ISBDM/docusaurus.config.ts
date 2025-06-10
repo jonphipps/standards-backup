@@ -17,7 +17,7 @@ const config: Config = {
   
   title: 'ISBD for Manifestation',
   tagline: 'International Standard Bibliographic Description for Manifestation',
-  baseUrl: process.env.BASE_URL || '/ISBDM/',
+  baseUrl: '/ISBDM/',
   projectName: 'ISBDM',
 
   customFields: {

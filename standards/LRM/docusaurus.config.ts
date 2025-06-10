@@ -13,7 +13,7 @@ const config: Config = {
   
   title: 'IFLA LRM',
   tagline: 'Library Reference Model',
-  baseUrl: process.env.BASE_URL || '/LRM/',
+  baseUrl: '/LRM/',
   projectName: 'LRM',
 
   customFields: {

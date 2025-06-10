@@ -15,7 +15,7 @@ const config: Config = {
   title: 'IFLA UNIMARC',
   tagline: 'Universal MARC Format',
   url: 'https://iflastandards.github.io',
-  baseUrl: process.env.BASE_URL || '/UNIMARC/',
+  baseUrl: '/UNIMARC/',
   projectName: 'UNIMARC',
 
   customFields: {

@@ -13,7 +13,7 @@ const config: Config = {
   
   title: 'IFLA MULDICAT',
   tagline: 'Multilingual Dictionary of Cataloguing Terms',
-  baseUrl: process.env.BASE_URL || '/muldicat/',
+  baseUrl: '/muldicat/',
   projectName: 'muldicat',
 
   customFields: {

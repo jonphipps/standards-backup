@@ -7,10 +7,17 @@ import {
   sharedPlugins, 
   sharedThemes, 
   commonDefaults,
-  getSiteUrls
 } from '@ifla/theme/config';
+import { siteURLs } from '@ifla/theme/config/siteURLs';
 
-const siteUrls = getSiteUrls(process.env);
+const standardsDropdown = [
+  { label: 'ISBDM', href: siteURLs.ISBDM },
+  { label: 'LRM', href: siteURLs.LRM },
+  { label: 'FR', href: siteURLs.FR },
+  { label: 'ISBD', href: siteURLs.ISBD },
+  { label: 'MULDICAT', href: siteURLs.MULDICAT },
+  { label: 'UNIMARC', href: siteURLs.UNIMARC },
+];
 
 const config: Config = {
   ...commonDefaults,
@@ -18,7 +25,7 @@ const config: Config = {
   
   title: 'IFLA Standards Portal',
   tagline: 'International Federation of Library Associations and Institutions',
-  baseUrl: process.env.BASE_URL || '/',
+  baseUrl: '/',
   projectName: 'standards-portal',
   staticDirectories: ['static', '../packages/theme/static'],
 
@@ -78,32 +85,7 @@ const config: Config = {
           type: 'dropdown',
           label: 'Standards',
           position: 'left',
-          items: [
-            {
-              label: 'ISBDM',
-              href: siteUrls.isbdm || '/ISBDM/',
-            },
-            {
-              label: 'LRM',
-              href: siteUrls.lrm || '/LRM/',
-            },
-            {
-              label: 'FR',
-              href: siteUrls.fr || '/fr/',
-            },
-            {
-              label: 'ISBD',
-              href: siteUrls.isbd || '/isbd/',
-            },
-            {
-              label: 'MulDiCat',
-              href: siteUrls.muldicat || '/muldicat/',
-            },
-            {
-              label: 'UNIMARC',
-              href: siteUrls.unimarc || '/unimarc/',
-            },
-          ],
+          items: standardsDropdown,
         },
         {
           type: 'doc',
@@ -112,6 +94,12 @@ const config: Config = {
           label: 'Documentation',
         },
         {to: '/blog', label: 'Blog', position: 'left'},
+        {
+          to: '/manage',
+          label: 'Management',
+          position: 'left',
+          className: 'navbar__item--management',
+        },
         {
           href: 'https://github.com/iflastandards/standards-dev',
           label: 'GitHub',
@@ -130,15 +118,15 @@ const config: Config = {
           items: [
             {
               label: 'ISBDM',
-              href: '/ISBDM/',
+              href: siteURLs.ISBDM,
             },
             {
               label: 'LRM',
-              href: '/LRM/',
+              href: siteURLs.LRM,
             },
             {
               label: 'ISBD',
-              href: '/isbd/',
+              href: siteURLs.ISBD,
             },
           ],
         },

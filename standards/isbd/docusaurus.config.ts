@@ -15,7 +15,7 @@ const config: Config = {
   title: 'IFLA ISBD',
   tagline: 'International Standard Bibliographic Description',
   url: 'https://iflastandards.github.io',
-  baseUrl: process.env.BASE_URL || '/ISBD/',
+  baseUrl: '/ISBD/',
   projectName: 'ISBD',
 
   customFields: {

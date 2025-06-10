@@ -15,7 +15,7 @@ const config: Config = {
   title: 'IFLA FR',
   tagline: 'Functional Requirements',
   url: 'https://iflastandards.github.io',
-  baseUrl: process.env.BASE_URL || '/FR/',
+  baseUrl: '/FR/',
   projectName: 'FR',
 
   customFields: {

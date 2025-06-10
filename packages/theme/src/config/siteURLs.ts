@@ -1,11 +1,13 @@
-export function getSiteUrls(env: Record<string, string | undefined>) {
-  return {
-    portal: env.PORTAL_URL,
-    isbdm: env.ISBDM_URL,
-    lrm: env.LRM_URL,
-    fr: env.FR_URL,
-    isbd: env.ISBD_URL,
-    muldicat: env.MULDICAT_URL,
-    unimarc: env.UNIMARC_URL,
-  };
+export const siteURLs = {
+  PORTAL: process.env.PORTAL_URL!,
+  ISBDM: process.env.ISBDM_URL!,
+  LRM: process.env.LRM_URL!,
+  FR: process.env.FR_URL!,
+  ISBD: process.env.ISBD_URL!,
+  MULDICAT: process.env.MULDICAT_URL!,
+  UNIMARC: process.env.UNIMARC_URL!,
+};
+
+export function getStandardUrl(key: keyof typeof siteURLs) {
+  return siteURLs[key];
 }
