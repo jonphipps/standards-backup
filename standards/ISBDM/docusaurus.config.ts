@@ -11,8 +11,6 @@ import {
   getSiteUrls 
 } from '@ifla/theme/config';
 
-const siteUrls = getSiteUrls(process.env);
-
 const config: Config = {
   ...commonDefaults,
   url: process.env.DOCUSAURUS_URL || 'http://localhost:3001',
