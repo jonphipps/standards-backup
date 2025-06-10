@@ -5,16 +5,12 @@ export {
   VOCABULARY_DEFAULTS 
 } from './docusaurus.base';
 
-export {
-  siteURLs,
-  getStandardUrl
-} from './siteURLs';
-
 export { 
   sharedThemeConfig,
   sharedPlugins,
   sharedThemes,
-  commonDefaults
+  commonDefaults,
+  siteUrls
 } from './docusaurus';
 
 export { 
