@@ -4,7 +4,6 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "lib": ["ES2022"],
-    "esModuleInterop": true,
     // --- JSX ---
     "jsx": "react-jsx", // For React 17+ (including React 19) new JSX transform
     "jsxImportSource": "react", // Often default but good to be explicit
@@ -29,7 +28,8 @@
       "node",
       "docusaurus-plugin-sass",
       "@docusaurus/theme-classic",
-      "@docusaurus/types"
+      "@docusaurus/types",
+      "@docusaurus/plugin-content-docs"
     ],
     //paths and aliases
     "baseUrl": ".",
@@ -37,7 +37,7 @@
     "paths": {
       "@site/plugins/*": ["./plugins/*"],
       "@site/*": ["./*"], // Allows @site/src/... to resolve from the project root
-      "@docusaurus/*": ["./node_modules/@docusaurus/core/lib/client/exports/*"],
+      // "@docusaurus/*": ["./node_modules/@docusaurus/core/lib/client/exports/*"], // Commented out
       "@theme/*": [
         "./src/theme/*", // For your user-swizzled components in src/theme
         "./.docusaurus/theme-fallback/*" // For default theme components or unswizzled components
