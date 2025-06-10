@@ -9,14 +9,16 @@ import { findUpSync } from 'find-up';
 // Docusaurus typically sets process.cwd() to the site's root directory.
 const sitePackagePath = process.cwd();
 
-const envLocalPath = findUpSync('.env.local', { cwd: sitePackagePath });
+// Determine which env file to load based on NODE_ENV
+const envFileName = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.local';
+const envPath = findUpSync(envFileName, { cwd: sitePackagePath });
 
-if (envLocalPath) {
-  dotenv.config({ path: envLocalPath });
-  // console.log(`Loaded environment variables from: ${envLocalPath}`); // Optional: for debugging
+if (envPath) {
+  dotenv.config({ path: envPath });
+  // console.log(`Loaded environment variables from: ${envPath}`); // Optional: for debugging
 } else {
   console.warn(
-    `Root .env.local file not found when searching upwards from ${sitePackagePath}. ` +
+    `Root ${envFileName} file not found when searching upwards from ${sitePackagePath}. ` +
     `Falling back to default dotenv behavior (loading .env from CWD or process.env).`
   );
   dotenv.config(); // Default behavior
