@@ -1,56 +1,117 @@
 import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
+import Link from '@docusaurus/Link';
 import styles from './styles.module.css';
 
-type FeatureItem = {
+type StandardItem = {
   title: string;
-  Svg: React.ComponentType<React.ComponentProps<'svg'>>;
+  code: string;
   description: ReactNode;
+  href: string;
+  status: 'published' | 'draft' | 'development';
 };
 
-const FeatureList: FeatureItem[] = [
+const StandardsList: StandardItem[] = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'ISBD for Manifestation (ISBDM)',
+    code: 'ISBDM',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        International Standard Bibliographic Description for Manifestation provides rules for creating 
+        consistent bibliographic descriptions of library materials in their physical or digital form.
       </>
     ),
+    href: '/ISBDM/',
+    status: 'published',
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Library Reference Model (LRM)',
+    code: 'LRM',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        A high-level conceptual model that provides a framework for understanding the bibliographic universe 
+        and the relationships between bibliographic entities.
       </>
     ),
+    href: '/LRM/',
+    status: 'published',
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'International Standard Bibliographic Description (ISBD)',
+    code: 'ISBD',
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        The foundational standard for bibliographic description, providing rules for creating consistent 
+        and comprehensive bibliographic records across all types of library materials.
       </>
     ),
+    href: '/isbd/',
+    status: 'development',
+  },
+  {
+    title: 'Functional Requirements (FR)',
+    code: 'FR',
+    description: (
+      <>
+        Specifications for functional requirements that support discovery, identification, selection, 
+        and access to bibliographic resources.
+      </>
+    ),
+    href: '/fr/',
+    status: 'development',
+  },
+  {
+    title: 'Multilingual Dictionary of Cataloguing Terms (MulDiCat)',
+    code: 'MulDiCat',
+    description: (
+      <>
+        A comprehensive multilingual dictionary providing standardized cataloguing terminology 
+        to support international library cooperation.
+      </>
+    ),
+    href: '/muldicat/',
+    status: 'development',
+  },
+  {
+    title: 'UNIMARC',
+    code: 'UNIMARC',
+    description: (
+      <>
+        Universal MARC format designed to facilitate the international exchange of bibliographic data 
+        in machine-readable form between different library systems.
+      </>
+    ),
+    href: '/unimarc/',
+    status: 'development',
   },
 ];
 
-function Feature({title, Svg, description}: FeatureItem) {
+function StandardCard({title, code, description, href, status}: StandardItem) {
+  const statusClass = status === 'published' ? styles.statusPublished : 
+                     status === 'draft' ? styles.statusDraft : styles.statusDevelopment;
+  
   return (
-    <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
-      </div>
-      <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
+    <div className={clsx('col col--6', styles.standardCard)}>
+      <div className={styles.card}>
+        <div className={styles.cardHeader}>
+          <div className={styles.cardTitle}>
+            <Heading as="h3">{title}</Heading>
+            <span className={clsx(styles.statusBadge, statusClass)}>
+              {status.charAt(0).toUpperCase() + status.slice(1)}
+            </span>
+          </div>
+        </div>
+        <div className={styles.cardBody}>
+          <p>{description}</p>
+        </div>
+        <div className={styles.cardFooter}>
+          <Link
+            className="button button--primary button--block"
+            to={href}>
+            View {code} Standard
+          </Link>
+        </div>
       </div>
     </div>
   );
@@ -58,11 +119,18 @@ function Feature({title, Svg, description}: FeatureItem) {
 
 export default function HomepageFeatures(): ReactNode {
   return (
-    <section className={styles.features}>
+    <section className={styles.features} id="standards">
       <div className="container">
+        <div className={styles.sectionHeader}>
+          <Heading as="h2">IFLA Standards</Heading>
+          <p className={styles.sectionDescription}>
+            Explore our comprehensive collection of international bibliographic standards, 
+            developed through collaborative efforts with library professionals worldwide.
+          </p>
+        </div>
         <div className="row">
-          {FeatureList.map((props, idx) => (
-            <Feature key={idx} {...props} />
+          {StandardsList.map((props, idx) => (
+            <StandardCard key={idx} {...props} />
           ))}
         </div>
       </div>

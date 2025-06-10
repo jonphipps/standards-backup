@@ -6,3 +6,32 @@
 @import '@ifla/theme/styles';
 
 /* Portal-specific customizations can be added here */
+
+/* Management menu - hidden by default, shown for authorized users */
+.navbar__item--management {
+  display: none;
+}
+
+/* Show management menu for authorized users */
+body.user-authorized .navbar__item--management {
+  display: flex;
+}
+
+/* Color variables for consistency */
+:root {
+  --ifla-color-text-secondary: #666;
+  --ifla-color-background-card: #fff;
+  --ifla-color-background-subtle: #f8f9fa;
+  --ifla-color-border: #dee2e6;
+  --ifla-color-primary: #00492c;
+}
+
+[data-theme='dark'] {
+  --ifla-color-text-secondary: #aaa;
+  --ifla-color-background-card: #1e1e1e;
+  --ifla-color-background-card-dark: #1e1e1e;
+  --ifla-color-background-subtle: #2a2a2a;
+  --ifla-color-background-subtle-dark: #2a2a2a;
+  --ifla-color-border: #444;
+  --ifla-color-border-dark: #444;
+}

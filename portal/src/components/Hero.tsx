@@ -8,40 +8,35 @@ export default function Hero(): JSX.Element {
       <div className="container">
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>
-            Welcome to the IFLA Standards Workspace
+            IFLA Standards Portal
           </h1>
           <p className={styles.heroSubtitle}>
-            A collaborative platform for IFLA Review Group members and editors to develop and maintain bibliographic standards
+            Access authoritative bibliographic standards developed by the International Federation of Library Associations and Institutions
           </p>
           
           <div className={styles.heroActions}>
             <Link
               className="button button--primary button--lg"
-              to="/sheets/pull">
-              Pull Sheet
+              to="#standards">
+              Explore Standards
             </Link>
             <Link
               className="button button--secondary button--lg"
-              to="/docs/new">
-              New Page
-            </Link>
-            <Link
-              className="button button--secondary button--lg"
-              to="/releases/draft">
-              Draft Release
+              to="/docs">
+              Documentation
             </Link>
           </div>
           
           <div className={styles.heroDescription}>
-            <h2>For Editors and Review Group Members</h2>
+            <h2>Professional Bibliographic Standards</h2>
             <p>
-              This workspace provides tools and resources to help you:
+              IFLA develops and maintains international standards that enable libraries worldwide to:
             </p>
             <ul>
-              <li>Collaborate on standard development and revisions</li>
-              <li>Manage vocabulary sheets and RDF resources</li>
-              <li>Track changes and review proposals</li>
-              <li>Prepare and publish standard releases</li>
+              <li>Create consistent and interoperable bibliographic records</li>
+              <li>Share resources effectively across institutions</li>
+              <li>Implement modern cataloging practices</li>
+              <li>Support discovery and access to library materials</li>
             </ul>
           </div>
         </div>
