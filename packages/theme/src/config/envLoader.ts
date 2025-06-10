@@ -10,7 +10,7 @@ import { findUpSync } from 'find-up';
 const sitePackagePath = process.cwd();
 
 // Determine which env file to load based on NODE_ENV
-const envFileName = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.local';
+const envFileName = '.env.local';
 const envPath = findUpSync(envFileName, { cwd: sitePackagePath });
 
 if (envPath) {
