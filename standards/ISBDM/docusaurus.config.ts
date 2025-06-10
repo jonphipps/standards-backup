@@ -1,14 +1,21 @@
+import '@ifla/theme/config/envLoader'; // Loads .env.local from root
+
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import type { SidebarItem, DefaultSidebarItemsGeneratorArgs } from '@docusaurus/plugin-content-docs/lib/types';
 import { 
   sharedThemeConfig, 
   sharedPlugins, 
   sharedThemes, 
-  commonDefaults 
+  commonDefaults, 
+  getSiteUrls 
 } from '@ifla/theme/config';
+
+const siteUrls = getSiteUrls(process.env);
 
 const config: Config = {
   ...commonDefaults,
+  url: siteUrls.isbdm || commonDefaults.url!,
   
   title: 'ISBD for Manifestation',
   tagline: 'International Standard Bibliographic Description for Manifestation',
@@ -61,7 +68,7 @@ const config: Config = {
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [],
-        createRedirects(existingPath) {
+        createRedirects(existingPath: string) {
           // Check if this is an element path that needs redirection
           const elementMatch = existingPath.match(/^\/docs\/(attributes|statements|notes|relationships)\/(\d+)$/);
           if (elementMatch) {
@@ -92,14 +99,14 @@ const config: Config = {
           },
           lastVersion: 'current',
           onlyIncludeVersions: ['current'],
-          async sidebarItemsGenerator({defaultSidebarItemsGenerator, ...args}) {
-            const sidebarItems = await defaultSidebarItemsGenerator(args);
+          async sidebarItemsGenerator({defaultSidebarItemsGenerator, ...args}: DefaultSidebarItemsGeneratorArgs) {
+            const sidebarItems: SidebarItem[] = await defaultSidebarItemsGenerator(args);
 
-            function filterIndexMdx(items) {
+            function filterIndexMdx(items: SidebarItem[]): SidebarItem[] {
               return items
-                  .filter(item => {
+                  .filter((item: SidebarItem) => {
                     if (item.type === 'doc') {
-                      const docId = item.id || item.docId || '';
+                      const docId = item.id || (item as any).docId || '';
                       if (docId === 'index' || 
                           docId.endsWith('/index') || 
                           docId.split('/').pop() === 'index') {
@@ -108,9 +115,12 @@ const config: Config = {
                     }
                     return true;
                   })
-                  .map(item => {
+                  .map((item: SidebarItem) => {
                     if (item.type === 'category' && item.items) {
-                      return {...item, items: filterIndexMdx(item.items)};
+                      return {
+                        ...item,
+                        items: filterIndexMdx(item.items),
+                      };
                     }
                     return item;
                   });
