@@ -1,0 +1,169 @@
+.managementContainer {
+  padding: 2rem 0 4rem;
+  min-height: 80vh;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.headerDescription {
+  font-size: 1.2rem;
+  color: var(--ifla-color-text-secondary);
+  margin: 0;
+}
+
+.managementCard {
+  background: var(--ifla-color-background-card);
+  border: 1px solid var(--ifla-color-border);
+  border-radius: 8px;
+  padding: 2rem;
+  height: 100%;
+}
+
+.managementCard h2 {
+  margin-top: 0;
+  color: var(--ifla-color-primary);
+}
+
+.cardActions h3 {
+  margin: 2rem 0 1rem 0;
+  color: var(--ifla-color-text);
+  font-size: 1.1rem;
+  border-bottom: 1px solid var(--ifla-color-border);
+  padding-bottom: 0.5rem;
+}
+
+.cardActions h3:first-of-type {
+  margin-top: 1.5rem;
+}
+
+.actionGroup {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.standardsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.standardItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--ifla-color-background-subtle);
+  border-radius: 6px;
+  border: 1px solid var(--ifla-color-border);
+}
+
+.standardInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.standardName {
+  font-size: 0.9rem;
+  color: var(--ifla-color-text-secondary);
+}
+
+.statusBadge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: fit-content;
+}
+
+.statusPublished {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.statusDevelopment {
+  background-color: #e2e3e5;
+  color: #383d41;
+}
+
+.quickActionsCard {
+  background: var(--ifla-color-background-card);
+  border: 1px solid var(--ifla-color-border);
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+.quickActionsCard h2 {
+  margin-top: 0;
+  color: var(--ifla-color-primary);
+}
+
+.toolCard {
+  background: var(--ifla-color-background-subtle);
+  border: 1px solid var(--ifla-color-border);
+  border-radius: 6px;
+  padding: 1.5rem;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.toolCard h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--ifla-color-text);
+}
+
+.toolCard p {
+  color: var(--ifla-color-text-secondary);
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] .managementCard,
+[data-theme='dark'] .quickActionsCard {
+  background: var(--ifla-color-background-card-dark, #1e1e1e);
+  border-color: var(--ifla-color-border-dark, #444);
+}
+
+[data-theme='dark'] .standardItem,
+[data-theme='dark'] .toolCard {
+  background: var(--ifla-color-background-subtle-dark, #2a2a2a);
+  border-color: var(--ifla-color-border-dark, #444);
+}
+
+[data-theme='dark'] .statusPublished {
+  background-color: #1e4620;
+  color: #b8e6c1;
+}
+
+[data-theme='dark'] .statusDevelopment {
+  background-color: #2d3436;
+  color: #b2bec3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .actionGroup {
+    flex-direction: column;
+  }
+  
+  .standardItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .standardInfo {
+    width: 100%;
+  }
+}
