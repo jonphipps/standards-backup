@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import Link from '@docusaurus/Link';
 import styles from './styles.module.css';
+import { siteURLs } from '@ifla/theme/config/siteURLs';
 
 type StandardItem = {
   title: string;
@@ -22,7 +23,7 @@ const StandardsList: StandardItem[] = [
         consistent bibliographic descriptions of library materials in their physical or digital form.
       </>
     ),
-    href: '/ISBDM/',
+    href: siteURLs.ISBDM,
     status: 'published',
   },
   {
@@ -34,7 +35,7 @@ const StandardsList: StandardItem[] = [
         and the relationships between bibliographic entities.
       </>
     ),
-    href: '/LRM/',
+    href: siteURLs.LRM,
     status: 'published',
   },
   {
@@ -46,7 +47,7 @@ const StandardsList: StandardItem[] = [
         and comprehensive bibliographic records across all types of library materials.
       </>
     ),
-    href: '/isbd/',
+    href: siteURLs.ISBD,
     status: 'development',
   },
   {
@@ -58,7 +59,7 @@ const StandardsList: StandardItem[] = [
         and access to bibliographic resources.
       </>
     ),
-    href: '/fr/',
+    href: siteURLs.FR,
     status: 'development',
   },
   {
@@ -70,7 +71,7 @@ const StandardsList: StandardItem[] = [
         to support international library cooperation.
       </>
     ),
-    href: '/muldicat/',
+    href: siteURLs.MULDICAT,
     status: 'development',
   },
   {
@@ -79,10 +80,10 @@ const StandardsList: StandardItem[] = [
     description: (
       <>
         Universal MARC format designed to facilitate the international exchange of bibliographic data 
-        in machine-readable form between different library systems.
+        and support library automation.
       </>
     ),
-    href: '/unimarc/',
+    href: siteURLs.UNIMARC,
     status: 'development',
   },
 ];

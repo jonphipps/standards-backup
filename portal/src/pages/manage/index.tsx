@@ -4,6 +4,7 @@ import Heading from '@theme/Heading';
 import Link from '@docusaurus/Link';
 import clsx from 'clsx';
 import styles from './styles.module.css';
+import { siteURLs } from '@ifla/theme/config/siteURLs';
 
 // This will eventually check GitHub org membership
 // For now, we'll create the UI structure
@@ -79,12 +80,12 @@ function ManagementDashboard(): React.ReactNode {
               
               <div className={styles.standardsList}>
                 {[
-                  { code: 'ISBDM', name: 'ISBD for Manifestation', href: '/ISBDM/manage', status: 'published' },
-                  { code: 'LRM', name: 'Library Reference Model', href: '/LRM/manage', status: 'published' },
-                  { code: 'ISBD', name: 'International Standard Bibliographic Description', href: '/isbd/manage', status: 'development' },
-                  { code: 'FR', name: 'Functional Requirements', href: '/fr/manage', status: 'development' },
-                  { code: 'MulDiCat', name: 'Multilingual Dictionary', href: '/muldicat/manage', status: 'development' },
-                  { code: 'UNIMARC', name: 'UNIMARC', href: '/unimarc/manage', status: 'development' },
+                  { code: 'ISBDM', name: 'ISBD for Manifestation', href: siteURLs.ISBDM + '/manage', status: 'published' },
+                  { code: 'LRM', name: 'Library Reference Model', href: siteURLs.LRM + '/manage', status: 'published' },
+                  { code: 'ISBD', name: 'International Standard Bibliographic Description', href: siteURLs.ISBD + '/manage', status: 'development' },
+                  { code: 'FR', name: 'Functional Requirements', href: siteURLs.FR + '/manage', status: 'development' },
+                  { code: 'MulDiCat', name: 'Multilingual Dictionary', href: siteURLs.MULDICAT + '/manage', status: 'development' },
+                  { code: 'UNIMARC', name: 'UNIMARC', href: siteURLs.UNIMARC + '/manage', status: 'development' },
                 ].map((standard) => (
                   <div key={standard.code} className={styles.standardItem}>
                     <div className={styles.standardInfo}>
