@@ -1,7 +1,8 @@
+import '@ifla/theme/config/envLoader'; // Loads .env.local from root
+
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
-import dotenv from 'dotenv';
-dotenv.config();
+
 import { 
   sharedThemeConfig, 
   sharedPlugins, 
