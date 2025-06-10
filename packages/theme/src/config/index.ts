@@ -6,7 +6,8 @@ export {
 } from './docusaurus.base';
 
 export {
-  getSiteUrls as getSiteUrls
+  siteURLs,
+  getStandardUrl
 } from './siteURLs';
 
 export { 
