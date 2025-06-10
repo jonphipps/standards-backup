@@ -15,7 +15,7 @@ const siteUrls = getSiteUrls(process.env);
 
 const config: Config = {
   ...commonDefaults,
-  url: siteUrls.isbdm || commonDefaults.url!,
+  url: process.env.DOCUSAURUS_URL || 'http://localhost:3001',
   
   title: 'ISBD for Manifestation',
   tagline: 'International Standard Bibliographic Description for Manifestation',

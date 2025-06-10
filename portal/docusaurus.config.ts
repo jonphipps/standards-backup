@@ -1,5 +1,4 @@
 import '@ifla/theme/config/envLoader'; // Loads .env.local from root
-
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
@@ -15,7 +14,7 @@ const siteUrls = getSiteUrls(process.env);
 
 const config: Config = {
   ...commonDefaults,
-  url: siteUrls.portal || commonDefaults.url!,
+  url: process.env.DOCUSAURUS_URL || 'http://localhost:3000',
   
   title: 'IFLA Standards Portal',
   tagline: 'International Federation of Library Associations and Institutions',

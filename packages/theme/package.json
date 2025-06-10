@@ -8,6 +8,7 @@
     ".": "./src/index.ts",
     "./components": "./src/components/index.ts", 
     "./config": "./src/config/index.ts",
+    "./config/envLoader": "./src/config/envLoader.ts",
     "./utils": "./src/utils/index.ts",
     "./styles": "./src/styles/index.css"
   }
