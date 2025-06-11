@@ -205,12 +205,19 @@ export const baseThemeConfig: Preset.ThemeConfig = {
           },
           {
             label: 'Portal',
-            href: '../portal/',
+            href: process.env.NODE_ENV === 'production' ? '../portal/' : '/portal/',
           },
         ],
       },
     ],
-    copyright: `<div style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;"><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer"><img src="img/cc0_by.png" alt="Badge for Creative Commons Attribution 4.0 International license" style="height: 20px;" /></a><span>Copyright © ${new Date().getFullYear()} International Federation of Library Associations and Institutions (IFLA).</span></div>`,
+    copyright: `
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">
+          <img src="img/cc0_by.png" alt="Badge for Creative Commons Attribution 4.0 International license" style="height: 20px;" />
+        </a>
+        <span>Copyright © ${new Date().getFullYear()} International Federation of Library Associations and Institutions (IFLA).</span>
+      </div>
+    `,
   },
 
   // Color mode configuration

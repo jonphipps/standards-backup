@@ -28,6 +28,7 @@ The new configuration system consolidates all IFLA site configurations into a ce
 1. Replace the entire `docusaurus.config.ts` with:
 
 ```typescript
+import '@ifla/theme/config/envLoader';
 import { createDocusaurusConfig } from '@ifla/theme/config';
 import type { Config } from '@docusaurus/types';
 
@@ -37,8 +38,6 @@ const config: Config = createDocusaurusConfig({
 
 export default config;
 ```
-
-Note: The `siteId` parameter is required and must match one of the configured sites in `siteConfigs.ts`.
 
 2. Remove `site.config.ts` if it exists (portal only)
 
@@ -87,6 +86,7 @@ const config: Config = createDocusaurusConfig({
 2. Create `docusaurus.config.ts` in the site directory:
 
 ```typescript
+import '@ifla/theme/config/envLoader';
 import { createDocusaurusConfig } from '@ifla/theme/config';
 import type { Config } from '@docusaurus/types';
 
@@ -104,9 +104,7 @@ Once all sites are migrated, these files can be removed:
 - `packages/theme/src/config/docusaurus.ts`
 - `packages/theme/src/config/browser.ts`
 - `packages/theme/src/config/createIFLAConfig.ts` (old one)
-- `packages/theme/src/config/envLoader.ts`
 - `packages/theme/src/config/siteURLs.ts`
-- `packages/theme/src/config/sites.ts` (old one)
 - `portal/site.config.ts`
 
 ## URL Handling

@@ -18,7 +18,6 @@ export interface SiteConfig {
   numberPrefix: string;
   editUrl?: string;
   customFields?: Record<string, any>;
-  staticDirectories?: string[];
   navbar?: {
     title?: string;
     items?: any[];
@@ -38,7 +37,6 @@ export const siteConfigs: SiteConfig[] = [
     ghPath: '/standards-dev/',
     vocabularyPrefix: 'ifla',
     numberPrefix: 'T',
-    staticDirectories: ['../packages/theme/static', 'static'],
     navbar: {
       items: [
         {
@@ -46,12 +44,12 @@ export const siteConfigs: SiteConfig[] = [
           position: 'left',
           type: 'dropdown',
           items: [
-            { label: 'ISBDM', href: '__DYNAMIC_ISBDM_URL__' },
-            { label: 'LRM', href: '__DYNAMIC_LRM_URL__' },
-            { label: 'FR', href: '__DYNAMIC_FR_URL__' },
-            { label: 'ISBD', href: '__DYNAMIC_ISBD_URL__' },
-            { label: 'MulDiCat', href: '__DYNAMIC_MULDICAT_URL__' },
-            { label: 'UNIMARC', href: '__DYNAMIC_UNIMARC_URL__' },
+            { label: 'ISBDM', href: 'https://iflastandards.github.io/standards-dev/isbdm/' },
+            { label: 'LRM', href: 'https://iflastandards.github.io/standards-dev/lrm/' },
+            { label: 'FR', href: 'https://iflastandards.github.io/standards-dev/fr/' },
+            { label: 'ISBD', href: 'https://iflastandards.github.io/standards-dev/isbd/' },
+            { label: 'MulDiCat', href: 'https://iflastandards.github.io/standards-dev/muldicat/' },
+            { label: 'UNIMARC', href: 'https://iflastandards.github.io/standards-dev/unimarc/' },
           ],
         },
         { type: 'doc', docId: 'index', label: 'Documentation', position: 'left' },
@@ -60,8 +58,17 @@ export const siteConfigs: SiteConfig[] = [
         { href: 'https://github.com/iflastandards/standards-dev', label: 'GitHub', position: 'right' },
       ],
     },
-    // No custom footer - use base footer
-    // footer: undefined,
+    footer: {
+      links: [
+        {
+          title: 'More',
+          items: [
+            { label: 'Blog', to: '/blog' },
+            { label: 'Documentation', to: '/docs' },
+          ],
+        },
+      ],
+    },
   },
   {
     id: 'isbdm',
@@ -69,7 +76,7 @@ export const siteConfigs: SiteConfig[] = [
     tagline: 'International Standard Bibliographic Description for Manifestation',
     dir: 'standards/ISBDM',
     port: 3001,
-    ghPath: '/standards-dev/ISBDM/',
+    ghPath: '/standards-dev/isbdm/',
     vocabularyPrefix: 'isbdm',
     numberPrefix: 'T',
     editUrl: 'https://github.com/iflastandards/standards-dev/tree/main/',
@@ -147,7 +154,6 @@ export const siteConfigs: SiteConfig[] = [
       ],
     },
     footer: {
-      style: 'dark',
       links: [
         {
           title: 'Documentation',
@@ -156,29 +162,7 @@ export const siteConfigs: SiteConfig[] = [
             { label: 'Elements', to: '/docs/statements' },
           ],
         },
-        {
-          title: 'Community',
-          items: [
-            { label: 'IFLA', href: 'https://www.ifla.org/' },
-            { label: 'GitHub', href: 'https://github.com/iflastandards/standards-dev' },
-          ],
-        },
-        {
-          title: 'Resources',
-          items: [
-            { label: 'Vocabulary Server', href: 'https://iflastandards.info/' },
-            { label: 'Portal', href: process.env.NODE_ENV === 'production' ? '../portal/' : '/portal/' },
-          ],
-        },
       ],
-      copyright: `
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
-          <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">
-            <img src="img/cc0_by.png" alt="Badge for Creative Commons Attribution 4.0 International license" style="height: 20px;" />
-          </a>
-          <span>Copyright © ${new Date().getFullYear()} International Federation of Library Associations and Institutions (IFLA).</span>
-        </div>
-      `,
     },
   },
   {
@@ -187,7 +171,7 @@ export const siteConfigs: SiteConfig[] = [
     tagline: 'IFLA Library Reference Model',
     dir: 'standards/LRM',
     port: 3002,
-    ghPath: '/standards-dev/LRM/',
+    ghPath: '/standards-dev/lrm/',
     vocabularyPrefix: 'lrm',
     numberPrefix: 'E',
     editUrl: 'https://github.com/iflastandards/standards-dev/tree/main/',
