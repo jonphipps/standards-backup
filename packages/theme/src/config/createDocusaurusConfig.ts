@@ -6,15 +6,35 @@
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import { baseConfig, baseThemeConfig } from './baseConfig';
-import { getSiteConfig } from './siteConfigs';
+import { getSiteConfig, siteConfigs } from './siteConfigs';
 import merge from 'lodash.merge';
+import path from 'path';
 
 export interface CreateConfigOptions {
-  siteId: string;
+  siteId?: string;
   additionalConfig?: Partial<Config>;
 }
 
-export function createDocusaurusConfig({ siteId, additionalConfig = {} }: CreateConfigOptions): Config {
+export function createDocusaurusConfig(options: CreateConfigOptions = {}): Config {
+  const { additionalConfig = {} } = options;
+  
+  // Auto-detect siteId from current working directory if not provided
+  let siteId = options.siteId;
+  
+  if (!siteId) {
+    const cwd = process.cwd();
+    const cwdRelative = path.relative(path.resolve(__dirname, '../../../../../'), cwd);
+    
+    // Find the site config that matches the current directory
+    const matchingSite = siteConfigs.find(site => site.dir === cwdRelative);
+    
+    if (!matchingSite) {
+      throw new Error(`Could not auto-detect site from directory: ${cwd}. Please provide siteId explicitly.`);
+    }
+    
+    siteId = matchingSite.id;
+  }
+  
   const siteConfig = getSiteConfig(siteId);
   
   if (!siteConfig) {

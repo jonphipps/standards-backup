@@ -28,13 +28,11 @@ The new configuration system consolidates all IFLA site configurations into a ce
 1. Replace the entire `docusaurus.config.ts` with:
 
 ```typescript
-import '@ifla/theme/config/envLoader';
 import { createDocusaurusConfig } from '@ifla/theme/config';
 import type { Config } from '@docusaurus/types';
 
-const config: Config = createDocusaurusConfig({
-  siteId: 'YOUR_SITE_ID', // e.g., 'portal', 'isbdm', 'lrm', etc.
-});
+// Site is auto-detected from current working directory
+const config: Config = createDocusaurusConfig();
 
 export default config;
 ```
@@ -45,12 +43,13 @@ export default config;
 
 ```typescript
 const config: Config = createDocusaurusConfig({
-  siteId: 'YOUR_SITE_ID',
   additionalConfig: {
     // Your overrides here
   }
 });
 ```
+
+Note: The site is automatically detected based on the current working directory. No need to specify `siteId` manually!
 
 ## Benefits
 
@@ -86,13 +85,10 @@ const config: Config = createDocusaurusConfig({
 2. Create `docusaurus.config.ts` in the site directory:
 
 ```typescript
-import '@ifla/theme/config/envLoader';
 import { createDocusaurusConfig } from '@ifla/theme/config';
 import type { Config } from '@docusaurus/types';
 
-const config: Config = createDocusaurusConfig({
-  siteId: 'newsite',
-});
+const config: Config = createDocusaurusConfig();
 
 export default config;
 ```
@@ -104,7 +100,9 @@ Once all sites are migrated, these files can be removed:
 - `packages/theme/src/config/docusaurus.ts`
 - `packages/theme/src/config/browser.ts`
 - `packages/theme/src/config/createIFLAConfig.ts` (old one)
+- `packages/theme/src/config/envLoader.ts`
 - `packages/theme/src/config/siteURLs.ts`
+- `packages/theme/src/config/sites.ts` (old one)
 - `portal/site.config.ts`
 
 ## URL Handling
