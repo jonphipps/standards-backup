@@ -2,6 +2,7 @@ import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import Link from '@docusaurus/Link';
+import { getStandardUrl } from '@ifla/theme';
 import styles from './styles.module.css';
 
 type StandardItem = {
@@ -22,7 +23,7 @@ const StandardsList: StandardItem[] = [
         consistent bibliographic descriptions of library materials in their physical or digital form.
       </>
     ),
-    href: '/ISBDM/',
+    href: getStandardUrl('isbdm'),
     status: 'published',
   },
   {
@@ -34,7 +35,7 @@ const StandardsList: StandardItem[] = [
         and the relationships between bibliographic entities.
       </>
     ),
-    href: '/LRM/',
+    href: getStandardUrl('lrm'),
     status: 'published',
   },
   {
@@ -46,7 +47,7 @@ const StandardsList: StandardItem[] = [
         and comprehensive bibliographic records across all types of library materials.
       </>
     ),
-    href: '/isbd/',
+    href: getStandardUrl('isbd'),
     status: 'development',
   },
   {
@@ -58,7 +59,7 @@ const StandardsList: StandardItem[] = [
         and access to bibliographic resources.
       </>
     ),
-    href: '/fr/',
+    href: getStandardUrl('fr'),
     status: 'development',
   },
   {
@@ -70,7 +71,7 @@ const StandardsList: StandardItem[] = [
         to support international library cooperation.
       </>
     ),
-    href: '/muldicat/',
+    href: getStandardUrl('muldicat'),
     status: 'development',
   },
   {
@@ -82,7 +83,7 @@ const StandardsList: StandardItem[] = [
         in machine-readable form between different library systems.
       </>
     ),
-    href: '/unimarc/',
+    href: getStandardUrl('unimarc'),
     status: 'development',
   },
 ];

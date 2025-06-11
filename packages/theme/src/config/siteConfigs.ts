@@ -18,6 +18,7 @@ export interface SiteConfig {
   numberPrefix: string;
   editUrl?: string;
   customFields?: Record<string, any>;
+  staticDirectories?: string[];
   navbar?: {
     title?: string;
     items?: any[];
@@ -37,6 +38,7 @@ export const siteConfigs: SiteConfig[] = [
     ghPath: '/standards-dev/',
     vocabularyPrefix: 'ifla',
     numberPrefix: 'T',
+    staticDirectories: ['../packages/theme/static', 'static'],
     navbar: {
       items: [
         {
@@ -44,12 +46,12 @@ export const siteConfigs: SiteConfig[] = [
           position: 'left',
           type: 'dropdown',
           items: [
-            { label: 'ISBDM', href: 'https://iflastandards.github.io/standards-dev/isbdm/' },
-            { label: 'LRM', href: 'https://iflastandards.github.io/standards-dev/lrm/' },
-            { label: 'FR', href: 'https://iflastandards.github.io/standards-dev/fr/' },
-            { label: 'ISBD', href: 'https://iflastandards.github.io/standards-dev/isbd/' },
-            { label: 'MulDiCat', href: 'https://iflastandards.github.io/standards-dev/muldicat/' },
-            { label: 'UNIMARC', href: 'https://iflastandards.github.io/standards-dev/unimarc/' },
+            { label: 'ISBDM', href: '__DYNAMIC_ISBDM_URL__' },
+            { label: 'LRM', href: '__DYNAMIC_LRM_URL__' },
+            { label: 'FR', href: '__DYNAMIC_FR_URL__' },
+            { label: 'ISBD', href: '__DYNAMIC_ISBD_URL__' },
+            { label: 'MulDiCat', href: '__DYNAMIC_MULDICAT_URL__' },
+            { label: 'UNIMARC', href: '__DYNAMIC_UNIMARC_URL__' },
           ],
         },
         { type: 'doc', docId: 'index', label: 'Documentation', position: 'left' },
@@ -67,7 +69,7 @@ export const siteConfigs: SiteConfig[] = [
     tagline: 'International Standard Bibliographic Description for Manifestation',
     dir: 'standards/ISBDM',
     port: 3001,
-    ghPath: '/standards-dev/isbdm/',
+    ghPath: '/standards-dev/ISBDM/',
     vocabularyPrefix: 'isbdm',
     numberPrefix: 'T',
     editUrl: 'https://github.com/iflastandards/standards-dev/tree/main/',
@@ -185,7 +187,7 @@ export const siteConfigs: SiteConfig[] = [
     tagline: 'IFLA Library Reference Model',
     dir: 'standards/LRM',
     port: 3002,
-    ghPath: '/standards-dev/lrm/',
+    ghPath: '/standards-dev/LRM/',
     vocabularyPrefix: 'lrm',
     numberPrefix: 'E',
     editUrl: 'https://github.com/iflastandards/standards-dev/tree/main/',
