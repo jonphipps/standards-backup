@@ -8,49 +8,14 @@ import type * as Preset from '@docusaurus/preset-classic';
 import { baseConfig, baseThemeConfig } from './baseConfig';
 import { getSiteConfig, siteConfigs } from './siteConfigs';
 import merge from 'lodash.merge';
-import path from 'path';
 
 export interface CreateConfigOptions {
-  siteId?: string;
+  siteId: string;
   additionalConfig?: Partial<Config>;
 }
 
-export function createDocusaurusConfig(options: CreateConfigOptions = {}): Config {
-  const { additionalConfig = {} } = options;
-  
-  // Auto-detect siteId from current working directory if not provided
-  let siteId = options.siteId;
-  
-  if (!siteId) {
-    const cwd = process.cwd();
-    
-    // Try to find the site config that matches the current directory
-    // Check if we're in a subdirectory of the monorepo root
-    const matchingSite = siteConfigs.find(site => {
-      // Check if cwd ends with the site directory
-      return cwd.endsWith(site.dir) || cwd.endsWith(site.dir.replace(/\//g, path.sep));
-    });
-    
-    if (!matchingSite) {
-      // If no exact match, check if we're running from monorepo root with a specific site
-      // This handles cases like "pnpm start portal" from root
-      const possibleSiteFromArgs = process.argv.find(arg => 
-        siteConfigs.some(site => site.id === arg)
-      );
-      
-      if (possibleSiteFromArgs) {
-        siteId = possibleSiteFromArgs;
-      } else {
-        throw new Error(
-          `Could not auto-detect site from directory: ${cwd}\n` +
-          `Available sites: ${siteConfigs.map(s => s.id).join(', ')}\n` +
-          `Please run from within a site directory or provide siteId explicitly.`
-        );
-      }
-    } else {
-      siteId = matchingSite.id;
-    }
-  }
+export function createDocusaurusConfig(options: CreateConfigOptions): Config {
+  const { siteId, additionalConfig = {} } = options;
   
   const siteConfig = getSiteConfig(siteId);
   
@@ -116,35 +81,28 @@ export function createDocusaurusConfig(options: CreateConfigOptions = {}): Confi
         return preset;
       }),
       
-      // Theme configuration
-      themeConfig: merge(
-        {},
-        baseThemeConfig,
-        {
-          navbar: {
-            title: siteConfig.navbar?.title || siteConfig.title,
-            items: [
-              ...(siteConfig.navbar?.items || []),
-              // Add GitHub link if not already present and editUrl is defined
-              ...(siteConfig.editUrl && !siteConfig.navbar?.items?.some(item => 
-                typeof item === 'object' && 'href' in item && item.href?.includes('github')
-              ) ? [{
-                href: 'https://github.com/iflastandards/standards-dev',
-                position: 'right' as const,
-                className: 'header-github-link',
-                'aria-label': 'GitHub repository',
-              }] : []),
-            ],
-          },
-          footer: siteConfig.footer?.links ? {
-            ...baseThemeConfig.footer,
-            links: [
-              ...(siteConfig.footer.links || []),
-              ...(baseThemeConfig.footer.links || []),
-            ],
-          } : baseThemeConfig.footer,
-        }
-      ) as Preset.ThemeConfig,
+      // Theme configuration - explicitly construct to avoid merge issues
+      themeConfig: {
+        ...baseThemeConfig,
+        navbar: {
+          ...baseThemeConfig.navbar,
+          title: siteConfig.navbar?.title || siteConfig.title,
+          items: [
+            ...(siteConfig.navbar?.items || []),
+            // Add GitHub link if not already present and editUrl is defined
+            ...(siteConfig.editUrl && !siteConfig.navbar?.items?.some(item => 
+              typeof item === 'object' && 'href' in item && item.href?.includes('github')
+            ) ? [{
+              href: 'https://github.com/iflastandards/standards-dev',
+              position: 'right' as const,
+              className: 'header-github-link',
+              'aria-label': 'GitHub repository',
+            }] : []),
+          ],
+        },
+        // Use site-specific footer if provided, otherwise use base footer
+        footer: siteConfig.footer || baseThemeConfig.footer,
+      } as Preset.ThemeConfig,
     },
     additionalConfig
   );

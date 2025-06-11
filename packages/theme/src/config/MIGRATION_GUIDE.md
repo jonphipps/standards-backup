@@ -38,7 +38,7 @@ const config: Config = createDocusaurusConfig({
 export default config;
 ```
 
-Note: While auto-detection is available when running from within the site directory, explicitly specifying the `siteId` is recommended for reliability, especially when using pnpm workspaces.
+Note: The `siteId` parameter is required and must match one of the configured sites in `siteConfigs.ts`.
 
 2. Remove `site.config.ts` if it exists (portal only)
 

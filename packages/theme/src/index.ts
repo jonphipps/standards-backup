@@ -16,8 +16,8 @@
 // Export all components
 export * from './components';
 
-// Export configuration helpers
-export * from './config';
+// Export browser-safe configuration helpers
+export * from './config/browser';
 
 // Export utilities and hooks
 export * from './utils';
@@ -31,7 +31,7 @@ export * from './types';
 
 // Default export for convenience
 import * as Components from './components';
-import * as Config from './config';
+import * as Config from './config/browser';
 import * as Utils from './utils';
 import * as Hooks from './hooks';
 import * as Types from './types';

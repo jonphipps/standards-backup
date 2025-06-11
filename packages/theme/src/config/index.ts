@@ -1,6 +1,8 @@
 // Configuration exports for IFLA theme
+// NOTE: This index is for build-time use only (Node.js environment)
+// For browser-safe exports, see ./browser.ts
 
-// New unified configuration approach
+// New unified configuration approach (build-time only)
 export { 
   createDocusaurusConfig,
   getSiteUrl,
@@ -22,22 +24,23 @@ export {
 } from './siteConfigs';
 
 // Legacy exports for backward compatibility (to be removed)
-export { 
-  default as createIFLAConfig, 
-  VOCABULARY_DEFAULTS 
-} from './docusaurus.base';
+// Note: These are commented out to prevent browser bundling issues
+// export { 
+//   default as createIFLAConfig, 
+//   VOCABULARY_DEFAULTS 
+// } from './docusaurus.base';
 
-export {
-  siteURLs,
-  getStandardUrl
-} from './siteURLs';
+// export {
+//   siteURLs,
+//   getStandardUrl
+// } from './siteURLs';
 
-export { 
-  sharedThemeConfig,
-  sharedPlugins,
-  sharedThemes,
-  commonDefaults
-} from './docusaurus';
+// export { 
+//   sharedThemeConfig,
+//   sharedPlugins,
+//   sharedThemes,
+//   commonDefaults
+// } from './docusaurus';
 
 export { 
   default as defaultSidebars,
