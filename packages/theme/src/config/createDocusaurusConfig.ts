@@ -23,16 +23,33 @@ export function createDocusaurusConfig(options: CreateConfigOptions = {}): Confi
   
   if (!siteId) {
     const cwd = process.cwd();
-    const cwdRelative = path.relative(path.resolve(__dirname, '../../../../../'), cwd);
     
-    // Find the site config that matches the current directory
-    const matchingSite = siteConfigs.find(site => site.dir === cwdRelative);
+    // Try to find the site config that matches the current directory
+    // Check if we're in a subdirectory of the monorepo root
+    const matchingSite = siteConfigs.find(site => {
+      // Check if cwd ends with the site directory
+      return cwd.endsWith(site.dir) || cwd.endsWith(site.dir.replace(/\//g, path.sep));
+    });
     
     if (!matchingSite) {
-      throw new Error(`Could not auto-detect site from directory: ${cwd}. Please provide siteId explicitly.`);
+      // If no exact match, check if we're running from monorepo root with a specific site
+      // This handles cases like "pnpm start portal" from root
+      const possibleSiteFromArgs = process.argv.find(arg => 
+        siteConfigs.some(site => site.id === arg)
+      );
+      
+      if (possibleSiteFromArgs) {
+        siteId = possibleSiteFromArgs;
+      } else {
+        throw new Error(
+          `Could not auto-detect site from directory: ${cwd}\n` +
+          `Available sites: ${siteConfigs.map(s => s.id).join(', ')}\n` +
+          `Please run from within a site directory or provide siteId explicitly.`
+        );
+      }
+    } else {
+      siteId = matchingSite.id;
     }
-    
-    siteId = matchingSite.id;
   }
   
   const siteConfig = getSiteConfig(siteId);

@@ -31,11 +31,14 @@ The new configuration system consolidates all IFLA site configurations into a ce
 import { createDocusaurusConfig } from '@ifla/theme/config';
 import type { Config } from '@docusaurus/types';
 
-// Site is auto-detected from current working directory
-const config: Config = createDocusaurusConfig();
+const config: Config = createDocusaurusConfig({
+  siteId: 'YOUR_SITE_ID', // e.g., 'portal', 'isbdm', 'lrm', etc.
+});
 
 export default config;
 ```
+
+Note: While auto-detection is available when running from within the site directory, explicitly specifying the `siteId` is recommended for reliability, especially when using pnpm workspaces.
 
 2. Remove `site.config.ts` if it exists (portal only)
 
@@ -43,13 +46,12 @@ export default config;
 
 ```typescript
 const config: Config = createDocusaurusConfig({
+  siteId: 'YOUR_SITE_ID',
   additionalConfig: {
     // Your overrides here
   }
 });
 ```
-
-Note: The site is automatically detected based on the current working directory. No need to specify `siteId` manually!
 
 ## Benefits
 
@@ -88,7 +90,9 @@ Note: The site is automatically detected based on the current working directory.
 import { createDocusaurusConfig } from '@ifla/theme/config';
 import type { Config } from '@docusaurus/types';
 
-const config: Config = createDocusaurusConfig();
+const config: Config = createDocusaurusConfig({
+  siteId: 'newsite',
+});
 
 export default config;
 ```
