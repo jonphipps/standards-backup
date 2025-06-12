@@ -8,6 +8,16 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import styles from './styles.module.scss';
 
+// Type augmentation for TabItem to include children prop
+declare module '@theme/TabItem' {
+  interface Props {
+    children?: React.ReactNode;
+    value: string;
+    label?: string;
+    'data-testid'?: string;
+  }
+}
+
 interface ElementSubType {
   uri: string;
   url: string;
