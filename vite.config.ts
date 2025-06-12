@@ -25,7 +25,7 @@ export default defineConfig({
     test: {
         globals: true,
         environment: 'jsdom',
-        setupFiles: ['./packages/theme/src/tests/setup.ts', './standards/ISBDM/src/tests/setup.ts'],
+        setupFiles: ['./packages/theme/src/tests/setup.ts'],
         include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
         exclude: ['**/node_modules/**', '**/dist/**', '**/build/**'],
     },

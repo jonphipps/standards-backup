@@ -1382,7 +1382,7 @@ The following errors occurred during processing:
      */
     escapeMarkdown(text) {
         if (!text) return '';
-        return text.replace(/[|\\`*_{}[\]()#+\-.!]/g, '\\$&');
+        return text.replace(/[|\\`*_{}[\]()#+\-.!"]/g, '\\$&');
     }
 
     /**

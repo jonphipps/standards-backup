@@ -92,7 +92,7 @@ if (spreadsheetArg) {
 
 // Show help if requested
 if (args.includes('--help') || args.includes('-h')) {
-    console.log(`
+    const helpText = `
 Language Tag Checker for Google Sheets
 
 Usage:
@@ -123,8 +123,11 @@ Access Strategy:
   2. Fall back to Google Sheets API (requires GOOGLE_SHEETS_API_KEY)
   3. Fail with helpful error message
 
-`);
-    process.exit(0);
+`;
+    // Use process.stdout.write and exit in its callback to ensure flush
+    process.stdout.write(helpText, () => {
+        process.exit(0);
+    });
 }
 
 // Initialize Claude if using AI

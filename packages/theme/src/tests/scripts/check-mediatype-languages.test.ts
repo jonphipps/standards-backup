@@ -114,7 +114,7 @@ const mockDetectLanguage = (text, declaredLang) => {
 // Parse arguments
 const args = process.argv.slice(2);
 const outputMarkdown = args.includes('--markdown') || args.includes('-md');
-const useAI = args.includes('--ai');
+const useAIInMock = args.includes('--ai'); // Renamed to avoid conflict, will be used by the mock script
 const testMode = args.includes('--test');
 
 // Mock data
@@ -170,7 +170,9 @@ mockSheetData.forEach(sheet => {
 
 // Output results
 if (outputMarkdown) {
-  const reportPath = path.join('${tmpDir}', \`language-tag-mismatches\${useAI ? '-ai' : ''}.md\`);
+  const mockTmpDir = '${tmpDir}'; // Inject tmpDir as a string literal
+  const mockUseAI = useAIInMock; // Use the parsed arg from mock script's context
+  const reportPath = path.join(mockTmpDir, \`language-tag-mismatches\${mockUseAI ? '-ai' : ''}.md\`);
   const markdown = \`# Language Tag Mismatch Report
 Generated: \${new Date().toISOString()}
 

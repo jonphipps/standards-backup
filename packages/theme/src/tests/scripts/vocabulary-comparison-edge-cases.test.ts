@@ -16,6 +16,15 @@ describe('VocabularyComparisonTool Edge Cases', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
+
+        // Default mock for the getAvailableSheets call in the constructor
+        mockFetch.mockResolvedValue({
+            ok: true,
+            status: 200,
+            statusText: 'OK',
+            json: async () => ({ sheets: [] }) // Default to empty sheets, specific tests can override
+        });
+
         tool = new VocabularyComparisonTool(mockApiKey, mockSpreadsheetId);
     });
 
@@ -25,17 +34,21 @@ describe('VocabularyComparisonTool Edge Cases', () => {
 
     describe('Error Handling', () => {
         it('should handle network errors gracefully', async () => {
+            // Mock fetch to reject, simulating a network issue for all attempts
             mockFetch.mockRejectedValue(new Error('Network error'));
 
-            await expect(tool.getAvailableSheets()).rejects.toThrow('Network error');
+            // Expect the tool's method to throw an error that includes the SUT's prefix and the original error message
+            await expect(tool.getAvailableSheets()).rejects.toThrow('Failed to fetch spreadsheet metadata: Network error');
         });
 
         it('should handle malformed API responses', async () => {
             const mockResponse = {
                 ok: true,
+                status: 200,
+                statusText: 'OK',
                 json: vi.fn().mockResolvedValue({}) // Missing 'sheets' property
             };
-            mockFetch.mockResolvedValue(mockResponse);
+            mockFetch.mockResolvedValue(mockResponse); // Changed to mockResolvedValue for general case within this test
 
             await expect(tool.getAvailableSheets()).rejects.toThrow();
         });
@@ -43,6 +56,8 @@ describe('VocabularyComparisonTool Edge Cases', () => {
         it('should handle empty spreadsheet responses', async () => {
             const mockResponse = {
                 ok: true,
+                status: 200,
+                statusText: 'OK',
                 json: vi.fn().mockResolvedValue({
                     sheets: []
                 })
@@ -56,6 +71,8 @@ describe('VocabularyComparisonTool Edge Cases', () => {
         it('should handle empty sheet data', async () => {
             const mockResponse = {
                 ok: true,
+                status: 200,
+                statusText: 'OK',
                 json: vi.fn().mockResolvedValue({
                     values: []
                 })
@@ -69,6 +86,8 @@ describe('VocabularyComparisonTool Edge Cases', () => {
         it('should handle missing values in sheet response', async () => {
             const mockResponse = {
                 ok: true,
+                status: 200,
+                statusText: 'OK',
                 json: vi.fn().mockResolvedValue({}) // Missing 'values' property
             };
             mockFetch.mockResolvedValue(mockResponse);
@@ -80,19 +99,29 @@ describe('VocabularyComparisonTool Edge Cases', () => {
 
     describe('Edge Cases in Data Processing', () => {
         it('should handle empty headers', async () => {
+            // Mock for the fetchSheetData call within fetchSheetConcepts('test-sheet', ...)
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                status: 200,
+                statusText: 'OK',
+                json: vi.fn().mockResolvedValue({ values: [['h1', 'h2'], ['r1c1', 'r1c2']] })
+            });
+
             const concepts = await tool.fetchSheetConcepts('test-sheet', {
                 token: 'test',
                 uri: 'http://example.org'
             });
             
-            // Mock empty response
-            const mockResponse = {
+            // Mock for the subsequent, explicit fetchSheetData('empty-headers') call
+            const mockEmptyHeadersResponse = {
                 ok: true,
+                status: 200,
+                statusText: 'OK',
                 json: vi.fn().mockResolvedValue({
-                    values: []
+                    values: [] // Represents a sheet that, when fetched, has no rows (e.g., only a header or completely empty)
                 })
             };
-            mockFetch.mockResolvedValue(mockResponse);
+            mockFetch.mockResolvedValueOnce(mockEmptyHeadersResponse);
 
             const result = await tool.fetchSheetData('empty-headers');
             expect(result).toEqual([]);

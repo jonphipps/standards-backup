@@ -24,8 +24,17 @@ describe('VocabularyComparisonTool', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
+
+        // Default mock for the getAvailableSheets call in the constructor
+        mockFetch.mockResolvedValue({
+            ok: true,
+            status: 200,
+            statusText: 'OK',
+            json: async () => ({ sheets: [] }) // Default to empty sheets
+        });
+
         tool = new VocabularyComparisonTool(mockApiKey, mockSpreadsheetId, {
-            indexSheet: 'index',
+            indexSheet: 'index', // This will trigger getAvailableSheets in constructor
             skipRdfCheck: true,
             markdown: false
         });
@@ -66,6 +75,8 @@ describe('VocabularyComparisonTool', () => {
         it('should fetch and parse available sheets', async () => {
             const mockResponse = {
                 ok: true,
+                status: 200,
+                statusText: 'OK',
                 json: vi.fn().mockResolvedValue({
                     sheets: [
                         { properties: { title: 'Sheet1', sheetId: 123 } },
@@ -86,6 +97,7 @@ describe('VocabularyComparisonTool', () => {
         it('should throw error on failed API call', async () => {
             const mockResponse = {
                 ok: false,
+                status: 401,
                 statusText: 'Unauthorized'
             };
             mockFetch.mockResolvedValueOnce(mockResponse);
@@ -471,6 +483,8 @@ describe('VocabularyComparisonTool', () => {
         it('should fetch sheet data via API', async () => {
             const mockResponse = {
                 ok: true,
+                status: 200,
+                statusText: 'OK',
                 json: vi.fn().mockResolvedValue({
                     values: [
                         ['uri', 'skos:prefLabel@en', 'skos:definition@en'],
@@ -490,6 +504,7 @@ describe('VocabularyComparisonTool', () => {
         it('should handle API errors', async () => {
             const mockResponse = {
                 ok: false,
+                status: 404,
                 statusText: 'Not Found'
             };
             mockFetch.mockResolvedValueOnce(mockResponse);
