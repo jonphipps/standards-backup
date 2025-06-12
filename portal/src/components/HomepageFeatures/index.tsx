@@ -4,12 +4,13 @@ import Heading from '@theme/Heading';
 import Link from '@docusaurus/Link';
 import styles from './styles.module.css';
 import { getSiteUrl, type SiteKey } from '@ifla/theme/config/siteConfig';
+import { useDocsEnv } from '@ifla/theme/hooks/useDocsEnv';
 
 type StandardItem = {
   title: string;
   code: string;
   description: ReactNode;
-  href: string;
+  siteKey: SiteKey;
   status: 'published' | 'draft' | 'development';
 };
 
@@ -23,7 +24,7 @@ const StandardsList: StandardItem[] = [
         consistent bibliographic descriptions of library materials in their physical or digital form.
       </>
     ),
-    href: getSiteUrl('ISBDM' as SiteKey),
+    siteKey: 'ISBDM' as SiteKey,
     status: 'published',
   },
   {
@@ -35,7 +36,7 @@ const StandardsList: StandardItem[] = [
         and the relationships between bibliographic entities.
       </>
     ),
-    href: getSiteUrl('LRM' as SiteKey),
+    siteKey: 'LRM' as SiteKey,
     status: 'published',
   },
   {
@@ -47,7 +48,7 @@ const StandardsList: StandardItem[] = [
         and comprehensive bibliographic records across all types of library materials.
       </>
     ),
-    href: getSiteUrl('isbd' as SiteKey),
+    siteKey: 'isbd' as SiteKey,
     status: 'development',
   },
   {
@@ -59,7 +60,7 @@ const StandardsList: StandardItem[] = [
         and access to bibliographic resources.
       </>
     ),
-    href: getSiteUrl('fr' as SiteKey),
+    siteKey: 'fr' as SiteKey,
     status: 'development',
   },
   {
@@ -71,7 +72,7 @@ const StandardsList: StandardItem[] = [
         to support international library cooperation.
       </>
     ),
-    href: getSiteUrl('muldicat' as SiteKey),
+    siteKey: 'muldicat' as SiteKey,
     status: 'development',
   },
   {
@@ -83,12 +84,15 @@ const StandardsList: StandardItem[] = [
         and support library automation.
       </>
     ),
-    href: getSiteUrl('unimarc' as SiteKey),
+    siteKey: 'unimarc' as SiteKey,
     status: 'development',
   },
 ];
 
-function StandardCard({title, code, description, href, status}: StandardItem) {
+function StandardCard({title, code, description, siteKey, status}: StandardItem) {
+  const currentEnv = useDocsEnv();
+  const href = getSiteUrl(siteKey, '', currentEnv);
+  
   const statusClass = status === 'published' ? styles.statusPublished : 
                      status === 'draft' ? styles.statusDraft : styles.statusDevelopment;
   
