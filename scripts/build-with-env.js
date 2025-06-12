@@ -57,6 +57,11 @@ async function main() {
     ]);
     cleanTheme = cleanAnswer.cleanTheme;
   }
+  
+  // Default cleanTheme to false if still undefined
+  if (cleanTheme === undefined) {
+    cleanTheme = false;
+  }
 
   // Validate environment
   if (!validEnvironments.includes(env)) {

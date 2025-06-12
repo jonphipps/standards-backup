@@ -126,3 +126,34 @@ pnpm build --env preview --site all --clean-theme
 # Build with production URLs to verify links
 pnpm build --env production --site all
 ```
+
+## Troubleshooting
+
+### Broken Links Error
+
+If you get "Docusaurus found broken links!" errors during build:
+
+1. **Check for missing pages**: Create placeholder pages for missing docs
+2. **Verify link paths**: Ensure links match the actual file structure
+3. **Check RDF files**: Ensure static RDF files exist in `static/rdf/` directories
+4. **Temporary fix**: Set `onBrokenLinks: 'warn'` in docusaurus.config.ts
+
+**Example fix for LRM site (2024-12-12)**:
+- Created missing `docs/elements.md` and `docs/examples.md`
+- Created `docs/intro/index.mdx` to match ISBDM pattern
+- Created placeholder RDF files in `static/rdf/{ttl,jsonld,xml}/`
+- Updated navbar `docId` to match folder structure
+- Set `onBrokenLinks: 'warn'` to allow builds with warnings
+
+### Build Script Import Errors
+
+**inquirer.prompt is not a function**
+- Check inquirer import: use `require('inquirer')` (not `.default`)
+- Verify Node/pnpm versions meet requirements
+
+### Theme Not Updating
+
+**Changes not reflected in build**
+- Use `--clean-theme` flag to force theme rebuild
+- Check that `packages/theme/package.json` has proper build script
+- Verify theme package dependencies are installed
