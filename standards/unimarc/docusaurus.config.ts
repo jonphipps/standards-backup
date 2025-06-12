@@ -1,21 +1,23 @@
-import '@ifla/theme/config/envLoader'; // Loads .env.local from root
+// import '@ifla/theme/config/envLoader'; // Loads .env.local from root
 
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
-import { 
-  sharedThemeConfig, 
-  sharedPlugins, 
-  sharedThemes, 
-  commonDefaults 
+import {
+  sharedThemeConfig,
+  sharedPlugins,
+  sharedThemes,
+  commonDefaults
 } from '@ifla/theme/config';
+import { getSiteDocusaurusConfig } from '@ifla/theme/config/siteConfig';
+
+const currentSiteConfig = getSiteDocusaurusConfig('unimarc');
 
 const config: Config = {
   ...commonDefaults,
-  
+  url: currentSiteConfig.url,
   title: 'IFLA UNIMARC',
   tagline: 'Universal MARC Format',
-  url: 'https://iflastandards.github.io',
-  baseUrl: '/UNIMARC/',
+  baseUrl: currentSiteConfig.baseUrl,
   projectName: 'UNIMARC',
 
   customFields: {

@@ -1,21 +1,24 @@
-import '@ifla/theme/config/envLoader'; // Loads .env.local from root
+// import '@ifla/theme/config/envLoader'; // Loads .env.local from root
 
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
-import { 
-  sharedThemeConfig, 
-  sharedPlugins, 
-  sharedThemes, 
-  commonDefaults 
+import {
+  sharedThemeConfig,
+  sharedPlugins,
+  sharedThemes,
+  commonDefaults
 } from '@ifla/theme/config';
+import { getSiteDocusaurusConfig } from '@ifla/theme/config/siteConfig';
+
+const currentSiteConfig = getSiteDocusaurusConfig('fr');
 
 const config: Config = {
   ...commonDefaults,
   
+  url: currentSiteConfig.url,
   title: 'IFLA FR',
   tagline: 'Functional Requirements',
-  url: 'https://iflastandards.github.io',
-  baseUrl: '/FR/',
+  baseUrl: currentSiteConfig.baseUrl,
   projectName: 'FR',
 
   customFields: {

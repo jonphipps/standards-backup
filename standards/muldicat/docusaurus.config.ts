@@ -1,4 +1,3 @@
-import '@ifla/theme/config/envLoader'; // Loads .env.local from root
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import { 
@@ -7,13 +6,17 @@ import {
   sharedThemes, 
   commonDefaults 
 } from '@ifla/theme/config';
+import { getSiteDocusaurusConfig } from '@ifla/theme/config/siteConfig';
+
+const currentSiteConfig = getSiteDocusaurusConfig('muldicat');
 
 const config: Config = {
   ...commonDefaults,
   
+  url: currentSiteConfig.url,
   title: 'IFLA MULDICAT',
   tagline: 'Multilingual Dictionary of Cataloguing Terms',
-  baseUrl: '/muldicat/',
+  baseUrl: currentSiteConfig.baseUrl,
   projectName: 'muldicat',
 
   customFields: {

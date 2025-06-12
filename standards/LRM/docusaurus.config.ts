@@ -7,13 +7,17 @@ import {
   sharedThemes, 
   commonDefaults 
 } from '@ifla/theme/config';
+import { getSiteDocusaurusConfig } from '@ifla/theme/config/siteConfig';
+
+const currentSiteConfig = getSiteDocusaurusConfig('LRM');
 
 const config: Config = {
   ...commonDefaults,
   
+  url: currentSiteConfig.url,
   title: 'IFLA LRM',
   tagline: 'Library Reference Model',
-  baseUrl: '/LRM/',
+  baseUrl: currentSiteConfig.baseUrl,
   projectName: 'LRM',
 
   customFields: {

@@ -1,33 +1,42 @@
-import '@ifla/theme/config/envLoader'; // Loads .env.local from root
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
-import { 
-  sharedThemeConfig, 
-  sharedPlugins, 
-  sharedThemes, 
+import {
+  sharedThemeConfig,
+  sharedPlugins,
+  sharedThemes,
   commonDefaults,
 } from '@ifla/theme/config';
-import { siteURLs } from '@ifla/theme/config/siteURLs';
+import {
+  getSiteDocusaurusConfig,
+  getSiteUrl,
+  type SiteKey,
+  getCurrentEnv,
+  DocsEnv,
+} from '@ifla/theme/config/siteConfig';
+
+const currentSiteConfig = getSiteDocusaurusConfig('portal');
+const currentEnv = getCurrentEnv();
 
 const standardsDropdown = [
-  { label: 'ISBDM', href: siteURLs.ISBDM },
-  { label: 'LRM', href: siteURLs.LRM },
-  { label: 'FR', href: siteURLs.FR },
-  { label: 'ISBD', href: siteURLs.ISBD },
-  { label: 'MULDICAT', href: siteURLs.MULDICAT },
-  { label: 'UNIMARC', href: siteURLs.UNIMARC },
+  { label: 'ISBDM', href: getSiteUrl('ISBDM' as SiteKey) },
+  { label: 'LRM', href: getSiteUrl('LRM' as SiteKey) },
+  { label: 'FR', href: getSiteUrl('fr' as SiteKey) }, // Assuming 'fr' is the SiteKey for 'FR'
+  { label: 'ISBD', href: getSiteUrl('isbd' as SiteKey) }, // Assuming 'isbd' is the SiteKey for 'ISBD'
+  { label: 'MULDICAT', href: getSiteUrl('muldicat' as SiteKey) },
+  { label: 'UNIMARC', href: getSiteUrl('unimarc' as SiteKey) },
 ];
 
 const config: Config = {
   ...commonDefaults,
-  url: process.env.DOCUSAURUS_URL || 'http://localhost:3000',
-  
+  url: currentSiteConfig.url,
   title: 'IFLA Standards Portal',
   tagline: 'International Federation of Library Associations and Institutions',
-  baseUrl: '/',
+  baseUrl: currentSiteConfig.baseUrl,
   projectName: 'standards-portal',
   staticDirectories: ['static', '../packages/theme/static'],
+  trailingSlash: currentEnv === DocsEnv.Preview ? false : true,
+  onBrokenAnchors: 'log', // Changed from default 'warn'
 
   // Portal-specific i18n
   i18n: {
@@ -110,7 +119,7 @@ const config: Config = {
     
     // Portal-specific footer
     footer: {
-      style: sharedThemeConfig.footer.style,
+      style: sharedThemeConfig.footer.style as 'light' | 'dark' | undefined,
       copyright: sharedThemeConfig.footer.copyright,
       links: [
         {
@@ -118,15 +127,15 @@ const config: Config = {
           items: [
             {
               label: 'ISBDM',
-              href: siteURLs.ISBDM,
+              href: getSiteUrl('ISBDM' as SiteKey),
             },
             {
               label: 'LRM',
-              href: siteURLs.LRM,
+              href: getSiteUrl('LRM' as SiteKey),
             },
             {
               label: 'ISBD',
-              href: siteURLs.ISBD,
+              href: getSiteUrl('isbd' as SiteKey),
             },
           ],
         },

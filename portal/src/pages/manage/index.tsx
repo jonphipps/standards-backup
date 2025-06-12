@@ -4,7 +4,7 @@ import Heading from '@theme/Heading';
 import Link from '@docusaurus/Link';
 import clsx from 'clsx';
 import styles from './styles.module.css';
-import { siteURLs } from '@ifla/theme/config/siteURLs';
+import { getSiteUrl, type SiteKey } from '@ifla/theme/config/siteConfig';
 
 // This will eventually check GitHub org membership
 // For now, we'll create the UI structure
@@ -53,20 +53,20 @@ function ManagementDashboard(): React.ReactNode {
                     href="https://github.com/orgs/iflastandards/teams">
                     Manage Teams
                   </Link>
-                  <Link
+                  {/* <Link
                     className="button button--secondary"
-                    to="/manage/assign-managers">
+                    to="/manage/assign-managers/">
                     Assign Team Managers
-                  </Link>
+                  </Link> */}
                 </div>
 
                 <h3>Global Tools</h3>
                 <div className={styles.actionGroup}>
-                  <Link
+                  {/* <Link
                     className="button button--outline button--primary"
-                    to="/manage/create-standard">
+                    to="/manage/create-standard/">
                     Create New Standard
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
             </div>
@@ -80,12 +80,12 @@ function ManagementDashboard(): React.ReactNode {
               
               <div className={styles.standardsList}>
                 {[
-                  { code: 'ISBDM', name: 'ISBD for Manifestation', href: siteURLs.ISBDM + '/manage', status: 'published' },
-                  { code: 'LRM', name: 'Library Reference Model', href: siteURLs.LRM + '/manage', status: 'published' },
-                  { code: 'ISBD', name: 'International Standard Bibliographic Description', href: siteURLs.ISBD + '/manage', status: 'development' },
-                  { code: 'FR', name: 'Functional Requirements', href: siteURLs.FR + '/manage', status: 'development' },
-                  { code: 'MulDiCat', name: 'Multilingual Dictionary', href: siteURLs.MULDICAT + '/manage', status: 'development' },
-                  { code: 'UNIMARC', name: 'UNIMARC', href: siteURLs.UNIMARC + '/manage', status: 'development' },
+                  { code: 'ISBDM', name: 'ISBD for Manifestation', href: getSiteUrl('ISBDM' as SiteKey, '/manage'), status: 'published' },
+                  { code: 'LRM', name: 'Library Reference Model', href: getSiteUrl('LRM' as SiteKey, '/manage'), status: 'published' },
+                  { code: 'ISBD', name: 'International Standard Bibliographic Description', href: getSiteUrl('isbd' as SiteKey, '/manage'), status: 'development' },
+                  { code: 'FR', name: 'Functional Requirements', href: getSiteUrl('fr' as SiteKey, '/manage'), status: 'development' },
+                  { code: 'MulDiCat', name: 'Multilingual Dictionary', href: getSiteUrl('muldicat' as SiteKey, '/manage'), status: 'development' },
+                  { code: 'UNIMARC', name: 'UNIMARC', href: getSiteUrl('unimarc' as SiteKey, '/manage'), status: 'development' },
                 ].map((standard) => (
                   <div key={standard.code} className={styles.standardItem}>
                     <div className={styles.standardInfo}>
@@ -122,9 +122,9 @@ function ManagementDashboard(): React.ReactNode {
                   <div className={styles.toolCard}>
                     <h3>CSV ↔ RDF</h3>
                     <p>Convert between CSV and RDF formats</p>
-                    <Link className="button button--primary button--block" to="/manage/csv-rdf">
+                    {/* <Link className="button button--primary button--block" to="/manage/csv-rdf/">
                       CSV/RDF Tools
-                    </Link>
+                    </Link> */}
                   </div>
                 </div>
                 
@@ -132,9 +132,9 @@ function ManagementDashboard(): React.ReactNode {
                   <div className={styles.toolCard}>
                     <h3>Google Sheets</h3>
                     <p>Sync with Google Sheets</p>
-                    <Link className="button button--primary button--block" to="/manage/sheets">
+                    {/* <Link className="button button--primary button--block" to="/manage/sheets/">
                       Sheet Tools
-                    </Link>
+                    </Link> */}
                   </div>
                 </div>
                 
@@ -142,9 +142,9 @@ function ManagementDashboard(): React.ReactNode {
                   <div className={styles.toolCard}>
                     <h3>Scaffold Pages</h3>
                     <p>Generate documentation pages</p>
-                    <Link className="button button--primary button--block" to="/manage/scaffold">
+                    {/* <Link className="button button--primary button--block" to="/manage/scaffold/">
                       Scaffold Tools
-                    </Link>
+                    </Link> */}
                   </div>
                 </div>
               </div>

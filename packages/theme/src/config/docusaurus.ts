@@ -1,6 +1,7 @@
 import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
 import dotenv from 'dotenv'; dotenv.config();
+import { getSiteUrl, type SiteKey } from './siteConfig';
 
 export const siteUrls = {
   portal: process.env.PORTAL_URL,
@@ -72,14 +73,14 @@ export const sharedThemeConfig = {
           },
           {
             label: 'Portal',
-            href: '/portal/',
+            href: getSiteUrl('portal' as SiteKey),
           },
         ],
       },
     ],
     copyright: `
       <div style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
-        <span>Copyright © ${new Date().getFullYear()} International Federation of Library Associations and Institutions (IFLA).</span>
+        <span>Copyright &copy; ${new Date().getFullYear()} International Federation of Library Associations and Institutions (IFLA).</span>
         <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">
           <img src="/img/cc0_by.png" alt="Badge for Creative Commons Attribution 4.0 International license" style="height: 20px;" />
         </a>

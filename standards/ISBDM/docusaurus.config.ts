@@ -1,23 +1,22 @@
-import '@ifla/theme/config/envLoader'; // Loads .env.local from root
-
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import type { SidebarItem, DefaultSidebarItemsGeneratorArgs } from '@docusaurus/plugin-content-docs/lib/types';
-import { 
-  sharedThemeConfig, 
-  sharedPlugins, 
-  sharedThemes, 
-  commonDefaults, 
-  getSiteUrls 
+import {
+  sharedThemeConfig,
+  sharedPlugins,
+  sharedThemes,
+  commonDefaults,
 } from '@ifla/theme/config';
+import { getSiteDocusaurusConfig } from '@ifla/theme/config/siteConfig';
+
+const currentSiteConfig = getSiteDocusaurusConfig('ISBDM');
 
 const config: Config = {
   ...commonDefaults,
-  url: process.env.DOCUSAURUS_URL || 'http://localhost:3001',
-  
+  url: currentSiteConfig.url,
   title: 'ISBD for Manifestation',
   tagline: 'International Standard Bibliographic Description for Manifestation',
-  baseUrl: '/ISBDM/',
+  baseUrl: currentSiteConfig.baseUrl,
   projectName: 'ISBDM',
 
   customFields: {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {JSX} from 'react';
 import Link from '@docusaurus/Link';
 import styles from './Hero.module.css';
 
@@ -17,7 +17,7 @@ export default function Hero(): JSX.Element {
           <div className={styles.heroActions}>
             <Link
               className="button button--primary button--lg"
-              to="#standards">
+              to="/#standards">
               Explore Standards
             </Link>
             <Link

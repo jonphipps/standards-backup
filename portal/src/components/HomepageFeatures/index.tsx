@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import Link from '@docusaurus/Link';
 import styles from './styles.module.css';
-import { siteURLs } from '@ifla/theme/config/siteURLs';
+import { getSiteUrl, type SiteKey } from '@ifla/theme/config/siteConfig';
 
 type StandardItem = {
   title: string;
@@ -23,7 +23,7 @@ const StandardsList: StandardItem[] = [
         consistent bibliographic descriptions of library materials in their physical or digital form.
       </>
     ),
-    href: siteURLs.ISBDM,
+    href: getSiteUrl('ISBDM' as SiteKey),
     status: 'published',
   },
   {
@@ -35,7 +35,7 @@ const StandardsList: StandardItem[] = [
         and the relationships between bibliographic entities.
       </>
     ),
-    href: siteURLs.LRM,
+    href: getSiteUrl('LRM' as SiteKey),
     status: 'published',
   },
   {
@@ -47,7 +47,7 @@ const StandardsList: StandardItem[] = [
         and comprehensive bibliographic records across all types of library materials.
       </>
     ),
-    href: siteURLs.ISBD,
+    href: getSiteUrl('isbd' as SiteKey),
     status: 'development',
   },
   {
@@ -59,7 +59,7 @@ const StandardsList: StandardItem[] = [
         and access to bibliographic resources.
       </>
     ),
-    href: siteURLs.FR,
+    href: getSiteUrl('fr' as SiteKey),
     status: 'development',
   },
   {
@@ -71,7 +71,7 @@ const StandardsList: StandardItem[] = [
         to support international library cooperation.
       </>
     ),
-    href: siteURLs.MULDICAT,
+    href: getSiteUrl('muldicat' as SiteKey),
     status: 'development',
   },
   {
@@ -83,7 +83,7 @@ const StandardsList: StandardItem[] = [
         and support library automation.
       </>
     ),
-    href: siteURLs.UNIMARC,
+    href: getSiteUrl('unimarc' as SiteKey),
     status: 'development',
   },
 ];
