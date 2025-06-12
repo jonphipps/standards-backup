@@ -3,7 +3,11 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "lib": ["ES2022"],
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
     // --- JSX ---
     "jsx": "react-jsx", // For React 17+ (including React 19) new JSX transform
     "jsxImportSource": "react", // Often default but good to be explicit
@@ -26,10 +30,10 @@
     "rootDir": "./",
     "types": [
       "node",
+      "react",
       "docusaurus-plugin-sass",
       "@docusaurus/theme-classic",
-      "@docusaurus/types",
-      "@docusaurus/plugin-content-docs"
+      "@docusaurus/types"
     ],
     //paths and aliases
     "baseUrl": ".",

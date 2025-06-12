@@ -1,185 +1,84 @@
 // packages/theme/src/config/siteConfig.ts
 
-export enum DocsEnv {
-  Localhost = 'localhost',
-  Preview = 'preview', // For GitHub Pages (e.g., iflastandards.github.io/standards-dev/)
-  Production = 'production', // For custom domain (e.g., iflastandards.info)
-}
+import { DocsEnv, type SiteKey, sites } from './siteConfigCore';
+import { getCurrentEnv } from './siteConfig.server';
 
-export interface SiteEnvSpecificConfig {
-  url: string; // The root URL of the deployment, e.g., http://localhost:3000 or https://iflastandards.info
-  baseUrl: string; // The base path for the site, e.g., / or /LRM/ or /standards-dev/LRM/
-}
+/**
+ * Generates a full URL to a page on a specified IFLA Docusaurus site, considering the target environment.
+ * If `targetEnv` is not provided, it defaults to the current site's environment.
+ * If `path` is an empty string, it links to the root of the `toSiteKey`.
+ * Ensures that `baseUrl` is correctly handled, avoiding double slashes if `path` starts with one.
+ * @param toSiteKey The key of the target site (e.g., 'LRM', 'portal').
+ * @param path The path to the page on the target site (e.g., '/introduction', 'docs/main'). Defaults to ''.
+ * @param targetEnv The deployment environment for which to generate the URL.
+ * @returns The full URL string, or '#' if the configuration for the site/env is not found.
+ */
+export function getSiteUrl(
+  toSiteKey: SiteKey,
+  path = '',
+  targetEnv: DocsEnv, // targetEnv is required
+): string {
+  let resolvedEnv = targetEnv;
 
-export interface SiteConfigData {
-  port?: number; // Localhost development port
-  localhost: SiteEnvSpecificConfig;
-  preview: SiteEnvSpecificConfig;
-  production: SiteEnvSpecificConfig;
-}
-
-// Site keys should ideally match the directory names used in `docusaurus start [siteName]`
-// or be a canonical identifier for the site.
-export const sites: Record<string, SiteConfigData> = {
-  portal: {
-    port: 3000,
-    localhost: { url: 'http://localhost:3000', baseUrl: '/' },
-    preview: { url: 'https://iflastandards.github.io', baseUrl: '/standards-dev/' },
-    production: { url: 'https://iflastandards.info', baseUrl: '/' },
-  },
-  ISBDM: {
-    port: 3001,
-    localhost: { url: 'http://localhost:3001', baseUrl: '/ISBDM/' },
-    preview: { url: 'https://iflastandards.github.io', baseUrl: '/standards-dev/ISBDM/' },
-    production: { url: 'https://iflastandards.info', baseUrl: '/ISBDM/' },
-  },
-  LRM: {
-    port: 3002,
-    localhost: { url: 'http://localhost:3002', baseUrl: '/LRM/' },
-    preview: { url: 'https://iflastandards.github.io', baseUrl: '/standards-dev/LRM/' },
-    production: { url: 'https://iflastandards.info', baseUrl: '/LRM/' },
-  },
-  fr: {
-    port: 3003,
-    localhost: { url: 'http://localhost:3003', baseUrl: '/fr/' },
-    preview: { url: 'https://iflastandards.github.io', baseUrl: '/standards-dev/fr/' },
-    production: { url: 'https://iflastandards.info', baseUrl: '/fr/' },
-  },
-  isbd: {
-    port: 3004,
-    localhost: { url: 'http://localhost:3004', baseUrl: '/isbd/' },
-    preview: { url: 'https://iflastandards.github.io', baseUrl: '/standards-dev/isbd/' },
-    production: { url: 'https://iflastandards.info', baseUrl: '/isbd/' },
-  },
-  muldicat: {
-    port: 3005,
-    localhost: { url: 'http://localhost:3005', baseUrl: '/muldicat/' },
-    preview: { url: 'https://iflastandards.github.io', baseUrl: '/standards-dev/muldicat/' },
-    production: { url: 'https://iflastandards.info', baseUrl: '/muldicat/' },
-  },
-  unimarc: {
-    port: 3006,
-    localhost: { url: 'http://localhost:3006', baseUrl: '/unimarc/' },
-    preview: { url: 'https://iflastandards.github.io', baseUrl: '/standards-dev/unimarc/' },
-    production: { url: 'https://iflastandards.info', baseUrl: '/unimarc/' },
-  },
-};
-
-export type SiteKey = keyof typeof sites;
-
-export function getCurrentEnv(): DocsEnv {
-  const envVar = process.env.DOCS_ENV?.toLowerCase();
-
-  if (envVar === 'localhost' || envVar === 'local') return DocsEnv.Localhost;
-  if (envVar === 'preview' || envVar === 'gh-pages' || envVar === 'github') return DocsEnv.Preview;
-  if (envVar === 'production' || envVar === 'prod') return DocsEnv.Production;
-
-  // Fallback for local development if DOCS_ENV is not set
-  if (process.env.NODE_ENV === 'development' && !envVar) {
+  if (typeof targetEnv === 'undefined') {
+    // Downgrade from critical error/trace to a warning, as fallback is attempted.
     console.warn(
-      `DOCS_ENV environment variable is not set. NODE_ENV is 'development'. ` +
-      `Defaulting DOCS_ENV to '${DocsEnv.Localhost}'.`
+      `[siteConfig.ts] getSiteUrl WARNING: called with undefined targetEnv! toSiteKey: ${toSiteKey}, path: ${path}. Attempting fallback. Stack trace for info:`,
     );
-    return DocsEnv.Localhost;
+    console.trace(); // Keep trace for informational purposes if needed for future debugging
+    
+    const fallbackEnv = getCurrentEnv(); 
+    console.warn(
+      `[siteConfig.ts] getSiteUrl: Using fallback environment '${fallbackEnv}' due to undefined targetEnv.`
+    );
+    resolvedEnv = fallbackEnv;
   }
 
-  console.warn(
-    `DOCS_ENV environment variable ('${process.env.DOCS_ENV}') is not set or has an invalid value. ` +
-    `Valid values are 'localhost' (or 'local'), 'preview' (or 'gh-pages', 'github'), ` +
-    `'production' (or 'prod'). Defaulting to '${DocsEnv.Production}'.`
+  console.log(
+    `[siteConfig.ts] getSiteUrl CALLED with toSiteKey: ${toSiteKey}, path: ${path}, original targetEnv: ${targetEnv} (type: ${typeof targetEnv}), resolvedEnv: ${resolvedEnv} (type: ${typeof resolvedEnv})`
   );
-  return DocsEnv.Production; // Default to production if not specified or invalid
-}
 
-/**
- * Retrieves the Docusaurus-specific `url` and `baseUrl` for a given site,
- * based on the current environment determined by `DOCS_ENV`.
- * 
- * @param siteKey The key of the site as defined in the `sites` object (e.g., "portal", "ISBDM").
- * @returns An object containing the `url` and `baseUrl` for the Docusaurus config.
- */
-export function getSiteDocusaurusConfig(siteKey: SiteKey): SiteEnvSpecificConfig {
-  const currentEnv = getCurrentEnv();
-  const siteConfig = sites[siteKey];
-
-  if (!siteConfig) {
-    throw new Error(
-      `[getSiteDocusaurusConfig] Configuration for site "${siteKey}" not found. ` +
-      `Ensure the siteKey passed from docusaurus.config.ts is a valid key in siteConfig.ts.`
+  // Validate resolvedEnv (could be original targetEnv or fallbackEnv)
+  if (!resolvedEnv || !Object.values(DocsEnv).includes(resolvedEnv)) {
+    console.error(
+      `[siteConfig.ts] getSiteUrl: Invalid resolvedEnv! Value: ${JSON.stringify(resolvedEnv)}, Type: ${typeof resolvedEnv}. Original targetEnv was ${JSON.stringify(targetEnv)}.`
     );
+    // If targetEnv was undefined, we already traced. If it was defined but invalid, trace now.
+    if (typeof targetEnv !== 'undefined') {
+        console.trace("[siteConfig.ts] Trace for invalid (but defined) targetEnv leading to invalid resolvedEnv.");
+    }
+    return `#ERROR_INVALID_RESOLVED_ENV_FOR_${toSiteKey}`;
   }
 
-  let configForEnv = siteConfig[currentEnv];
+  const siteConfig = sites[toSiteKey]?.[resolvedEnv];
 
-  // For localhost, ensure the URL explicitly uses the configured port.
-  if (currentEnv === DocsEnv.Localhost && siteConfig.port) {
-    configForEnv = {
-      ...configForEnv, // Retains the baseUrl from the localhost config
-      url: `http://localhost:${siteConfig.port}`,
-    };
+  if (!siteConfig) {
+    console.error(
+      `[siteConfig.ts] getSiteUrl: URL generation failed: Config for site '${toSiteKey}' in resolvedEnv '${String(resolvedEnv)}' (type: ${typeof resolvedEnv}) not found.`
+    );
+    if (sites[toSiteKey]) {
+      console.error(`[siteConfig.ts] Available envs for ${toSiteKey}: ${Object.keys(sites[toSiteKey]!).join(', ')}`);
+    } else {
+      console.error(`[siteConfig.ts] SiteKey ${toSiteKey} not found in sites configuration.`);
+    }
+    return '#ERROR_SITE_CONFIG_NOT_FOUND';
   }
-  
-  return configForEnv;
+
+  const LRMPath = path.startsWith('/') ? path.substring(1) : path;
+  const fullPath = `${siteConfig.baseUrl}${LRMPath}`;
+  return `${siteConfig.url}${fullPath}`;
 }
 
 /**
- * Generates a full, absolute URL to a page on a specific site, considering the target (or current) environment.
- * Useful for inter-site linking.
- * 
- * @param toSiteKey The key of the target site (e.g., 'LRM', 'portal'). Must be a valid SiteKey.
- * @param path Optional. The relative path within the target site (e.g., '/introduction', 'docs/main', or '').
- *             If it starts with '/', it's treated as absolute from the site's baseUrl root.
- *             If empty, links to the site's base (url + baseUrl).
- * @param targetEnv Optional. The environment for which to generate the URL. Defaults to the current environment.
- * @returns The full, absolute URL as a string.
+ * Retrieves the Docusaurus configuration (url, baseUrl) for a given site and the current environment.
+ * This is intended for use in `docusaurus.config.js` of each site.
+ * @param siteKey The key of the site for which to get the Docusaurus config.
+ * @returns An object containing the `url` and `baseUrl` for the site in the current environment.
  */
-export function getSiteUrl(toSiteKey: SiteKey, path: string = '', targetEnv?: DocsEnv): string {
-  const env = targetEnv || getCurrentEnv();
-  const siteConfig = sites[toSiteKey];
-
-  if (!siteConfig) {
-    console.error(`[getSiteUrl] Configuration for site "${toSiteKey}" not found.`);
-    // Return a non-functional link or throw an error, depending on desired strictness
-    return `/#error-site-config-not-found-${toSiteKey}`;
+export const getSiteDocusaurusConfig = (siteKey: SiteKey, currentEnv: DocsEnv): { url: string; baseUrl: string } => {
+  const site = sites[siteKey]?.[currentEnv];
+  if (!site) {
+    throw new Error(`Configuration for site '${siteKey}' in environment '${currentEnv}' not found.`);
   }
-
-  const envSpecificConfig = siteConfig[env];
-  let rootUrl = envSpecificConfig.url; // e.g., http://localhost:3000 or https://iflastandards.info
-
-  // For localhost, ensure the URL explicitly uses the configured port.
-  if (env === DocsEnv.Localhost && siteConfig.port) {
-    rootUrl = `http://localhost:${siteConfig.port}`;
-  }
-
-  const siteBasePath = envSpecificConfig.baseUrl; // e.g., /LRM/ or / or /standards-dev/LRM/
-
-  // Normalize rootUrl: remove any trailing slash.
-  const normalizedRootUrl = rootUrl.endsWith('/') ? rootUrl.slice(0, -1) : rootUrl;
-
-  // Normalize siteBasePath: ensure it starts with a slash.
-  let normalizedSiteBasePath = siteBasePath.startsWith('/') ? siteBasePath : `/${siteBasePath}`;
-  // Ensure it ends with a slash if it's not just "/", to correctly join with sub-paths.
-  if (normalizedSiteBasePath !== '/' && !normalizedSiteBasePath.endsWith('/')) {
-    normalizedSiteBasePath += '/';
-  }
-
-  // Normalize the sub-path: remove leading slash if present, as normalizedSiteBasePath will provide it.
-  const normalizedSubPath = path.startsWith('/') ? path.substring(1) : path;
-
-  let finalPath = normalizedSiteBasePath;
-  if (normalizedSubPath) {
-    if (finalPath.endsWith('/')) {
-      finalPath += normalizedSubPath;
-    } else {
-      // This case should be less common if normalizedSiteBasePath is handled correctly
-      finalPath += `/${normalizedSubPath}`;
-    }
-  }
-  
-  // If the original path was meant to be a directory (empty or ends with /), ensure the final path also ends with /.
-  if ((path === '' || path.endsWith('/')) && !finalPath.endsWith('/')) {
-    finalPath += '/';
-  }
-
-  return `${normalizedRootUrl}${finalPath}`;
-}
+  return { url: site.url, baseUrl: site.baseUrl };
+};

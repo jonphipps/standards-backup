@@ -23,9 +23,6 @@ export * from './config';
 export * from './utils';
 export * from './hooks';
 
-// Export types
-export * from './types';
-
 // Note: Styles are available via the package exports './styles' path
 // Import them in your site with: import '@ifla/theme/styles';
 

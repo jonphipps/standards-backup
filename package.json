@@ -64,8 +64,8 @@
     "deploy": "gh workflow run deploy-all.yml",
     "deploy:status": "gh run list --workflow=deploy-all.yml --limit=5",
     "deploy:build-all": "pnpm run build:portal && pnpm run build:standards",
-    "build:portal": "docusaurus build portal",
-    "build:standards": "docusaurus build standards/ISBDM && docusaurus build standards/LRM && docusaurus build standards/fr && docusaurus build standards/isbd && docusaurus build standards/muldicat && docusaurus build standards/unimarc"
+    "build:portal": "DOCS_ENV=production docusaurus build portal",
+    "build:standards": "DOCS_ENV=production docusaurus build standards/ISBDM && DOCS_ENV=production docusaurus build standards/LRM && DOCS_ENV=production docusaurus build standards/fr && DOCS_ENV=production docusaurus build standards/isbd && DOCS_ENV=production docusaurus build standards/muldicat && DOCS_ENV=production docusaurus build standards/unimarc"
   },
   "keywords": [],
   "author": "",
@@ -135,6 +135,8 @@
     "remark-preset-prettier": "^2.0.2",
     "sass": "^1.89.1",
     "tsx": "^4.20.1",
+    "tsup": "^8.0.0",
+    "esbuild-sass-plugin": "^2.0.0",
     "typescript": "~5.8.3",
     "vitest": "^3.2.2"
   },
@@ -217,6 +219,12 @@
     "vite": "^6.3.5",
     "vite-tsconfig-paths": "^5.1.4",
     "yaml": "^2.8.0"
+  },
+  "peerDependencies": {
+    "@docusaurus/core": "^3.0.0",
+    "@docusaurus/theme-common": "^3.0.0",
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   },
   "engines": {
     "node": ">=18.0"

@@ -17,7 +17,7 @@ export default function Hero(): JSX.Element {
           <div className={styles.heroActions}>
             <Link
               className="button button--primary button--lg"
-              to="/#standards">
+              to="#standards">
               Explore Standards
             </Link>
             <Link

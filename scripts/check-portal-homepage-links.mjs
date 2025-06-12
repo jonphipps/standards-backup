@@ -1,85 +1,199 @@
 import puppeteer from 'puppeteer';
 import { getSiteUrl, sites, DocsEnv } from '../packages/theme/src/config/siteConfig.ts';
+import fs from 'fs';
 
-async function checkLinks(targetUrl, docsEnvValue) {
-  const currentEnv = docsEnvValue;
-  const portalSiteKey = 'portal';
+const portalSiteKey = 'portal';
 
-  // Define links to check: { text: string (for logging), selector: string, toSite: SiteKey, path?: string }
+async function checkLinks(targetUrl, currentEnv) {
+  const currentPortalSiteConfig = sites[portalSiteKey]?.[currentEnv];
+  if (!currentPortalSiteConfig) {
+    console.error(`  ❌ ERROR: Configuration for '${portalSiteKey}' site in env '${currentEnv}' not found!`);
+    return false;
+  }
+  const currentPortalBaseUrl = currentPortalSiteConfig.baseUrl;
+  const expectTrailingSlashForCurrentEnv = currentEnv !== DocsEnv.Preview;
+
   const linksToVerify = [
-    // Navbar
-    { text: 'Navbar Logo', selector: 'nav .navbar__brand', toSite: portalSiteKey, path: '/' },
-    { text: 'Navbar ISBDM', selector: 'nav .navbar__items a.dropdown__link[href*="ISBDM"]', toSite: 'ISBDM' },
-    { text: 'Navbar LRM', selector: 'nav .navbar__items a.dropdown__link[href*="LRM"]', toSite: 'LRM' },
-    { text: 'Navbar FR', selector: 'nav .navbar__items a.dropdown__link[href*="fr"]', toSite: 'fr' },
-    { text: 'Navbar ISBD', selector: 'nav .navbar__items a.dropdown__link[href*="isbd"]', toSite: 'isbd' },
-    { text: 'Navbar Muldicat', selector: 'nav .navbar__items a.dropdown__link[href*="muldicat"]', toSite: 'muldicat' },
-    { text: 'Navbar Unimarc', selector: 'nav .navbar__items a.dropdown__link[href*="unimarc"]', toSite: 'unimarc' },
-    { text: 'Navbar Documentation', selector: 'nav .navbar__items a[href$="/docs/"]', toSite: portalSiteKey, path: '/docs/' },
-    { text: 'Navbar Blog', selector: 'nav .navbar__items a[href$="/blog/"]', toSite: portalSiteKey, path: '/blog/' },
-    { text: 'Navbar Management', selector: 'nav .navbar__items a[href$="/manage/"]', toSite: portalSiteKey, path: '/manage/' },
+    { text: 'Navbar Logo', type: 'logo', toSite: portalSiteKey, siteRelativePath: '/' },
+    
+    { text: 'Navbar Documentation', type: 'navInternal', toSite: portalSiteKey, siteRelativePath: '/docs/' },
+    { text: 'Navbar Blog', type: 'navInternal', toSite: portalSiteKey, siteRelativePath: '/blog/' },
+    { text: 'Navbar Management', type: 'navInternal', toSite: portalSiteKey, siteRelativePath: '/manage/' },
+    
+    { text: 'Hero Explore Standards', type: 'heroPrimary', toSite: portalSiteKey, siteRelativePath: '#standards' },
+    { text: 'Hero Documentation', type: 'heroSecondary', toSite: portalSiteKey, siteRelativePath: '/docs/' },
+    
+    { text: 'Navbar ISBDM', type: 'navExternal', toSite: 'ISBDM' },
+    { text: 'Navbar LRM', type: 'navExternal', toSite: 'LRM' },
+    { text: 'Navbar FR', type: 'navExternal', toSite: 'fr' },
+    { text: 'Navbar ISBD', type: 'navExternal', toSite: 'isbd' },
+    { text: 'Navbar Muldicat', type: 'navExternal', toSite: 'muldicat' },
+    { text: 'Navbar Unimarc', type: 'navExternal', toSite: 'unimarc' },
 
-    // Hero section
-    { text: 'Hero Explore Standards', selector: '.hero a.button[href$="/#standards"]', toSite: portalSiteKey, path: '/#standards' },
-    { text: 'Hero Documentation', selector: '.hero .heroActions a.button.button--secondary', toSite: portalSiteKey, path: '/docs/' },
-
-    // Footer Links (using expected href for more precise matching)
-    // Note: getSiteUrl is called here to define the selector, assuming it's stable for the test run.
-    { text: 'Footer ISBDM', selector: `footer a[href="${getSiteUrl('ISBDM', '', currentEnv)}"]`, toSite: 'ISBDM' },
-    { text: 'Footer LRM', selector: `footer a[href="${getSiteUrl('LRM', '', currentEnv)}"]`, toSite: 'LRM' },
-    { text: 'Footer Portal Blog', selector: `footer a[href="${getSiteUrl('portal', '/blog/', currentEnv)}"]`, toSite: 'portal', path: '/blog/' },
-    { text: 'Footer Portal Docs', selector: `footer a[href="${getSiteUrl('portal', '/docs/', currentEnv)}"]`, toSite: 'portal', path: '/docs/' },
+    { text: 'Footer ISBDM', type: 'footer', toSite: 'ISBDM' },
+    { text: 'Footer LRM', type: 'footer', toSite: 'LRM' },
+    { text: 'Footer Portal Blog', type: 'footer', toSite: 'portal', siteRelativePath: '/blog/' }, 
+    { text: 'Footer Portal Docs', type: 'footer', toSite: 'portal', siteRelativePath: '/docs/' },
   ];
 
   const browser = await puppeteer.launch({ headless: "new" });
   const page = await browser.newPage();
+
+  // Capture console logs and errors from the page
+  page.on('console', msg => console.log(`  BROWSER LOG: ${msg.text()}`));
+  page.on('pageerror', error => {
+    console.error(`  BROWSER ERROR: ${error.message}`);
+  });
+
   console.log(`Navigating to ${targetUrl} for DOCS_ENV=${currentEnv}...`);
   await page.goto(targetUrl, { waitUntil: 'networkidle0' });
 
+  // Wait for the main standards container to be present before proceeding
+  try {
+    await page.waitForSelector('section#standards', { timeout: 20000 });
+  } catch (e) {
+    console.error(`  ❌ FATAL: The main content container (#standards) did not appear in time. Page might not be rendering.`);
+    const screenshotPath = `failure-${currentEnv}-initial_load.png`;
+    await page.screenshot({ path: screenshotPath });
+    console.error(`     Screenshot saved to: ${screenshotPath}`);
+    const htmlPath = `failure-${currentEnv}-initial_load.html`;
+    fs.writeFileSync(htmlPath, await page.content());
+    console.error(`     HTML dump saved to: ${htmlPath}`);
+    await browser.close();
+    return false;
+  }
+
   let allTestsPassed = true;
+  let isDropdownOpen = false;
   console.log(`\nVerifying links for environment: ${currentEnv}`);
 
   for (const link of linksToVerify) {
-    const expectedHref = getSiteUrl(link.toSite, link.path || '', currentEnv);
-    let actualHref = '';
-    try {
-      await page.waitForSelector(link.selector, { timeout: 5000 });
-      actualHref = await page.$eval(link.selector, el => (el as HTMLAnchorElement).href);
+    const expectedFullHref = getSiteUrl(link.toSite, link.siteRelativePath || '', currentEnv);
+    let hrefForSelector; 
 
-      // Docusaurus's trailingSlash behavior means hrefs in the DOM might or might not have it.
-      // The `trailingSlash` config for the current env is key.
-      const expectTrailingSlash = currentEnv !== DocsEnv.Preview; // Based on portal/docusaurus.config.ts logic
-
-      let normalizedActualHref = actualHref;
-      const isAnchorLink = link.path?.includes('#') || actualHref.includes('#');
-      const siteBaseUrl = sites[link.toSite]?.[currentEnv]?.baseUrl || '';
-
-      if (expectTrailingSlash && !actualHref.endsWith('/') && !isAnchorLink && actualHref.startsWith(targetUrl)) {
-        // Only add slash if it's a local link and not an anchor
-        if (actualHref.substring(targetUrl.length-1).startsWith(siteBaseUrl.substring(0,siteBaseUrl.length-1))) { // check if it's part of the current site's base URL structure
-             normalizedActualHref = actualHref + '/';
+    if (link.toSite === portalSiteKey) {
+        let pathPart = link.siteRelativePath || '';
+        if (pathPart.startsWith('#')) {
+            hrefForSelector = pathPart;
+        } else {
+            hrefForSelector = (currentPortalBaseUrl + pathPart).replace(/\/\//g, '/'); 
+            
+            if (expectTrailingSlashForCurrentEnv) {
+                if (hrefForSelector !== '/' && !hrefForSelector.endsWith('/')) hrefForSelector += '/';
+            } else { 
+                if (hrefForSelector !== '/' && hrefForSelector.endsWith('/')) hrefForSelector = hrefForSelector.slice(0, -1);
+            }
         }
-      } else if (!expectTrailingSlash && actualHref.endsWith('/') && !isAnchorLink) {
-        normalizedActualHref = actualHref.slice(0, -1);
-      }
-      
-      // If expectedHref is just a base URL (e.g. https://iflastandards.info/) and actual is (https://iflastandards.info/)
-      if (expectedHref.endsWith('/') && !normalizedActualHref.endsWith('/') && normalizedActualHref === expectedHref.slice(0,-1)) {
-        normalizedActualHref += '/';
-      } else if (!expectedHref.endsWith('/') && normalizedActualHref.endsWith('/') && normalizedActualHref.slice(0,-1) === expectedHref) {
-        normalizedActualHref = normalizedActualHref.slice(0,-1);
+    } else {
+        hrefForSelector = expectedFullHref;
+    }
+
+    let selector;
+    switch (link.type) {
+        case 'logo':
+            selector = `nav .navbar__brand[href="${hrefForSelector}"]`;
+            break;
+        case 'heroPrimary': 
+            selector = `header.hero--primary a.button.button--primary[href="${hrefForSelector}"]`;
+            break;
+        case 'heroSecondary': 
+            selector = `header.hero--primary a.button.button--secondary[href="${hrefForSelector}"]`;
+            break;
+        case 'navInternal':
+            selector = `nav .navbar__items li:not(.dropdown) a.navbar__link[href="${hrefForSelector}"]`;
+            break;
+        case 'navExternal':
+            if (!isDropdownOpen) {
+                try {
+                    const dropdownToggleSelector = 'a.navbar__link.dropdown__toggle';
+                    await page.waitForSelector(dropdownToggleSelector, { timeout: 5000 });
+                    await page.click(dropdownToggleSelector);
+                    await page.waitForSelector('ul.dropdown__menu', { visible: true, timeout: 5000 });
+                    isDropdownOpen = true;
+                } catch (e) {
+                    console.error(`  ❌ ERROR: Could not open the Standards dropdown menu. ${e.message}`);
+                    allTestsPassed = false;
+                    link.type = 'skip'; 
+                }
+            }
+            if (link.type === 'skip') continue;
+
+            selector = `nav .navbar__items li.dropdown ul.dropdown__menu a.dropdown__link[href="${hrefForSelector}"]`;
+            break;
+        case 'footer':
+            selector = `footer.footer a.footer__link-item[href="${hrefForSelector}"]`;
+            break;
+        default:
+            console.error(`  ❌ ERROR: Unknown link type: ${link.type} for "${link.text}"`);
+            allTestsPassed = false;
+            continue; 
+    }
+
+    let actualHrefFromDOM = '';
+    try {
+      await page.waitForSelector(selector, { timeout: 7000 }); 
+      actualHrefFromDOM = await page.$eval(selector, el => el.href); 
+
+      const actualUrl = new URL(actualHrefFromDOM);
+      const expectedUrl = new URL(expectedFullHref);
+      let urlsMatch = false;
+
+      if (actualUrl.protocol === 'http:' && actualUrl.hostname === 'localhost') {
+        let normActualPath = actualUrl.pathname;
+        const isActualAnchor = actualUrl.hash !== '';
+
+        if (isActualAnchor) { /* no change for anchor */ }
+        else if (expectTrailingSlashForCurrentEnv) {
+            if (normActualPath !== '/' && !normActualPath.endsWith('/')) normActualPath += '/';
+        } else {
+            if (normActualPath !== '/' && normActualPath.endsWith('/')) normActualPath = normActualPath.slice(0, -1);
+        }
+        
+        let normExpectedPath = expectedUrl.pathname;
+        if (!expectTrailingSlashForCurrentEnv && !isActualAnchor && expectedUrl.pathname !== '/' && expectedUrl.pathname.endsWith('/')) {
+            normExpectedPath = expectedUrl.pathname.slice(0, -1);
+        }
+
+        urlsMatch = normActualPath === normExpectedPath &&
+                    actualUrl.search === expectedUrl.search &&
+                    actualUrl.hash === expectedUrl.hash;
+      } else {
+        let normActualForCompare = actualHrefFromDOM;
+        let normExpectedForCompare = expectedFullHref;
+        const actualIsAnchor = actualUrl.hash !== '';
+        const expectedIsAnchor = expectedUrl.hash !== '';
+        const actualPathEndsSlash = actualUrl.pathname.endsWith('/') && actualUrl.pathname !== '/';
+        const expectedPathEndsSlash = expectedUrl.pathname.endsWith('/') && expectedUrl.pathname !== '/';
+
+        if (actualPathEndsSlash && !expectedPathEndsSlash && !actualIsAnchor && !expectedIsAnchor) {
+            normExpectedForCompare = expectedFullHref + '/';
+        } else if (!actualPathEndsSlash && expectedPathEndsSlash && !actualIsAnchor && !expectedIsAnchor) {
+            normActualForCompare = actualHrefFromDOM + '/';
+        }
+        urlsMatch = normActualForCompare === normExpectedForCompare;
       }
 
-      if (normalizedActualHref === expectedHref) {
-        console.log(`  ✅ PASS: ${link.text} -> ${expectedHref}`);
+      if (urlsMatch) {
+        console.log(`  ✅ PASS: ${link.text} -> ${actualHrefFromDOM} (matches expected structure for ${expectedFullHref})`);
       } else {
         console.error(`  ❌ FAIL: ${link.text}`);
-        console.error(`     Expected: ${expectedHref}`);
-        console.error(`     Actual:   ${actualHref} (Normalized: ${normalizedActualHref})`);
+        console.error(`     Selector used: ${selector}`);
+        console.error(`     Expected full URL structure: ${expectedFullHref}`);
+        console.error(`     Actual href from DOM:      ${actualHrefFromDOM}`);
+        if (actualUrl.protocol === 'http:' && actualUrl.hostname === 'localhost') {
+             console.error(`     Compared Path (Actual from DOM):    ${new URL(actualHrefFromDOM).pathname} (Normalized for env: ${ (()=>{let p = new URL(actualHrefFromDOM).pathname; if(new URL(actualHrefFromDOM).hash !==''){return p;} if(expectTrailingSlashForCurrentEnv){if(p!=='/'&&!p.endsWith('/'))p+='/';}else{if(p!=='/'&&p.endsWith('/'))p=p.slice(0,-1);} return p;})() })`);
+             console.error(`     Compared Path (Expected target):  ${expectedUrl.pathname} (Normalized for env: ${ (()=>{let p = expectedUrl.pathname; if(expectedUrl.hash !==''){return p;} if(!expectTrailingSlashForCurrentEnv && p !=='/' && p.endsWith('/')){p=p.slice(0,-1);} return p;})() })`);
+        }
         allTestsPassed = false;
       }
     } catch (e) {
-      console.error(`  ❌ ERROR: For "${link.text}", selector "${link.selector}" not found or other error. ${e.message}`);
+      console.error(`  ❌ ERROR: For "${link.text}", selector "${selector}" not found or other error. ${e.message}`);
+      const screenshotPath = `failure-${currentEnv}-${link.text.replace(/\s+/g, '_')}.png`;
+      await page.screenshot({ path: screenshotPath });
+      console.error(`     Screenshot saved to: ${screenshotPath}`);
+      const htmlPath = `failure-${currentEnv}-${link.text.replace(/\s+/g, '_')}.html`;
+      fs.writeFileSync(htmlPath, await page.content());
+      console.error(`     HTML dump saved to: ${htmlPath}`);
       allTestsPassed = false;
     }
   }
@@ -90,7 +204,7 @@ async function checkLinks(targetUrl, docsEnvValue) {
 
 // Main execution
 const targetUrlArg = process.argv[2];
-const docsEnvArg = process.argv[3] as DocsEnv;
+const docsEnvArg = process.argv[3];
 
 if (!targetUrlArg || !docsEnvArg || !Object.values(DocsEnv).includes(docsEnvArg)) {
   console.error('Usage: node check-portal-homepage-links.mjs <targetUrl> <docsEnv>');

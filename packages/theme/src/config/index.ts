@@ -5,12 +5,17 @@ export {
   VOCABULARY_DEFAULTS 
 } from './docusaurus.base';
 
+export * from './siteConfigCore'; 
+export { getSiteUrl, getSiteDocusaurusConfig } from './siteConfig';
+export { getCurrentEnv, getSiteDocusaurusConfigWithOptions } from './siteConfig.server';
 export { 
   sharedThemeConfig,
   sharedPlugins,
   sharedThemes,
-  commonDefaults,
-  siteUrls
+  baseDocusaurusConfig as commonDefaults,
+  standardsDropdown,
+  sharedFooterSiteLinks
+  // Removed staticBaseSettings from here, assuming it's not part of the public API
 } from './docusaurus';
 
 export { 

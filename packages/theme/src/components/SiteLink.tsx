@@ -1,8 +1,17 @@
-// packages/theme/src/components/SiteLink.tsx
-import React from 'react';
-import { getSiteUrl, type SiteKey, type DocsEnv } from '../config/siteConfig';
+/// <reference types="react" />
 
-export interface SiteLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+// packages/theme/src/components/SiteLink.tsx
+import React, { JSX } from 'react';
+import Link from '@docusaurus/Link';
+import { useDocsEnv } from '../hooks/useDocsEnv';
+import { getSiteUrl, type SiteKey, type DocsEnv } from '../config';
+
+/**
+ * A component for creating robust, environment-aware links between different IFLA Docusaurus sites.
+ * It uses the centralized `siteConfig.ts` to generate correct absolute URLs based on the
+ * `DOCS_ENV` environment variable (or an explicitly provided `targetEnv`).
+ */
+interface SiteLinkProps extends Omit<React.ComponentProps<typeof Link>, 'href' | 'to'> {
   /**
    * The key of the target site (e.g., 'LRM', 'portal'). Must be a valid SiteKey.
    */
@@ -13,33 +22,32 @@ export interface SiteLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElem
    * If empty, links to the site's base (url + baseUrl).
    * Defaults to an empty string, linking to the base of the target site.
    */
-  path?: string;
+  to: string;
   /**
-   * Optional. The environment for which to generate the URL. 
-   * Defaults to the current environment determined by `DOCS_ENV`.
+   * Optional. The target environment.
    */
-  targetEnv?: DocsEnv;
+  toEnv?: DocsEnv;
+  /**
+   * The content of the link.
+   */
+  children?: React.ReactNode;
+  /**
+   * Optional. The CSS class name for the link element.
+   */
+  className?: string;
 }
 
-/**
- * A component for creating robust, environment-aware links between different IFLA Docusaurus sites.
- * It uses the centralized `siteConfig.ts` to generate correct absolute URLs based on the
- * `DOCS_ENV` environment variable (or an explicitly provided `targetEnv`).
- */
-const SiteLink: React.FC<SiteLinkProps> = ({ 
-  toSite,
-  path = '', 
-  targetEnv,
-  children,
-  ...anchorProps 
-}) => {
-  const href = getSiteUrl(toSite, path, targetEnv);
+const SiteLink = ({ to, toSite, toEnv, children, className }: SiteLinkProps): JSX.Element => {
+  const currentSiteEnv = useDocsEnv();
 
+  const targetEnv = toEnv || currentSiteEnv;
+  const finalUrl = getSiteUrl(toSite, to, targetEnv);
+  
   return (
-    <a href={href} {...anchorProps}>
+    <Link href={finalUrl} className={className}>
       {children}
-    </a>
+    </Link>
   );
-};
+}
 
 export default SiteLink;

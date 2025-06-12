@@ -1,4 +1,4 @@
-import type {ReactNode} from 'react';
+import {JSX, ReactNode} from 'react';
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import Link from '@docusaurus/Link';
@@ -118,7 +118,7 @@ function StandardCard({title, code, description, href, status}: StandardItem) {
   );
 }
 
-export default function HomepageFeatures(): ReactNode {
+export default function HomepageFeatures(): JSX.Element {
   return (
     <section className={styles.features} id="standards">
       <div className="container">

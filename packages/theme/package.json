@@ -1,16 +1,68 @@
 {
   "name": "@ifla/theme",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "private": true,
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "pnpm exec tsup"
+  },
+  "files": [
+    "dist",
+    "src",
+    "static",
+    "LICENSE",
+    "README.md"
+  ],
   "exports": {
-    ".": "./src/index.ts",
-    "./components": "./src/components/index.ts",
-    "./components/SiteLink": "./src/components/SiteLink.tsx",
-    "./config": "./src/config/index.ts",
-    "./config/siteConfig": "./src/config/siteConfig.ts",
-    "./utils": "./src/utils/index.ts",
-    "./styles": "./src/styles/index.css"
-  }
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./styles.css": "./dist/index.css",
+    "./styles": "./dist/index.css",
+    "./config": {
+      "types": "./dist/config.d.ts",
+      "import": "./dist/config.mjs",
+      "require": "./dist/config.js"
+    },
+    "./config/siteConfigCore": {
+      "types": "./dist/config/siteConfigCore.d.ts",
+      "import": "./dist/config/siteConfigCore.mjs",
+      "require": "./dist/config/siteConfigCore.js"
+    },
+    "./config/siteConfig": {
+      "types": "./dist/config/siteConfig.d.ts",
+      "import": "./dist/config/siteConfig.mjs",
+      "require": "./dist/config/siteConfig.js"
+    },
+    "./config/siteConfig.server": {
+      "types": "./dist/config/siteConfig.server.d.ts",
+      "import": "./dist/config/siteConfig.server.mjs",
+      "require": "./dist/config/siteConfig.server.js"
+    },
+    "./config/docusaurus": {
+      "types": "./dist/config/docusaurus.d.ts",
+      "import": "./dist/config/docusaurus.mjs",
+      "require": "./dist/config/docusaurus.js"
+    },
+    "./components/SiteLink": {
+      "types": "./dist/components/SiteLink.d.ts",
+      "import": "./dist/components/SiteLink.mjs",
+      "require": "./dist/components/SiteLink.js"
+    },
+    "./hooks/useDocsEnv": {
+      "types": "./dist/hooks/useDocsEnv.d.ts",
+      "import": "./dist/hooks/useDocsEnv.mjs",
+      "require": "./dist/hooks/useDocsEnv.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils/index.mjs",
+      "require": "./dist/utils/index.js"
+    }
+  },
+  "gitHead": "04e45d41a75574005543a45032997cb9a32c645e"
 }

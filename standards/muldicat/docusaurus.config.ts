@@ -1,21 +1,26 @@
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
-import { 
-  sharedThemeConfig, 
-  sharedPlugins, 
-  sharedThemes, 
-  commonDefaults 
+import {
+  sharedThemeConfig,
+  sharedPlugins,
+  sharedThemes,
+  commonDefaults,
+  getSiteDocusaurusConfig,
+  getCurrentEnv,
+  type SiteKey,
+  type DocsEnv
 } from '@ifla/theme/config';
-import { getSiteDocusaurusConfig } from '@ifla/theme/config/siteConfig';
 
-const currentSiteConfig = getSiteDocusaurusConfig('muldicat');
+const siteKey: SiteKey = 'muldicat';
+const currentEnv: DocsEnv = getCurrentEnv();
+const currentSiteConfig = getSiteDocusaurusConfig(siteKey, currentEnv);
 
 const config: Config = {
   ...commonDefaults,
   
   url: currentSiteConfig.url,
-  title: 'IFLA MULDICAT',
-  tagline: 'Multilingual Dictionary of Cataloguing Terms',
+  title: 'MulDiCat: RDA to MARC21 and UNIMARC',
+  tagline: 'MulDiCat: RDA to MARC21 and UNIMARC',
   baseUrl: currentSiteConfig.baseUrl,
   projectName: 'muldicat',
 
@@ -104,7 +109,7 @@ const config: Config = {
     
     navbar: {
       ...sharedThemeConfig.navbar,
-      title: 'IFLA MULDICAT',
+      title: 'MulDiCat: RDA to MARC21 and UNIMARC',
       items: [
         {
           type: 'doc',

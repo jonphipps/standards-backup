@@ -1,25 +1,28 @@
-// import '@ifla/theme/config/envLoader'; // Loads .env.local from root
-
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import {
   sharedThemeConfig,
   sharedPlugins,
   sharedThemes,
-  commonDefaults
+  commonDefaults,
+  getSiteDocusaurusConfig,
+  getCurrentEnv,
+  type SiteKey,
+  type DocsEnv
 } from '@ifla/theme/config';
-import { getSiteDocusaurusConfig } from '@ifla/theme/config/siteConfig';
 
-const currentSiteConfig = getSiteDocusaurusConfig('fr');
+const siteKey: SiteKey = 'fr';
+const currentEnv: DocsEnv = getCurrentEnv();
+const currentSiteConfig = getSiteDocusaurusConfig(siteKey, currentEnv);
 
 const config: Config = {
   ...commonDefaults,
   
   url: currentSiteConfig.url,
-  title: 'IFLA FR',
-  tagline: 'Functional Requirements',
+  title: 'IFLA FR Family of Models',
+  tagline: 'Conceptual Models for Bibliographic Information',
   baseUrl: currentSiteConfig.baseUrl,
-  projectName: 'FR',
+  projectName: 'fr',
 
   customFields: {
     vocabularyDefaults: {

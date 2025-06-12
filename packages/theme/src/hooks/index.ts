@@ -375,15 +375,4 @@ export function useToggle(initialValue: boolean = false) {
   return [value, { toggle, setTrue, setFalse, setValue }] as const;
 }
 
-/**
- * Hook for managing previous value
- */
-export function usePrevious<T>(value: T): T | undefined {
-  const ref = useRef<T>();
-  
-  useEffect(() => {
-    ref.current = value;
-  });
-  
-  return ref.current;
-}
+export * from './usePrevious';

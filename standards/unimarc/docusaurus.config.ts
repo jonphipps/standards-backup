@@ -1,16 +1,19 @@
-// import '@ifla/theme/config/envLoader'; // Loads .env.local from root
-
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import {
   sharedThemeConfig,
   sharedPlugins,
   sharedThemes,
-  commonDefaults
+  commonDefaults,
+  getSiteDocusaurusConfig,
+  getCurrentEnv,
+  type SiteKey,
+  type DocsEnv
 } from '@ifla/theme/config';
-import { getSiteDocusaurusConfig } from '@ifla/theme/config/siteConfig';
 
-const currentSiteConfig = getSiteDocusaurusConfig('unimarc');
+const siteKey: SiteKey = 'unimarc';
+const currentEnv: DocsEnv = getCurrentEnv();
+const currentSiteConfig = getSiteDocusaurusConfig(siteKey, currentEnv);
 
 const config: Config = {
   ...commonDefaults,

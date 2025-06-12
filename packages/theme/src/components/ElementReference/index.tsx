@@ -482,7 +482,7 @@ function generateRdfXml(rdfData: RDFData): string {
   } = rdfData;
 
   // Determine the proper type
-  let rdfXmlContent;
+  let rdfXmlContent: string;
   let propertyType;
   
   if (type?.toLowerCase().includes("class")) {

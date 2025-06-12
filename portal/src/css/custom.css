@@ -3,7 +3,7 @@
  * Base IFLA styles are imported from the shared theme
  */
 
-@import '@ifla/theme/styles';
+@import '@ifla/theme/styles.css';
 
 /* Portal-specific customizations can be added here */
 

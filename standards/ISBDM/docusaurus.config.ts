@@ -6,13 +6,21 @@ import {
   sharedPlugins,
   sharedThemes,
   commonDefaults,
+  getSiteDocusaurusConfig, // Import from main config barrel
+  getCurrentEnv,           // Import getCurrentEnv
+  type SiteKey,             // Import SiteKey type
+  type DocsEnv,              // Import DocsEnv type
+  getSiteUrl                // Import getSiteUrl
 } from '@ifla/theme/config';
-import { getSiteDocusaurusConfig } from '@ifla/theme/config/siteConfig';
 
-const currentSiteConfig = getSiteDocusaurusConfig('ISBDM');
+const siteKey: SiteKey = 'ISBDM';
+const currentEnv: DocsEnv = getCurrentEnv();
+const currentSiteConfig = getSiteDocusaurusConfig(siteKey, currentEnv);
+const portalUrl = getSiteUrl('portal', '/', currentEnv);
 
 const config: Config = {
   ...commonDefaults,
+  onBrokenLinks: 'warn', // Add this line
   url: currentSiteConfig.url,
   title: 'ISBD for Manifestation',
   tagline: 'International Standard Bibliographic Description for Manifestation',
@@ -260,7 +268,7 @@ const config: Config = {
           items: [
             {
               label: 'RDF Downloads',
-              href: './rdf/',
+              href: '/rdf/', // Corrected to be absolute to baseUrl
             },
             {
               label: 'Vocabulary Server',
@@ -277,7 +285,7 @@ const config: Config = {
             },
             {
               label: 'Portal',
-              href: process.env.NODE_ENV === 'production' ? '../portal/' : '/portal/',
+              href: portalUrl, // Use getSiteUrl for correct portal link
             },
           ],
         },

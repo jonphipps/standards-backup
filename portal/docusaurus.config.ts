@@ -1,114 +1,88 @@
 import type { Config } from '@docusaurus/types';
-import type * as Preset from '@docusaurus/preset-classic';
-
 import {
-  sharedThemeConfig,
-  sharedPlugins,
-  sharedThemes,
-  commonDefaults,
-} from '@ifla/theme/config';
-import {
-  getSiteDocusaurusConfig,
-  getSiteUrl,
-  type SiteKey,
-  getCurrentEnv,
   DocsEnv,
-} from '@ifla/theme/config/siteConfig';
+  type SiteKey,
+  getSiteDocusaurusConfig,
+  getCurrentEnv,
+  commonDefaults,
+  standardsDropdown,
+  sharedFooterSiteLinks
+} from '@ifla/theme/config';
+import { themes as prismThemes } from 'prism-react-renderer';
 
-const currentSiteConfig = getSiteDocusaurusConfig('portal');
+const siteKey: SiteKey = 'portal';
 const currentEnv = getCurrentEnv();
-
-const standardsDropdown = [
-  { label: 'ISBDM', href: getSiteUrl('ISBDM' as SiteKey) },
-  { label: 'LRM', href: getSiteUrl('LRM' as SiteKey) },
-  { label: 'FR', href: getSiteUrl('fr' as SiteKey) }, // Assuming 'fr' is the SiteKey for 'FR'
-  { label: 'ISBD', href: getSiteUrl('isbd' as SiteKey) }, // Assuming 'isbd' is the SiteKey for 'ISBD'
-  { label: 'MULDICAT', href: getSiteUrl('muldicat' as SiteKey) },
-  { label: 'UNIMARC', href: getSiteUrl('unimarc' as SiteKey) },
-];
+const { url, baseUrl } = getSiteDocusaurusConfig(siteKey, currentEnv);
 
 const config: Config = {
-  ...commonDefaults,
-  url: currentSiteConfig.url,
+  ...commonDefaults(currentEnv),
+  url,
   title: 'IFLA Standards Portal',
   tagline: 'International Federation of Library Associations and Institutions',
-  baseUrl: currentSiteConfig.baseUrl,
+  baseUrl,
   projectName: 'standards-portal',
   staticDirectories: ['static', '../packages/theme/static'],
-  trailingSlash: currentEnv === DocsEnv.Preview ? false : true,
-  onBrokenAnchors: 'log', // Changed from default 'warn'
+  trailingSlash: currentEnv === DocsEnv.Preview ? false : commonDefaults(currentEnv).trailingSlash,
+  onBrokenAnchors: 'ignore', // Changed from default 'warn'
+
+  customFields: {
+    docsEnv: currentEnv,
+  },
 
   // Portal-specific i18n
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
-    localeConfigs: {
-      en: {
-        label: 'English',
-      },
-    },
   },
 
-  // Portal-specific plugins
-  plugins: [
-    ...sharedPlugins,
-  ],
-
-  // Portal-specific presets
   presets: [
     [
       'classic',
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com/iflastandards/standards-dev/tree/main/portal/',
+          // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
+          editUrl:
+            'https://github.com/iflastandards/standards-dev/tree/main/portal/',
         },
         blog: {
           showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          editUrl: 'https://github.com/iflastandards/standards-dev/tree/main/portal/',
+          // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
+          editUrl:
+            'https://github.com/iflastandards/standards-dev/tree/main/portal/',
         },
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: [
+            require.resolve('@ifla/theme/styles.css'),
+            require.resolve('./src/css/custom.css'),
+          ],
         },
-      } satisfies Preset.Options,
+      } satisfies import('@docusaurus/preset-classic').Options,
     ],
   ],
 
-  // Shared themes
-  themes: sharedThemes,
-
-  // Portal-specific theme config
   themeConfig: {
-    ...sharedThemeConfig,
-    
-    // Portal-specific navbar
+    ...commonDefaults(currentEnv).themeConfig,
+    // Replace with your project's social card
+    image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      ...sharedThemeConfig.navbar,
-      title: 'IFLA Standards',
+      title: 'IFLA Standards Portal',
+      logo: {
+        alt: 'IFLA Logo',
+        src: 'img/ifla-logo-horizontal.svg',
+        srcDark: 'img/ifla-logo-horizontal-dark.svg',
+      },
       items: [
         {
-          type: 'dropdown',
-          label: 'Standards',
-          position: 'left',
-          items: standardsDropdown,
-        },
-        {
-          type: 'doc',
-          docId: 'index',
+          type: 'docSidebar',
+          sidebarId: 'tutorialSidebar',
           position: 'left',
           label: 'Documentation',
         },
         {to: '/blog', label: 'Blog', position: 'left'},
-        {
-          to: '/manage',
-          label: 'Management',
-          position: 'left',
-          className: 'navbar__item--management',
-        },
+        standardsDropdown(currentEnv),
         {
           href: 'https://github.com/iflastandards/standards-dev',
           label: 'GitHub',
@@ -116,26 +90,23 @@ const config: Config = {
         },
       ],
     },
-    
-    // Portal-specific footer
     footer: {
-      style: sharedThemeConfig.footer.style as 'light' | 'dark' | undefined,
-      copyright: sharedThemeConfig.footer.copyright,
+      style: 'dark',
       links: [
         {
-          title: 'Standards',
+          title: 'Sites',
+          items: sharedFooterSiteLinks(currentEnv),
+        },
+        {
+          title: 'Community',
           items: [
             {
-              label: 'ISBDM',
-              href: getSiteUrl('ISBDM' as SiteKey),
+              label: 'IFLA Website',
+              href: 'https://www.ifla.org/',
             },
             {
-              label: 'LRM',
-              href: getSiteUrl('LRM' as SiteKey),
-            },
-            {
-              label: 'ISBD',
-              href: getSiteUrl('isbd' as SiteKey),
+              label: 'IFLA Standards',
+              href: 'https://www.ifla.org/programmes/ifla-standards/',
             },
           ],
         },
@@ -147,15 +118,19 @@ const config: Config = {
               to: '/blog',
             },
             {
-              label: 'Documentation',
-              to: '/docs',
+              label: 'GitHub',
+              href: 'https://github.com/iflastandards/standards-dev',
             },
           ],
         },
-        ...sharedThemeConfig.footer.links,
       ],
+      copyright: `Copyright ${new Date().getFullYear()} IFLA. Built with Docusaurus.`,
     },
-  } satisfies Preset.ThemeConfig,
+    prism: {
+      theme: prismThemes.github,
+      darkTheme: prismThemes.dracula,
+    },
+  } satisfies import('@docusaurus/preset-classic').ThemeConfig,
 };
 
 export default config;
