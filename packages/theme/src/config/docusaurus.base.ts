@@ -57,7 +57,8 @@ export function createIFLAConfig(
     organizationName,
     projectName,
     trailingSlash: true,
-    onBrokenLinks: 'warn',
+    onBrokenLinks: 'warn', // Default: warn on broken links (override in sites as needed)
+    onBrokenAnchors: 'warn', // Default: warn on broken anchors (override in sites as needed)  
     onBrokenMarkdownLinks: 'warn',
 
     // Static directories - theme static first to ensure shared assets take precedence

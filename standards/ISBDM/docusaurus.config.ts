@@ -20,12 +20,13 @@ const portalUrl = getSiteUrl('portal', '/', currentEnv);
 
 const config: Config = {
   ...commonDefaults,
-  onBrokenLinks: 'ignore', // Ignore generated element links, use custom validation for navigation
   url: currentSiteConfig.url,
   title: 'ISBD for Manifestation',
   tagline: 'International Standard Bibliographic Description for Manifestation',
   baseUrl: currentSiteConfig.baseUrl,
   projectName: 'ISBDM',
+  onBrokenLinks: 'ignore', // Override: ignore generated element links
+  onBrokenAnchors: 'ignore', // Override: ignore generated anchor links
 
   customFields: {
     vocabularyDefaults: {

@@ -73,6 +73,8 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
+          onBrokenLinks: 'warn', // Warns on broken links
+          onBrokenAnchors: 'warn', // Warns on broken anchors
           editUrl: 'https://github.com/iflastandards/UNIMARC/tree/main/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
@@ -87,6 +89,7 @@ const config: Config = {
         },
         blog: {
           showReadingTime: true,
+          onBrokenLinks: 'throw',
           feedOptions: {
             type: ['rss', 'atom'],
             xslt: true,
