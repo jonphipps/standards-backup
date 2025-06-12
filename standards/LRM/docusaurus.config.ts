@@ -17,7 +17,6 @@ const currentSiteConfig = getSiteDocusaurusConfig(siteKey, currentEnv);
 
 const config: Config = {
   ...commonDefaults,
-  
   url: currentSiteConfig.url,
   title: 'IFLA LRM',
   tagline: 'Library Reference Model',

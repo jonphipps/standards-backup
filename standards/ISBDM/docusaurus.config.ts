@@ -1,6 +1,6 @@
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
-import type { SidebarItem, DefaultSidebarItemsGeneratorArgs } from '@docusaurus/plugin-content-docs/lib/types';
+import type { SidebarItem, SidebarItemsGeneratorArgs as DefaultSidebarItemsGeneratorArgs } from '@docusaurus/plugin-content-docs/lib/sidebars/types';
 import {
   sharedThemeConfig,
   sharedPlugins,
