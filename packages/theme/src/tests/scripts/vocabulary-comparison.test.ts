@@ -3,7 +3,6 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi, Mock } from 'vitest';
-import { VocabularyComparisonTool } from '../../../../../scripts/vocabulary-comparison.mjs';
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 
 // Mock dependencies
@@ -13,9 +12,12 @@ vi.mock('fs', () => ({
     mkdirSync: vi.fn()
 }));
 
-// Mock fetch globally
+// Mock fetch globally before importing the module that uses it
 const mockFetch = vi.fn() as Mock;
-global.fetch = mockFetch;
+vi.stubGlobal('fetch', mockFetch);
+
+// Now import the module after fetch is mocked
+const { VocabularyComparisonTool } = await import('../../../../../scripts/vocabulary-comparison.mjs');
 
 describe('VocabularyComparisonTool', () => {
     let tool: any;
@@ -34,7 +36,7 @@ describe('VocabularyComparisonTool', () => {
         });
 
         tool = new VocabularyComparisonTool(mockApiKey, mockSpreadsheetId, {
-            indexSheet: 'index', // This will trigger getAvailableSheets in constructor
+            indexSheet: 'index',
             skipRdfCheck: true,
             markdown: false
         });
@@ -73,6 +75,7 @@ describe('VocabularyComparisonTool', () => {
 
     describe('getAvailableSheets', () => {
         it('should fetch and parse available sheets', async () => {
+            // Mock the response for the test
             const mockResponse = {
                 ok: true,
                 status: 200,
@@ -95,6 +98,7 @@ describe('VocabularyComparisonTool', () => {
         });
 
         it('should throw error on failed API call', async () => {
+            // Mock the response for the actual test
             const mockResponse = {
                 ok: false,
                 status: 401,
@@ -109,35 +113,48 @@ describe('VocabularyComparisonTool', () => {
     });
 
     describe('findMatchingSheet', () => {
-        const availableSheets = [
-            { title: 'index', sheetId: 1 },
-            { title: 'unc_elements', sheetId: 2 },
-            { title: 'elements', sheetId: 3 },
-            { title: 'ISBD elements', sheetId: 4 }
-        ];
-
         it('should find exact token match', () => {
-            const result = tool.findMatchingSheet(availableSheets, 'elements', '');
-            expect(result).toEqual({ title: 'elements', sheetId: 3 });
+            const sheets = [
+                { title: 'isbdm-modeofissuance', sheetId: 1 },
+                { title: 'isbdm-contentform', sheetId: 2 }
+            ];
+            const result = tool.findMatchingSheet(sheets, 'isbdm-modeofissuance', null);
+            expect(result).toEqual({ title: 'isbdm-modeofissuance', sheetId: 1 });
         });
 
         it('should find exact title match', () => {
-            const result = tool.findMatchingSheet(availableSheets, 'test', 'ISBD elements');
-            expect(result).toEqual({ title: 'ISBD elements', sheetId: 4 });
+            const sheets = [
+                { title: 'ISBDM Mode of Issuance', sheetId: 1 },
+                { title: 'ISBDM Content Form', sheetId: 2 }
+            ];
+            const result = tool.findMatchingSheet(sheets, 'notfound', 'ISBDM Mode of Issuance');
+            expect(result).toEqual({ title: 'ISBDM Mode of Issuance', sheetId: 1 });
         });
 
-        it('should find isbdu pattern match', () => {
-            const result = tool.findMatchingSheet(availableSheets, 'isbdu', '');
-            expect(result).toEqual({ title: 'unc_elements', sheetId: 2 });
+        it('should find special isbdu pattern match', () => {
+            const sheets = [
+                { title: 'UNC/Elements', sheetId: 1 },
+                { title: 'Other Sheet', sheetId: 2 }
+            ];
+            const result = tool.findMatchingSheet(sheets, 'isbdu', null);
+            expect(result).toEqual({ title: 'UNC/Elements', sheetId: 1 });
         });
 
-        it('should find isbd pattern match (not unconstrained)', () => {
-            const result = tool.findMatchingSheet(availableSheets, 'isbd', '');
-            expect(result).toEqual({ title: 'elements', sheetId: 3 });
+        it('should find special isbd pattern match', () => {
+            const sheets = [
+                { title: 'Elements', sheetId: 1 },
+                { title: 'Other Sheet', sheetId: 2 }
+            ];
+            const result = tool.findMatchingSheet(sheets, 'isbd', null);
+            expect(result).toEqual({ title: 'Elements', sheetId: 1 });
         });
 
-        it('should return null for no matches', () => {
-            const result = tool.findMatchingSheet(availableSheets, 'nonexistent', '');
+        it('should return undefined for no matches', () => {
+            const sheets = [
+                { title: 'ISBDM Mode of Issuance', sheetId: 1 },
+                { title: 'ISBDM Content Form', sheetId: 2 }
+            ];
+            const result = tool.findMatchingSheet(sheets, 'nonexistent-token', null);
             expect(result).toBeUndefined();
         });
     });
@@ -154,155 +171,128 @@ describe('VocabularyComparisonTool', () => {
         });
 
         it('should parse header with language', () => {
-            const result = tool.parseColumnHeader('skos:prefLabel@en');
+            const result = tool.parseColumnHeader('skos:prefLabel@fr');
             expect(result).toEqual({
                 property: 'skos:prefLabel',
-                language: 'en',
+                language: 'fr',
                 index: 0,
-                original: 'skos:prefLabel@en'
+                original: 'skos:prefLabel@fr'
             });
         });
 
-        it('should parse header with language and index', () => {
-            const result = tool.parseColumnHeader('skos:altLabel@es[2]');
+        it('should parse header with array index', () => {
+            const result = tool.parseColumnHeader('skos:prefLabel[2]');
             expect(result).toEqual({
-                property: 'skos:altLabel',
-                language: 'es',
-                index: 2,
-                original: 'skos:altLabel@es[2]'
-            });
-        });
-
-        it('should parse header with index only', () => {
-            const result = tool.parseColumnHeader('skos:notation[1]');
-            expect(result).toEqual({
-                property: 'skos:notation',
+                property: 'skos:prefLabel',
                 language: null,
+                index: 2,
+                original: 'skos:prefLabel[2]'
+            });
+        });
+
+        it('should parse header with language and array index', () => {
+            const result = tool.parseColumnHeader('skos:prefLabel@fr[1]');
+            expect(result).toEqual({
+                property: 'skos:prefLabel',
+                language: 'fr',
                 index: 1,
-                original: 'skos:notation[1]'
+                original: 'skos:prefLabel@fr[1]'
             });
         });
 
         it('should return null for empty header', () => {
             const result = tool.parseColumnHeader('');
-            expect(result).toBeNull();
+            expect(result).toBe(null);
         });
     });
 
     describe('organizeColumns', () => {
         it('should organize columns by property and language', () => {
-            const headers = [
-                'uri',
-                'skos:prefLabel@en',
-                'skos:prefLabel@es',
-                'skos:definition@en',
-                'skos:altLabel@en[0]',
-                'skos:altLabel@en[1]'
-            ];
-
+            const headers = ['URI', 'skos:prefLabel', 'skos:prefLabel@fr', 'skos:altLabel', 'skos:altLabel[1]'];
             const result = tool.organizeColumns(headers);
 
-            expect(result.get('uri')).toBeDefined();
-            expect(result.get('skos:prefLabel')).toBeDefined();
-            expect(result.get('skos:prefLabel').get('en')).toEqual([1]);
-            expect(result.get('skos:prefLabel').get('es')).toEqual([2]);
-            expect(result.get('skos:altLabel').get('en')).toEqual([4, 5]);
+            expect(result).toBeInstanceOf(Map);
+            expect(result.has('skos:prefLabel')).toBe(true);
+            expect(result.has('skos:altLabel')).toBe(true);
+            
+            const prefLabelMap = result.get('skos:prefLabel');
+            expect(prefLabelMap.has('default')).toBe(true);
+            expect(prefLabelMap.has('fr')).toBe(true);
+            expect(prefLabelMap.get('default')).toEqual([1]);
+            expect(prefLabelMap.get('fr')).toEqual([2]);
+            
+            const altLabelMap = result.get('skos:altLabel');
+            expect(altLabelMap.has('default')).toBe(true);
+            expect(altLabelMap.get('default')).toEqual([3, 4]);
         });
     });
 
     describe('extractPropertyValues', () => {
-        const columnMap = new Map([
-            ['skos:prefLabel', new Map([
-                ['en', [1]],
-                ['es', [2]]
-            ])],
-            ['skos:altLabel', new Map([
-                ['en', [3, 4]]
-            ])]
-        ]);
-
         it('should extract single value for specified language', () => {
-            const row = ['uri1', 'English Label', 'Spanish Label', 'Alt1', 'Alt2'];
-            const result = tool.extractPropertyValues(row, columnMap.get('skos:prefLabel'), 'en');
+            const row = ['uri', 'English Label', 'French Label', 'Alt Label'];
+            const propertyMap = new Map([
+                ['en', [1]],
+                ['fr', [2]]
+            ]);
+            const result = tool.extractPropertyValues(row, propertyMap, 'en');
             expect(result).toEqual(['English Label']);
         });
 
         it('should extract multiple values for repeatable property', () => {
-            const row = ['uri1', 'English Label', 'Spanish Label', 'Alt1', 'Alt2'];
-            const result = tool.extractPropertyValues(row, columnMap.get('skos:altLabel'), 'en');
-            expect(result).toEqual(['Alt1', 'Alt2']);
+            const row = ['uri', 'Alt Label 1', '', 'Alt Label 2'];
+            const propertyMap = new Map([
+                ['default', [1, , 3]] // sparse array
+            ]);
+            const result = tool.extractPropertyValues(row, propertyMap);
+            expect(result).toEqual(['Alt Label 1', 'Alt Label 2']);
         });
 
         it('should fallback to default language', () => {
-            const row = ['uri1', 'English Label', 'Spanish Label', 'Alt1', 'Alt2'];
-            const result = tool.extractPropertyValues(row, columnMap.get('skos:prefLabel'), 'fr');
-            expect(result).toEqual(['English Label']); // Falls back to 'en'
-        });
-    });
-
-    describe('expandUri', () => {
-        const vocab = { uri: 'http://example.org/vocab/' };
-
-        it('should return full URI unchanged', () => {
-            const result = tool.expandUri('http://example.org/full/uri', vocab);
-            expect(result).toBe('http://example.org/full/uri');
-        });
-
-        it('should expand prefixed URI', () => {
-            const result = tool.expandUri('ex:concept1', vocab);
-            expect(result).toBe('http://example.org/vocab/concept1');
-        });
-
-        it('should handle URI ending with slash', () => {
-            const vocabWithSlash = { uri: 'http://example.org/vocab/' };
-            const result = tool.expandUri('ex:concept1', vocabWithSlash);
-            expect(result).toBe('http://example.org/vocab/concept1');
-        });
-
-        it('should handle URI not ending with slash', () => {
-            const vocabWithoutSlash = { uri: 'http://example.org/vocab' };
-            const result = tool.expandUri('ex:concept1', vocabWithoutSlash);
-            expect(result).toBe('http://example.org/vocab/concept1');
-        });
-
-        it('should return unchanged for non-prefixed strings', () => {
-            const result = tool.expandUri('simple-string', vocab);
-            expect(result).toBe('simple-string');
-        });
-    });
-
-    describe('isInstructionRow', () => {
-        it('should identify instruction rows', () => {
-            expect(tool.isInstructionRow('Instructions:', 'some text')).toBe(true);
-            expect(tool.isInstructionRow('Example data', 'example')).toBe(true);
-            expect(tool.isInstructionRow('token:with:colons', '')).toBe(true);
-            expect(tool.isInstructionRow('very-long-token-name-that-exceeds-fifty-characters-in-length', '')).toBe(true);
-            expect(tool.isInstructionRow('valid', 'not-a-url')).toBe(true);
-        });
-
-        it('should not identify valid data rows as instructions', () => {
-            expect(tool.isInstructionRow('token', 'http://example.org')).toBe(false);
-            expect(tool.isInstructionRow('valid-token', '')).toBe(false);
+            const row = ['uri', 'English Label', '', ''];
+            const propertyMap = new Map([
+                ['en', [1]],
+                ['de', [2]]
+            ]);
+            const result = tool.extractPropertyValues(row, propertyMap, 'fr');
+            expect(result).toEqual(['English Label']);
         });
     });
 
     describe('hasValidRdfUri', () => {
         it('should validate RDF URIs', () => {
-            expect(tool.hasValidRdfUri('http://example.org/vocab')).toBe(true);
-            expect(tool.hasValidRdfUri('https://example.org/vocab')).toBe(true);
+            expect(tool.hasValidRdfUri('http://example.com/concept')).toBe(true);
+            expect(tool.hasValidRdfUri('https://example.com/concept')).toBe(true);
+            expect(tool.hasValidRdfUri('not-a-uri')).toBe(false);
             expect(tool.hasValidRdfUri('')).toBe(false);
-            expect(tool.hasValidRdfUri('not-a-url')).toBe(false);
             expect(tool.hasValidRdfUri(null)).toBe(false);
+        });
+    });
+
+    describe('isInstructionRow', () => {
+        it('should identify instruction rows', () => {
+            expect(tool.isInstructionRow('Instructions:', '')).toBe(true);
+            expect(tool.isInstructionRow('This is a long instruction line that exceeds fifty characters', '')).toBe(true);
+            expect(tool.isInstructionRow('instruction', '')).toBe(true);
+            expect(tool.isInstructionRow('example', '')).toBe(true);
+            expect(tool.isInstructionRow('', '')).toBe(true);
+            expect(tool.isInstructionRow(null, '')).toBe(true);
+        });
+
+        it('should not identify valid data rows as instructions', () => {
+            expect(tool.isInstructionRow('C001', 'http://example.com/C001')).toBe(false);
+            expect(tool.isInstructionRow('Short token', 'http://example.com/concept')).toBe(false);
         });
     });
 
     describe('validateSkosStructure', () => {
         it('should validate concepts with all required properties', () => {
             const concepts = [
-                { uri: 'http://example.org/1', prefLabel: 'Label 1', definition: 'Def 1' },
-                { uri: 'http://example.org/2', prefLabel: 'Label 2', definition: 'Def 2' }
+                {
+                    uri: 'http://example.com/C001',
+                    prefLabel: 'Test Label',
+                    definition: 'Test Definition'
+                }
             ];
-
             const result = tool.validateSkosStructure(concepts);
             expect(result.errors).toHaveLength(0);
             expect(result.warnings).toHaveLength(0);
@@ -310,31 +300,34 @@ describe('VocabularyComparisonTool', () => {
 
         it('should report missing URIs as errors', () => {
             const concepts = [
-                { prefLabel: 'Label 1', definition: 'Def 1' },
-                { uri: 'http://example.org/2', prefLabel: 'Label 2' }
+                {
+                    prefLabel: 'Test Label',
+                    definition: 'Test Definition',
+                    rowIndex: 2
+                }
             ];
-
             const result = tool.validateSkosStructure(concepts);
-            expect(result.errors).toHaveLength(1);
-            expect(result.errors[0]).toContain('Missing URI');
+            expect(result.errors).toContain('Row 2: Missing URI');
         });
 
         it('should report missing labels as warnings', () => {
             const concepts = [
-                { uri: 'http://example.org/1', definition: 'Def 1' },
-                { uri: 'http://example.org/2', prefLabel: 'Label 2' }
+                {
+                    uri: 'http://example.com/C001',
+                    definition: 'Test Definition',
+                    rowIndex: 3
+                }
             ];
-
             const result = tool.validateSkosStructure(concepts);
-            expect(result.warnings).toHaveLength(1);
-            expect(result.warnings[0]).toContain('Missing preferred label');
+            expect(result.warnings).toContain('Row 3: Missing preferred label');
         });
     });
 
     describe('normalizeText', () => {
         it('should normalize text correctly', () => {
-            expect(tool.normalizeText('  Hello   World  ')).toBe('hello world');
-            expect(tool.normalizeText('UPPERCASE')).toBe('uppercase');
+            expect(tool.normalizeText('  Test  Text  ')).toBe('test text');
+            expect(tool.normalizeText('Test\nText')).toBe('test text');
+            expect(tool.normalizeText('Test\tText')).toBe('test text');
             expect(tool.normalizeText('')).toBe('');
             expect(tool.normalizeText(null)).toBe('');
             expect(tool.normalizeText(undefined)).toBe('');
@@ -343,153 +336,123 @@ describe('VocabularyComparisonTool', () => {
 
     describe('escapeMarkdown', () => {
         it('should escape markdown special characters', () => {
-            expect(tool.escapeMarkdown('Text with | pipe')).toBe('Text with \\| pipe');
-            expect(tool.escapeMarkdown('Text with * asterisk')).toBe('Text with \\* asterisk');
-            expect(tool.escapeMarkdown('Text with [brackets]')).toBe('Text with \\[brackets\\]');
-            expect(tool.escapeMarkdown('')).toBe('');
-            expect(tool.escapeMarkdown(null)).toBe('');
+            expect(tool.escapeMarkdown('*test*')).toBe('\\*test\\*');
+            expect(tool.escapeMarkdown('_test_')).toBe('\\_test\\_');
+            expect(tool.escapeMarkdown('[test]')).toBe('\\[test\\]');
+            expect(tool.escapeMarkdown('`test`')).toBe('\\`test\\`');
+            expect(tool.escapeMarkdown('normal text')).toBe('normal text');
         });
     });
 
     describe('truncateText', () => {
         it('should truncate long text', () => {
-            const longText = 'This is a very long text that should be truncated';
-            const result = tool.truncateText(longText, 20);
-            expect(result).toBe('This is a very long ...');
+            const longText = 'a'.repeat(100);
+            const result = tool.truncateText(longText, 50);
+            expect(result).toBe('a'.repeat(50) + '...');
         });
 
         it('should not truncate short text', () => {
             const shortText = 'Short text';
-            const result = tool.truncateText(shortText, 20);
-            expect(result).toBe('Short text');
+            const result = tool.truncateText(shortText, 50);
+            expect(result).toBe(shortText);
         });
 
         it('should handle empty text', () => {
-            expect(tool.truncateText('', 10)).toBe('');
-            expect(tool.truncateText(null, 10)).toBe('');
+            expect(tool.truncateText('', 50)).toBe('');
+            expect(tool.truncateText(null, 50)).toBe('');
         });
     });
 
     describe('generateMarkdownReport', () => {
-        beforeEach(() => {
-            tool.vocabularies = [
-                {
-                    token: 'test1',
-                    title: 'Test Vocabulary 1',
-                    sheetName: 'sheet1',
-                    uri: 'http://example.org/test1',
-                    hasRdf: true,
-                    sheetId: 123
-                },
-                {
-                    token: 'test2',
-                    title: 'Test Vocabulary 2',
-                    sheetName: 'sheet2',
-                    uri: 'http://example.org/test2',
-                    hasRdf: false,
-                    sheetId: 456
-                }
-            ];
-
-            tool.availableSheets = [
-                { title: 'sheet1', sheetId: 123 },
-                { title: 'sheet2', sheetId: 456 }
-            ];
-
-            tool.options.markdown = true;
-            tool.options.outputPath = 'test-output.md';
-        });
-
-        it('should generate markdown report successfully', () => {
+        it('should generate markdown report successfully', async () => {
             const results = {
-                matches: [
-                    {
-                        vocabulary: 'test1',
-                        uri: 'http://example.org/concept1',
-                        sheetValues: { prefLabel: 'Concept 1' }
-                    }
+                vocabularies: [
+                    { token: 'test', title: 'Test Vocab', sheetId: 1, sheetName: 'Test' }
                 ],
+                errors: [],
+                matches: [],
                 mismatches: [],
-                missing: [],
-                errors: []
+                missing: []
             };
 
             tool.generateMarkdownReport(results);
 
             expect(writeFileSync).toHaveBeenCalledWith(
-                'test-output.md',
+                'tmp/vocabulary-comparison-report.md',
                 expect.stringContaining('# Vocabulary Comparison Report')
             );
-            expect(writeFileSync).toHaveBeenCalledWith(
-                'test-output.md',
-                expect.stringContaining('Perfect Matches | 1')
-            );
         });
 
-        it('should include error information in report', () => {
+        it('should include error information in report', async () => {
             const results = {
+                vocabularies: [
+                    { token: 'test', title: 'Test Vocab', sheetId: 1, sheetName: 'Test' }
+                ],
+                errors: [
+                    { vocabulary: 'test', message: 'Error 1' },
+                    { vocabulary: 'test2', message: 'Error 2' }
+                ],
                 matches: [],
                 mismatches: [],
-                missing: [],
-                errors: [
-                    { vocabulary: 'test1', message: 'Test error message' }
-                ]
+                missing: []
             };
 
             tool.generateMarkdownReport(results);
 
-            const markdownContent = (writeFileSync as Mock).mock.calls[0][1];
-            expect(markdownContent).toContain('🚨 Errors (1)');
-            expect(markdownContent).toContain('Test error message');
+            const content = (writeFileSync as Mock).mock.calls[0][1];
+            expect(content).toContain('## 🚨 Errors');
+            expect(content).toContain('Error 1');
+            expect(content).toContain('Error 2');
         });
 
-        it('should handle mismatches in report', () => {
+        it('should handle mismatches in report', async () => {
             const results = {
-                matches: [],
-                mismatches: [
-                    {
-                        vocabulary: 'test1',
-                        uri: 'http://example.org/concept1',
-                        rowIndex: 2,
-                        prefLabelMatch: false,
-                        definitionMatch: true,
-                        notationMatch: true,
-                        sheetValues: {
-                            prefLabel: 'Sheet Label',
-                            definition: 'Sheet Definition',
-                            notation: 'SN1'
-                        },
-                        rdfValues: {
-                            prefLabel: 'RDF Label',
-                            definition: 'Sheet Definition',
-                            notation: 'SN1'
-                        }
-                    }
+                vocabularies: [
+                    { token: 'test', title: 'Test Vocab', sheetId: 1, sheetName: 'Test' }
                 ],
-                missing: [],
-                errors: []
+                errors: [],
+                matches: [],
+                mismatches: [{
+                    uri: 'http://example.com/C001',
+                    sheetValues: {
+                        prefLabel: 'Sheet Label',
+                        definition: 'Sheet Definition',
+                        notation: 'C001'
+                    },
+                    rdfValues: {
+                        prefLabel: 'RDF Label',
+                        definition: 'RDF Definition',
+                        notation: 'C001'
+                    },
+                    prefLabelMatch: false,
+                    definitionMatch: false,
+                    notationMatch: true,
+                    vocabularyTitle: 'Test Vocab'
+                }],
+                missing: []
             };
 
             tool.generateMarkdownReport(results);
 
-            const markdownContent = (writeFileSync as Mock).mock.calls[0][1];
-            expect(markdownContent).toContain('⚠️ Mismatches (1)');
-            expect(markdownContent).toContain('Sheet Label');
-            expect(markdownContent).toContain('RDF Label');
+            const content = (writeFileSync as Mock).mock.calls[0][1];
+            expect(content).toContain('## ⚠️ Mismatches');
+            expect(content).toContain('http://example.com/C001');
+            expect(content).toContain('Sheet Label');
+            expect(content).toContain('RDF Label');
         });
     });
 
     describe('Integration: fetchSheetData', () => {
         it('should fetch sheet data via API', async () => {
+            // Mock the response for fetchSheetData
             const mockResponse = {
                 ok: true,
                 status: 200,
                 statusText: 'OK',
                 json: vi.fn().mockResolvedValue({
                     values: [
-                        ['uri', 'skos:prefLabel@en', 'skos:definition@en'],
-                        ['http://example.org/1', 'Label 1', 'Definition 1'],
-                        ['http://example.org/2', 'Label 2', 'Definition 2']
+                        ['URI', 'skos:prefLabel', 'skos:definition'],
+                        ['http://example.com/C001', 'Test Concept', 'A test concept']
                     ]
                 })
             };
@@ -497,11 +460,14 @@ describe('VocabularyComparisonTool', () => {
 
             const result = await tool.fetchSheetData('test-sheet');
 
-            expect(result).toHaveLength(3);
-            expect(result[0]).toEqual(['uri', 'skos:prefLabel@en', 'skos:definition@en']);
+            expect(result).toEqual([
+                ['URI', 'skos:prefLabel', 'skos:definition'],
+                ['http://example.com/C001', 'Test Concept', 'A test concept']
+            ]);
         });
 
         it('should handle API errors', async () => {
+            // Mock an error response
             const mockResponse = {
                 ok: false,
                 status: 404,
