@@ -22,6 +22,7 @@ const config: Config = {
   tagline: 'Library Reference Model',
   baseUrl: currentSiteConfig.baseUrl,
   projectName: 'LRM',
+  onBrokenLinks: 'warn',
 
   customFields: {
     vocabularyDefaults: {
@@ -112,7 +113,7 @@ const config: Config = {
       items: [
         {
           type: 'doc',
-          docId: 'intro',
+          docId: 'intro/intro',
           position: 'left',
           label: 'Introduction',
         },
