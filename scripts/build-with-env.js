@@ -25,7 +25,7 @@ async function main() {
         name: 'environment',
         message: 'Select build environment:',
         choices: validEnvironments,
-        default: 'preview'
+        default: 'localhost'
       }
     ]);
     env = envAnswer.environment;
