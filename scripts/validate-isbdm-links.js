@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 const puppeteer = require('puppeteer');
-const { getCurrentEnv, getSiteDocusaurusConfig } = require('../packages/theme/dist/config/siteConfig.server');
+const { getCurrentEnv } = require('../packages/theme/dist/config/siteConfig.server');
+const { getSiteDocusaurusConfig } = require('../packages/theme/dist/config/siteConfig');
+const { sites } = require('../packages/theme/dist/config/siteConfigCore');
 
 /**
  * ISBDM-specific link validation that ignores generated element links
@@ -31,6 +33,12 @@ const CRITICAL_SELECTORS = [
 
 async function validateISBDMLinks() {
   console.log('\n🔍 Validating ISBDM navigation links (ignoring generated content)...');
+  
+  // Verify ISBDM exists in central configuration
+  if (!sites.ISBDM) {
+    console.error('❌ ISBDM not found in central site configuration');
+    process.exit(1);
+  }
   
   const env = getCurrentEnv();
   const config = getSiteDocusaurusConfig('ISBDM', env);

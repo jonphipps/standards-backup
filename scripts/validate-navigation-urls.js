@@ -3,42 +3,40 @@
 const { getCurrentEnv } = require('../packages/theme/dist/config/siteConfig.server');
 const { getSiteUrl } = require('../packages/theme/dist/config/siteConfig');
 const { standardsDropdown, sharedFooterSiteLinks } = require('../packages/theme/dist/config/docusaurus');
+const { sites, DocsEnv } = require('../packages/theme/dist/config/siteConfigCore');
 
 /**
  * Validates that navigation URLs are correctly configured for the current environment.
  * For non-localhost environments, URLs will appear "broken" locally but should match
  * the expected deployment URLs.
+ * 
+ * Automatically future-proofed by using the central site configuration.
  */
 
-const EXPECTED_PATTERNS = {
-  localhost: {
-    portal: /^http:\/\/localhost:3000\/portal\//,
-    ISBDM: /^http:\/\/localhost:3001\/ISBDM\//,
-    LRM: /^http:\/\/localhost:3002\/LRM\//,
-    fr: /^http:\/\/localhost:3003\/fr\//,
-    isbd: /^http:\/\/localhost:3004\/isbd\//,
-    muldicat: /^http:\/\/localhost:3005\/muldicat\//,
-    unimarc: /^http:\/\/localhost:3006\/unimarc\//
-  },
-  preview: {
-    portal: /^https:\/\/iflastandards\.github\.io\/standards-dev\/portal\//,
-    ISBDM: /^https:\/\/iflastandards\.github\.io\/standards-dev\/ISBDM\//,
-    LRM: /^https:\/\/iflastandards\.github\.io\/standards-dev\/LRM\//,
-    fr: /^https:\/\/iflastandards\.github\.io\/standards-dev\/fr\//,
-    isbd: /^https:\/\/iflastandards\.github\.io\/standards-dev\/isbd\//,
-    muldicat: /^https:\/\/iflastandards\.github\.io\/standards-dev\/muldicat\//,
-    unimarc: /^https:\/\/iflastandards\.github\.io\/standards-dev\/unimarc\//
-  },
-  production: {
-    portal: /^https:\/\/iflastandards\.info\/portal\//,
-    ISBDM: /^https:\/\/iflastandards\.info\/ISBDM\//,
-    LRM: /^https:\/\/iflastandards\.info\/LRM\//,
-    fr: /^https:\/\/iflastandards\.info\/fr\//,
-    isbd: /^https:\/\/iflastandards\.info\/isbd\//,
-    muldicat: /^https:\/\/iflastandards\.info\/muldicat\//,
-    unimarc: /^https:\/\/iflastandards\.info\/unimarc\//
-  }
-};
+// Generate expected patterns dynamically from the central site configuration
+function generateExpectedPatterns() {
+  const patterns = {};
+  
+  Object.values(DocsEnv).forEach(env => {
+    patterns[env] = {};
+    
+    Object.entries(sites).forEach(([siteKey, siteConfigs]) => {
+      if (siteKey === 'github') return; // Skip github as it's not a user-facing site
+      
+      const config = siteConfigs[env];
+      if (config) {
+        // Escape special regex characters and create pattern
+        const escapedUrl = config.url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const escapedBaseUrl = config.baseUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        patterns[env][siteKey] = new RegExp(`^${escapedUrl}${escapedBaseUrl}`);
+      }
+    });
+  });
+  
+  return patterns;
+}
+
+const EXPECTED_PATTERNS = generateExpectedPatterns();
 
 function validateNavigationUrls() {
   console.log('\n🧭 Validating Navigation URL Configuration...');
@@ -184,7 +182,9 @@ function showNavigationUrls() {
   });
   
   console.log('\n🔗 Sample getSiteUrl calls:');
-  ['portal', 'ISBDM', 'LRM'].forEach(site => {
+  // Get first 3 sites (excluding github) from central configuration
+  const sampleSites = Object.keys(sites).filter(site => site !== 'github').slice(0, 3);
+  sampleSites.forEach(site => {
     console.log(`   ${site}/: ${getSiteUrl(site, '/', env)}`);
     console.log(`   ${site}/docs/intro: ${getSiteUrl(site, '/docs/intro', env)}`);
   });

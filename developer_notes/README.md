@@ -25,6 +25,23 @@ Each documentation file follows this structure:
 
 When adding new features or modifying existing ones, please update or create corresponding documentation in this directory. This helps maintain institutional knowledge and makes onboarding easier.
 
+### Adding New Sites
+
+When adding new sites to the project:
+
+1. **Add site configuration** to `packages/theme/src/config/siteConfigCore.ts`:
+   - Update the `SiteKey` type to include your new site
+   - Add site configuration to the `sites` object for all environments
+
+2. **Link validation automatically includes new sites**:
+   - No updates needed to validation scripts - they use the central configuration
+   - New sites get default empty ignore patterns (check all links)
+   - Add site-specific ignore patterns in `scripts/validate-site-links.js` if needed
+
+3. **Navigation dropdowns automatically include new sites** if added to the theme configuration
+
+This ensures all tooling automatically works with new sites without manual updates.
+
 ## For AI Assistants
 
 These notes are specifically written to be helpful for AI coding assistants. They include:

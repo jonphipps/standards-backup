@@ -4,12 +4,15 @@ const { execSync } = require('child_process');
 const { program } = require('commander');
 const inquirer = require('inquirer').default;
 const puppeteer = require('puppeteer');
-const { getCurrentEnv, getSiteDocusaurusConfig } = require('../packages/theme/dist/config/siteConfig.server');
+const { getCurrentEnv } = require('../packages/theme/dist/config/siteConfig.server');
+const { getSiteDocusaurusConfig } = require('../packages/theme/dist/config/siteConfig');
+const { sites } = require('../packages/theme/dist/config/siteConfigCore');
 
-const validSites = ['portal', 'isbdm', 'lrm', 'fr', 'isbd', 'muldicat', 'unimarc'];
+// Get valid sites from central configuration (excluding github)
+const validSites = Object.keys(sites).filter(site => site !== 'github').map(site => site.toLowerCase());
 
-// Site-specific ignore patterns
-const IGNORE_PATTERNS = {
+// Site-specific ignore patterns - automatically includes all sites from central config
+const SITE_SPECIFIC_IGNORE_PATTERNS = {
   isbdm: [
     /\/docs\/elements\/\d+/,
     /\/docs\/attributes\/\d+/,
@@ -22,14 +25,17 @@ const IGNORE_PATTERNS = {
   lrm: [
     /\/docs\/elements\/\d+/,
     /\/vocabulary\/\d+/
-  ],
-  // Other sites check all links by default
-  portal: [],
-  fr: [],
-  isbd: [],
-  muldicat: [],
-  unimarc: []
+  ]
+  // Other sites default to checking all links (empty array)
 };
+
+// Generate ignore patterns for all sites, defaulting to empty arrays for new sites
+const IGNORE_PATTERNS = {};
+Object.keys(sites).forEach(siteKey => {
+  if (siteKey !== 'github') {
+    IGNORE_PATTERNS[siteKey.toLowerCase()] = SITE_SPECIFIC_IGNORE_PATTERNS[siteKey.toLowerCase()] || [];
+  }
+});
 
 program
   .option('--site <site>', 'Site to validate links for')
