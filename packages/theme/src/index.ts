@@ -13,6 +13,9 @@
  * @license MIT
  */
 
+// Import styles to include them in the bundle
+import './styles/index.css';
+
 // Export all components
 export * from './components';
 

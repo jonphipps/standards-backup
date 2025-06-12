@@ -16,10 +16,8 @@
   --ifla-grey: #666666;
   
   /* Extended color palette - Green-based to match IFLA branding */
-  --ifla-green-dark: #256534;
-  --ifla-green-darker: #1f5429;
+  --ifla-green-darker: #256534;
   --ifla-green-darkest: #194220;
-  --ifla-green-light: #5fa370;
   --ifla-green-lighter: #73b384;
   --ifla-green-lightest: #87c398;
   
