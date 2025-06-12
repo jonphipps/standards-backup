@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi, Mock } from 'vitest';
-import { VocabularyComparisonTool } from '../../../scripts/vocabulary-comparison.mjs';
+import { VocabularyComparisonTool } from '../../../../../scripts/vocabulary-comparison.mjs';
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 
 // Mock dependencies

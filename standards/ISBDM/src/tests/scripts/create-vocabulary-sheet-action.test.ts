@@ -80,7 +80,7 @@ describe('create-vocabulary-sheet-action', () => {
 
       // The module itself doesn't read the file on import
       // Only when main() is called. Let's test that the functions exist
-      const module = await import('../../../scripts/create-vocabulary-sheet-action');
+      const module = await import('../../../../../scripts/create-vocabulary-sheet-action');
       
       expect(module.initializeGoogle).toBeDefined();
       expect(module.findOrCreateWorkbook).toBeDefined();
@@ -101,7 +101,7 @@ describe('create-vocabulary-sheet-action', () => {
 
       // The module import itself won't throw
       // We need to test the main function behavior
-      const module = await import('../../../scripts/create-vocabulary-sheet-action');
+      const module = await import('../../../../../scripts/create-vocabulary-sheet-action');
       
       // Verify that attempting to read the file throws
       expect(() => fs.readFileSync('config.json', 'utf8')).toThrow('File not found');
@@ -156,7 +156,7 @@ describe('create-vocabulary-sheet-action', () => {
       
       try {
         // Import the module (won't run main automatically)
-        const module = await import('../../../scripts/create-vocabulary-sheet-action');
+        const module = await import('../../../../../scripts/create-vocabulary-sheet-action');
         
         // Verify the module exports are available
         expect(module.initializeGoogle).toBeDefined();

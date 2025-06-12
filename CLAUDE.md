@@ -5,6 +5,7 @@
 - always test and pass tests before offering to commit. We're not done until tests pass. If there's no formal re-runnable test, offer to make one
 - we're using vitest as a test runner
 - use puppeteer for interface testing when useful
+- when you're searching for missing code, recursively search /Users/jonphipps/Code/IFLA/standards-dev first, then search the git repo history and and branches, then recuresively search /Users/jonphipps/Code/IFLA/
 
 # IFLA Standards Development Project Context
 

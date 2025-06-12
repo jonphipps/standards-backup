@@ -14,10 +14,23 @@ const mockEnv = {
 };
 
 describe('check-mediatype-languages.mjs', () => {
-  const scriptPath = path.join(process.cwd(), 'scripts', 'check-mediatype-languages.mjs');
-  const tmpDir = path.join(process.cwd(), 'tmp');
+  const projectRoot = path.resolve(__dirname, '../../../../..');
+  const scriptPath = path.join(projectRoot, 'scripts', 'check-mediatype-languages.mjs');
+  const tmpDir = path.join(projectRoot, 'tmp');
 
   beforeEach(async () => {
+    // Debug: Check current working directory
+    console.log('Test CWD:', process.cwd());
+    console.log('Script path:', scriptPath);
+    
+    // Verify script exists
+    try {
+      await fs.access(scriptPath);
+    } catch (error) {
+      console.error(`Script not found at: ${scriptPath}`);
+      throw error;
+    }
+    
     // Ensure tmp directory exists
     await fs.mkdir(tmpDir, { recursive: true });
     
@@ -42,19 +55,36 @@ describe('check-mediatype-languages.mjs', () => {
 
   describe('Command Line Arguments', () => {
     it('should show help when --help flag is used', async () => {
-      const { stdout } = await execAsync(`node ${scriptPath} --help`);
-      
-      expect(stdout).toContain('Language Tag Checker for Google Sheets');
-      expect(stdout).toContain('Usage:');
-      expect(stdout).toContain('Options:');
-      expect(stdout).toContain('--spreadsheet-id=ID');
-      expect(stdout).toContain('--ai');
-      expect(stdout).toContain('--markdown');
-      expect(stdout).toContain('Examples:');
+      try {
+        const result = await execAsync(`node ${scriptPath} --help`, { 
+          cwd: projectRoot,
+          env: { ...process.env }
+        });
+        const stdout = result.stdout || '';
+        const stderr = result.stderr || '';
+        
+        console.log('Command stdout:', JSON.stringify(stdout));
+        console.log('Command stderr:', JSON.stringify(stderr));
+        
+        expect(stdout).toContain('Language Tag Checker for Google Sheets');
+        expect(stdout).toContain('Usage:');
+        expect(stdout).toContain('Options:');
+        expect(stdout).toContain('--spreadsheet-id=ID');
+        expect(stdout).toContain('--ai');
+        expect(stdout).toContain('--markdown');
+        expect(stdout).toContain('Examples:');
+      } catch (error) {
+        // If the command fails, check stderr
+        console.error('Command failed:', error);
+        console.error('Command stderr:', error.stderr);
+        console.error('Command stdout:', error.stdout);
+        throw error;
+      }
     });
 
     it('should handle -h alias for help', async () => {
-      const { stdout } = await execAsync(`node ${scriptPath} -h`);
+      const result = await execAsync(`node ${scriptPath} -h`, { cwd: projectRoot });
+      const stdout = result.stdout || '';
       
       expect(stdout).toContain('Language Tag Checker for Google Sheets');
     });
@@ -140,7 +170,7 @@ mockSheetData.forEach(sheet => {
 
 // Output results
 if (outputMarkdown) {
-  const reportPath = path.join(process.cwd(), 'tmp', \`language-tag-mismatches\${useAI ? '-ai' : ''}.md\`);
+  const reportPath = path.join('${tmpDir}', \`language-tag-mismatches\${useAI ? '-ai' : ''}.md\`);
   const markdown = \`# Language Tag Mismatch Report
 Generated: \${new Date().toISOString()}
 
@@ -171,7 +201,7 @@ Total mismatches found: **\${mismatches.length}**
 
     it('should detect language mismatches in mock data', async () => {
       const mockScript = await createMockScript();
-      const { stdout } = await execAsync(`node ${mockScript}`);
+      const { stdout = '' } = await execAsync(`node ${mockScript}`, { cwd: projectRoot });
       
       expect(stdout).toContain('Found 1 language mismatches');
       expect(stdout).toContain('Row 3: zh -> fr'); // French text in Chinese column
@@ -179,7 +209,7 @@ Total mismatches found: **\${mismatches.length}**
 
     it('should generate markdown report with --markdown flag', async () => {
       const mockScript = await createMockScript();
-      await execAsync(`node ${mockScript} --markdown`);
+      await execAsync(`node ${mockScript} --markdown`, { cwd: projectRoot });
       
       const reportPath = path.join(tmpDir, 'language-tag-mismatches.md');
       const reportContent = await fs.readFile(reportPath, 'utf-8');
@@ -193,7 +223,7 @@ Total mismatches found: **\${mismatches.length}**
 
     it('should generate AI-specific markdown report with --ai flag', async () => {
       const mockScript = await createMockScript();
-      await execAsync(`node ${mockScript} --markdown --ai`);
+      await execAsync(`node ${mockScript} --markdown --ai`, { cwd: projectRoot });
       
       const reportPath = path.join(tmpDir, 'language-tag-mismatches-ai.md');
       const exists = await fs.access(reportPath).then(() => true).catch(() => false);

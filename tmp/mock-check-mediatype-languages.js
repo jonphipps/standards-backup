@@ -75,7 +75,7 @@ mockSheetData.forEach(sheet => {
 
 // Output results
 if (outputMarkdown) {
-  const reportPath = path.join(process.cwd(), 'tmp', `language-tag-mismatches${useAI ? '-ai' : ''}.md`);
+  const reportPath = path.join('/Users/jonphipps/Code/IFLA/standards-dev/tmp', `language-tag-mismatches${useAI ? '-ai' : ''}.md`);
   const markdown = `# Language Tag Mismatch Report
 Generated: ${new Date().toISOString()}
 

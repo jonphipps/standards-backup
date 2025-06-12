@@ -8,7 +8,7 @@ import {
   createVocabularySheet,
   findOrCreateWorkbook,
   updateIndexSheet
-} from '../../../scripts/create-vocabulary-sheet';
+} from '../../../../../scripts/create-vocabulary-sheet';
 
 // Test the actual business logic, not the mocks
 describe('create-vocabulary-sheet - Business Logic Tests', () => {

@@ -6,7 +6,7 @@ import {
   findOrCreateWorkbook,
   createVocabularySheet,
   DCTAP_PROFILES
-} from '../../../scripts/create-vocabulary-sheet';
+} from '../../../../../scripts/create-vocabulary-sheet';
 
 // Mock googleapis
 vi.mock('googleapis', () => ({

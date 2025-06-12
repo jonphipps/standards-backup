@@ -61,28 +61,28 @@ describe('Vocabulary Comparison CLI', () => {
 
     describe('Package.json Scripts', () => {
         it('should have compare:vocabulary script', async () => {
-            const packageJson = require('../../../package.json');
+            const packageJson = require('../../../../../package.json');
             
             expect(packageJson.scripts['compare:vocabulary']).toBeDefined();
             expect(packageJson.scripts['compare:vocabulary']).toContain('vocabulary-comparison.mjs');
         });
 
         it('should have compare:vocabulary:help script', async () => {
-            const packageJson = require('../../../package.json');
+            const packageJson = require('../../../../../package.json');
             
             expect(packageJson.scripts['compare:vocabulary:help']).toBeDefined();
             expect(packageJson.scripts['compare:vocabulary:help']).toContain('--help');
         });
 
         it('should have compare:vocabulary:md script', async () => {
-            const packageJson = require('../../../package.json');
+            const packageJson = require('../../../../../package.json');
             
             expect(packageJson.scripts['compare:vocabulary:md']).toBeDefined();
             expect(packageJson.scripts['compare:vocabulary:md']).toContain('--markdown');
         });
 
         it('should have compare:vocabulary:validate script', async () => {
-            const packageJson = require('../../../package.json');
+            const packageJson = require('../../../../../package.json');
             
             expect(packageJson.scripts['compare:vocabulary:validate']).toBeDefined();
             expect(packageJson.scripts['compare:vocabulary:validate']).toContain('--skip-rdf-check');

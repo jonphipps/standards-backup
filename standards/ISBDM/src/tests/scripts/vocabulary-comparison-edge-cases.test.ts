@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi, Mock } from 'vitest';
-import { VocabularyComparisonTool } from '../../../scripts/vocabulary-comparison.mjs';
+import { VocabularyComparisonTool } from '../../../../../scripts/vocabulary-comparison.mjs';
 
 // Mock dependencies
 const mockFetch = vi.fn() as Mock;

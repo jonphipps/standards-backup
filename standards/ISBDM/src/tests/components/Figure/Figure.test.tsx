@@ -78,9 +78,9 @@ describe('Figure component', () => {
       />
     );
 
-    // Should have two figcaptions
+    // Should have one figcaption
     const captions = screen.getAllByRole('figure')[0].querySelectorAll('figcaption');
-    expect(captions).toHaveLength(2);
+    expect(captions).toHaveLength(1);
 
     // Check expand link
     const link = screen.getByRole('link');
