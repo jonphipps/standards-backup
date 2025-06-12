@@ -41,8 +41,6 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          onBrokenLinks: 'warn', // Warns on broken links
-          onBrokenAnchors: 'warn', // Warns on broken anchors
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
@@ -50,7 +48,6 @@ const config: Config = {
         },
         blog: {
           showReadingTime: true,
-          onBrokenLinks: 'throw',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
