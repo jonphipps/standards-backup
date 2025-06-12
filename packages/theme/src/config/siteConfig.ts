@@ -64,8 +64,8 @@ export function getSiteUrl(
     return '#ERROR_SITE_CONFIG_NOT_FOUND';
   }
 
-  const LRMPath = path.startsWith('/') ? path.substring(1) : path;
-  const fullPath = `${siteConfig.baseUrl}${LRMPath}`;
+  const normalizedPath = path.startsWith('/') ? path.substring(1) : path;
+  const fullPath = `${siteConfig.baseUrl}${normalizedPath}`;
   return `${siteConfig.url}${fullPath}`;
 }
 

@@ -2,6 +2,8 @@
 - this is the command to build a single standards: pnpm build standards/{name}
 - NEVER hard code navigation links. Always use links that can resolve regardless of base url
 - offer to add to git, create a commit message, and commit if I say yes/ok
+- always test and pass tests before offering to commit. We're not done until tests pass. If there's no formal re-runnable test, offer to make one
+- we're using vitest as a test runner
 
 # IFLA Standards Development Project Context
 
