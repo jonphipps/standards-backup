@@ -16,7 +16,7 @@ const currentEnv: DocsEnv = getCurrentEnv();
 const currentSiteConfig = getSiteDocusaurusConfig(siteKey, currentEnv);
 
 const config: Config = {
-  ...commonDefaults,
+  ...commonDefaults(currentEnv),
   
   url: currentSiteConfig.url,
   title: 'MulDiCat: RDA to MARC21 and UNIMARC',

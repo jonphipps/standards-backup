@@ -174,6 +174,7 @@ export const staticBaseSettings: Partial<Config> = {
 export const baseDocusaurusConfig = (currentEnv: DocsEnv): Partial<Config> => {
   return {
     ...staticBaseSettings, // Spread the static base settings
+    staticDirectories: ['static', '../../packages/theme/static'], // Standards sites path
     plugins: sharedPlugins,
     themes: sharedThemes,
     themeConfig: {

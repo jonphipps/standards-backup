@@ -19,7 +19,7 @@ const currentSiteConfig = getSiteDocusaurusConfig(siteKey, currentEnv);
 const portalUrl = getSiteUrl('portal', '/', currentEnv);
 
 const config: Config = {
-  ...commonDefaults,
+  ...commonDefaults(currentEnv),
   url: currentSiteConfig.url,
   title: 'ISBD for Manifestation',
   tagline: 'International Standard Bibliographic Description for Manifestation',
