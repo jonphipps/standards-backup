@@ -20,7 +20,7 @@ const portalUrl = getSiteUrl('portal', '/', currentEnv);
 
 const config: Config = {
   ...commonDefaults,
-  onBrokenLinks: 'warn', // Add this line
+  onBrokenLinks: 'ignore', // Ignore generated element links, use custom validation for navigation
   url: currentSiteConfig.url,
   title: 'ISBD for Manifestation',
   tagline: 'International Standard Bibliographic Description for Manifestation',

@@ -4,6 +4,7 @@
 - offer to add to git, create a commit message, and commit if I say yes/ok
 - always test and pass tests before offering to commit. We're not done until tests pass. If there's no formal re-runnable test, offer to make one
 - we're using vitest as a test runner
+- use puppeteer for interface testing when useful
 
 # IFLA Standards Development Project Context
 
