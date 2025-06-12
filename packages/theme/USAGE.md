@@ -40,18 +40,28 @@ pnpm add docusaurus-plugin-sass @easyops-cn/docusaurus-search-local
 Replace your `docusaurus.config.ts` with:
 
 ```typescript
-import { createIFLAConfig, VOCABULARY_DEFAULTS } from '@ifla/theme/config';
+import type { Config } from '@docusaurus/types';
+import { commonDefaults, getSiteDocusaurusConfig, getCurrentEnv, DocsEnv, SiteKey } from '@ifla/theme/config/siteConfig.server';
 
-const config = createIFLAConfig({
+// Unique key for the site, matching the key in siteConfig.ts
+const siteKey: SiteKey = 'my-standard'; 
+
+const currentEnv: DocsEnv = getCurrentEnv();
+const currentSiteConfig = getSiteDocusaurusConfig(siteKey, currentEnv);
+
+const config: Config = {
+  ...commonDefaults,
+  url: currentSiteConfig.url,
+  baseUrl: currentSiteConfig.baseUrl,
+
   title: 'IFLA My Standard',
   tagline: 'A comprehensive library standard',
-  url: 'https://mystandard.iflastandards.info',
-  baseUrl: '/',
+
   organizationName: 'iflastandards',
   projectName: 'my-standard',
-  githubUrl: 'https://github.com/iflastandards/my-standard',
-  vocabularyDefaults: VOCABULARY_DEFAULTS.GENERIC // or ISBDM, LRM, ISBD
-});
+
+  // ... other site-specific configurations
+};
 
 export default config;
 ```
@@ -165,11 +175,13 @@ import { VocabularyTable } from '@ifla/theme/components';
 Use consistent linking throughout your documentation:
 
 ```mdx
-import { InLink, OutLink } from '@ifla/theme/components';
+import { InLink, OutLink, SiteLink } from '@ifla/theme/components';
 
 See the <InLink href="/docs/elements/1002">Description</InLink> element for more details.
 
 Refer to the <OutLink href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/">Dublin Core specification</OutLink> for background.
+
+Link to another standard site using <SiteLink toSiteKey="LRM" path="/docs/overview">the LRM site</SiteLink>.
 ```
 
 ### Semantic Components
@@ -332,19 +344,19 @@ vocabularyDefaults: {
 Extend the default navigation:
 
 ```typescript
-const config = createIFLAConfig({
-  // ... base config
-});
+// In docusaurus.config.ts, after defining the base config
+
+// ... (imports and initial config setup as above)
+
+const config: Config = {
+  // ... (all your base config properties)
+};
 
 // Add custom navbar items
 config.themeConfig.navbar.items.splice(1, 0, {
-  type: 'dropdown',
-  label: 'My Custom Menu',
+  to: '/community/',
+  label: 'Community',
   position: 'left',
-  items: [
-    { type: 'doc', docId: 'custom/overview', label: 'Overview' },
-    { type: 'doc', docId: 'custom/guide', label: 'User Guide' },
-  ],
 });
 
 export default config;
@@ -358,18 +370,27 @@ export default config;
 
 2. Replace your docusaurus config:
 ```typescript
-import { createIFLAConfig, VOCABULARY_DEFAULTS } from '@ifla/theme/config';
+import type { Config } from '@docusaurus/types';
+import { commonDefaults, getSiteDocusaurusConfig, getCurrentEnv, DocsEnv, SiteKey } from '@ifla/theme/config/siteConfig.server';
 
-const config = createIFLAConfig({
+const siteKey: SiteKey = 'ISBDM'; // Set the site key to ISBDM
+
+const currentEnv: DocsEnv = getCurrentEnv();
+const currentSiteConfig = getSiteDocusaurusConfig(siteKey, currentEnv);
+
+const config: Config = {
+  ...commonDefaults,
+  url: currentSiteConfig.url,
+  baseUrl: currentSiteConfig.baseUrl,
+
   title: 'IFLA ISBDM',
   tagline: 'International Standard Bibliographic Description (Manifestation)',
-  url: 'https://iflastandards.github.io',
-  baseUrl: '/ISBDM/',
+
   organizationName: 'iflastandards',
-  projectName: 'ISBDM',
-  githubUrl: 'https://github.com/iflastandards/ISBDM',
-  vocabularyDefaults: VOCABULARY_DEFAULTS.ISBDM
-});
+  projectName: 'ISBDM', // Corresponds to repo name for GitHub pages deployment
+};
+
+export default config;
 ```
 
 3. Update CSS imports:

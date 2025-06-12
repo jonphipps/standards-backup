@@ -33,21 +33,33 @@ yarn add @ifla/theme
 In your `docusaurus.config.ts`:
 
 ```typescript
-import { createIFLAConfig, VOCABULARY_DEFAULTS } from '@ifla/theme/config';
+import type { Config } from '@docusaurus/types';
+import { commonDefaults, getSiteDocusaurusConfig, getCurrentEnv, DocsEnv, SiteKey } from '@ifla/theme/config/siteConfig.server';
 
-const config = createIFLAConfig({
+// Unique key for the site, matching the key in siteConfig.ts
+const siteKey: SiteKey = 'my-standard'; 
+
+const currentEnv: DocsEnv = getCurrentEnv();
+const currentSiteConfig = getSiteDocusaurusConfig(siteKey, currentEnv);
+
+const config: Config = {
+  ...commonDefaults,
+  url: currentSiteConfig.url,
+  baseUrl: currentSiteConfig.baseUrl,
+
   title: 'My IFLA Standard',
   tagline: 'A comprehensive library standard',
-  url: 'https://mystandard.iflastandards.info',
-  baseUrl: '/',
+
   organizationName: 'iflastandards',
   projectName: 'my-standard',
-  githubUrl: 'https://github.com/iflastandards/my-standard',
-  vocabularyDefaults: VOCABULARY_DEFAULTS.GENERIC
-});
+
+  // ... other site-specific configurations
+};
 
 export default config;
 ```
+
+This setup leverages a centralized configuration that is aware of the deployment environment (`localhost`, `preview`, `production`) via the `DOCS_ENV` environment variable.
 
 ### 2. Import Styles
 
@@ -64,7 +76,7 @@ In your `src/css/custom.css`:
 In your MDX files:
 
 ```mdx
-import { ElementReference, VocabularyTable, InLink } from '@ifla/theme/components';
+import { ElementReference, VocabularyTable, InLink, SiteLink } from '@ifla/theme/components';
 
 # My Element
 
@@ -72,14 +84,24 @@ import { ElementReference, VocabularyTable, InLink } from '@ifla/theme/component
 
 ## See Also
 
-See <InLink href="/docs/related-element">Related Element</InLink> for more information.
+- See <InLink href="/docs/related-element">Related Element</InLink> for an internal link.
+- See <SiteLink toSiteKey="other-standard" path="/docs/some-page">Another Standard</SiteLink> for a link to another site.
 
 ## Vocabulary
 
 <VocabularyTable csvUrl="/data/vocabulary.csv" />
-```
 
 ## Components
+
+### SiteLink
+
+Creates an environment-aware link to another Docusaurus site within the monorepo. It automatically resolves the correct URL for `localhost`, `preview`, and `production` builds.
+
+```tsx
+import { SiteLink } from '@ifla/theme/components';
+
+<SiteLink toSiteKey="LRM" path="/docs/lrm-overview">Read the LRM Overview</SiteLink>
+```
 
 ### ElementReference
 
@@ -395,15 +417,15 @@ export default customConfig;
 
 ## License
 
-MIT © International Federation of Library Associations and Institutions (IFLA)
+MIT International Federation of Library Associations and Institutions (IFLA)
 
 ## Support
 
-- 📚 [Documentation](https://iflastandards.github.io/standards-dev/)
-- 🐛 [Issue Tracker](https://github.com/iflastandards/standards-dev/issues)
-- 💬 [Discussions](https://github.com/iflastandards/standards-dev/discussions)
-- 📧 Email: [standards@ifla.org](mailto:standards@ifla.org)
+- [Documentation](https://iflastandards.github.io/standards-dev/)
+- [Issue Tracker](https://github.com/iflastandards/standards-dev/issues)
+- [Discussions](https://github.com/iflastandards/standards-dev/discussions)
+- Email: [standards@ifla.org](mailto:standards@ifla.org)
 
 ---
 
-**Built with ❤️ by the IFLA community**
+**Built with by the IFLA community**

@@ -10,3 +10,5 @@ dist/
 /tmp/
 .DS_Store
 /output
+/*.png
+/*.html

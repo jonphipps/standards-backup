@@ -82,3 +82,12 @@
 
 ## Component Development Guidelines
 - always use sass for styles. Components should be created in folders named for the component and the component code should be in index.tsx and styles in styles.module.scss
+
+## Developer Notes Management
+- Maintain a comprehensive set of instructions in the developer_notes folder. Each file should have:
+    - Simple usage instructions at the top
+    - More detailed developer section with:
+        - Related code information
+        - Where features are configured
+        - Hints for modification
+- Remember to ask about updating notes when we finish working on something
