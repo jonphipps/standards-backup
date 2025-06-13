@@ -5,7 +5,7 @@ description: Complete developer guide for the VocabularyTable component
 sidebar_label: VocabularyTable Component (Developer)
 ---
 
-import VocabularyTable from '@site/src/components/global/VocabularyTable';
+import { VocabularyTable } from '@ifla/theme';
 
 # VocabularyTable Component - Developer Guide
 
@@ -22,7 +22,7 @@ The `VocabularyTable` component is **globally registered** and available in all 
 However, if you need to access **static methods** like `generateTOC`, you must import the component:
 
 ```mdx
-import VocabularyTable from '@site/src/components/global/VocabularyTable';
+import { VocabularyTable } from '@ifla/theme';
 
 export const toc = VocabularyTable.generateTOC(frontMatter);
 ```
