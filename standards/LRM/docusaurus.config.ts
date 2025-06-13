@@ -67,7 +67,7 @@ const config: Config = {
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [],
-        createRedirects(existingPath) {
+        createRedirects(_existingPath: string) {
           return undefined;
         },
       },

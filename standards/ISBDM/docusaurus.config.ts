@@ -1,6 +1,6 @@
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
-import type { SidebarItem, SidebarItemsGeneratorArgs as DefaultSidebarItemsGeneratorArgs } from '@docusaurus/plugin-content-docs/lib/sidebars/types';
+import type {  SidebarItemsGeneratorArgs, NormalizedSidebarItem } from '@docusaurus/plugin-content-docs/lib/sidebars/types';
 import {
   sharedPlugins,
   sharedThemes,
@@ -11,6 +11,11 @@ import {
   type DocsEnv,              // Import DocsEnv type
   getSiteUrl                // Import getSiteUrl
 } from '@ifla/theme/config';
+
+// Create a custom type that includes the undocumented `defaultSidebarItemsGenerator`
+type CustomSidebarItemsGeneratorArgs = SidebarItemsGeneratorArgs & {
+  defaultSidebarItemsGenerator: (args: SidebarItemsGeneratorArgs) => Promise<NormalizedSidebarItem[]> | NormalizedSidebarItem[];
+};
 
 const siteKey: SiteKey = 'ISBDM';
 const currentEnv: DocsEnv = getCurrentEnv();
@@ -104,12 +109,13 @@ const config: Config = {
           },
           lastVersion: 'current',
           onlyIncludeVersions: ['current'],
-          async sidebarItemsGenerator({defaultSidebarItemsGenerator, ...args}: DefaultSidebarItemsGeneratorArgs) {
-            const sidebarItems: SidebarItem[] = await defaultSidebarItemsGenerator(args);
+          async sidebarItemsGenerator(generatorArgs: SidebarItemsGeneratorArgs) {
+            const { defaultSidebarItemsGenerator, ...args } = generatorArgs as CustomSidebarItemsGeneratorArgs;
+            const sidebarItems: NormalizedSidebarItem[] = await defaultSidebarItemsGenerator(args);
 
-            function filterIndexMdx(items: SidebarItem[]): SidebarItem[] {
+            function filterIndexMdx(items: NormalizedSidebarItem[]): NormalizedSidebarItem[] {
               return items
-                  .filter((item: SidebarItem) => {
+                  .filter((item: NormalizedSidebarItem) => {
                     if (item.type === 'doc') {
                       const docId = item.id || (item as any).docId || '';
                       if (docId === 'index' || 
@@ -120,11 +126,11 @@ const config: Config = {
                     }
                     return true;
                   })
-                  .map((item: SidebarItem) => {
+                  .map((item: NormalizedSidebarItem) => {
                     if (item.type === 'category' && item.items) {
                       return {
                         ...item,
-                        items: filterIndexMdx(item.items),
+                        items: filterIndexMdx(item.items as NormalizedSidebarItem[]), // Ensure recursive call gets NormalizedSidebarItem[]
                       };
                     }
                     return item;

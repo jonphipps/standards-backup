@@ -121,8 +121,14 @@ export function VocabularyTable({
   // Current language state
   const [currentLanguage, setCurrentLanguage] = useState(resolvedDefaultLanguage);
   
-  const { colorMode } = useColorMode();
-  const isDarkTheme = colorMode === 'dark';
+  let isDarkTheme = false;
+  try {
+    const { colorMode } = useColorMode();
+    isDarkTheme = colorMode === 'dark';
+  } catch (error) {
+    // Fallback to light theme if colorMode is not available
+    isDarkTheme = false;
+  }
 
   const [filterText, setFilterText] = useState('');
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());

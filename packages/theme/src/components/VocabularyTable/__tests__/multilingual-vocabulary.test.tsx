@@ -4,6 +4,15 @@ import { VocabularyTable } from '../index';
 import { expect, describe, it, vi, beforeEach } from 'vitest';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
+// Augment the Window interface for testing purposes
+declare global {
+  interface Window {
+    __DOCUSAURUS__?: {
+      siteConfig?: any;
+    };
+  }
+}
+
 // Mock the useColorMode hook
 vi.mock('@docusaurus/theme-common', () => ({
   useColorMode: () => ({
@@ -11,57 +20,42 @@ vi.mock('@docusaurus/theme-common', () => ({
   }),
 }));
 
-// Mock the useDocusaurusContext hook with multilingual defaults
-vi.mock('@docusaurus/useDocusaurusContext', () => {
-  return {
-    default: () => ({
-      siteConfig: {
-        customFields: {
-          vocabularyDefaults: {
-            prefix: 'isbdm',
-            startCounter: 1000,
-            uriStyle: 'numeric',
-            caseStyle: 'kebab-case',
-            showFilter: true,
-            filterPlaceholder: 'Filter values...',
-            showTitle: false,
-            showURIs: true,
-            defaultLanguage: 'en',
-            availableLanguages: ['en', 'fr', 'es'],
-            showLanguageSelector: true
-          }
-        }
-      },
-      i18n: {
-        currentLocale: 'en', // Default locale for tests
-        locales: ['en', 'fr', 'es']
-      }
-    })
-  };
-});
+// Centralized mock for Docusaurus context
+const mockSiteConfig = {
+  customFields: {
+    vocabularyDefaults: {
+      prefix: 'isbdm',
+      startCounter: 1000,
+      uriStyle: 'numeric',
+      caseStyle: 'kebab-case',
+      showFilter: true,
+      filterPlaceholder: 'Filter values...',
+      showTitle: false,
+      showURIs: true,
+      defaultLanguage: 'en',
+      availableLanguages: ['en', 'fr', 'es'],
+      showLanguageSelector: true,
+    },
+  },
+};
+
+// Mock the useDocusaurusContext hook
+vi.mock('@docusaurus/useDocusaurusContext', () => ({
+  default: () => ({
+    siteConfig: mockSiteConfig,
+    i18n: {
+      currentLocale: 'en',
+      locales: ['en', 'fr', 'es'],
+    },
+  }),
+}));
 
 describe('Multilingual VocabularyTable', () => {
   // Mock window.__DOCUSAURUS__ for generateTOC tests
   beforeEach(() => {
     if (typeof window !== 'undefined') {
       window.__DOCUSAURUS__ = {
-        siteConfig: {
-          customFields: {
-            vocabularyDefaults: {
-              prefix: 'isbdm',
-              startCounter: 1000,
-              uriStyle: 'numeric',
-              caseStyle: 'kebab-case',
-              showFilter: true,
-              filterPlaceholder: 'Filter values...',
-              showTitle: false,
-              showURIs: true,
-              defaultLanguage: 'en',
-              availableLanguages: ['en', 'fr', 'es'],
-              showLanguageSelector: true
-            }
-          }
-        }
+        siteConfig: mockSiteConfig,
       };
     }
   });
@@ -413,23 +407,7 @@ describe('Multilingual VocabularyTable', () => {
     it.skip('uses current Docusaurus locale as default language', () => {
       // Mock French locale
       const mockContextWithFrench = {
-        siteConfig: {
-          customFields: {
-            vocabularyDefaults: {
-              prefix: 'isbdm',
-              startCounter: 1000,
-              uriStyle: 'numeric',
-              caseStyle: 'kebab-case',
-              showFilter: true,
-              filterPlaceholder: 'Filter values...',
-              showTitle: false,
-              showURIs: true,
-              defaultLanguage: 'en',
-              availableLanguages: ['en', 'fr', 'es'],
-              showLanguageSelector: true
-            }
-          }
-        },
+        siteConfig: mockSiteConfig,
         i18n: {
           currentLocale: 'fr',
           locales: ['en', 'fr', 'es']
@@ -450,23 +428,7 @@ describe('Multilingual VocabularyTable', () => {
     it.skip('falls back to English when current locale is not available in data', () => {
       // Mock German locale (not available in test data)
       const mockContextWithGerman = {
-        siteConfig: {
-          customFields: {
-            vocabularyDefaults: {
-              prefix: 'isbdm',
-              startCounter: 1000,
-              uriStyle: 'numeric',
-              caseStyle: 'kebab-case',
-              showFilter: true,
-              filterPlaceholder: 'Filter values...',
-              showTitle: false,
-              showURIs: true,
-              defaultLanguage: 'en',
-              availableLanguages: ['en', 'fr', 'es'],
-              showLanguageSelector: true
-            }
-          }
-        },
+        siteConfig: mockSiteConfig,
         i18n: {
           currentLocale: 'de',
           locales: ['en', 'fr', 'es', 'de']
