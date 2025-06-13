@@ -124,7 +124,14 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright ${new Date().getFullYear()} IFLA. Built with Docusaurus.`,
+      copyright: `
+        Copyright © ${new Date().getFullYear()} International Federation of Library Associations and Institutions (IFLA)<br />
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">
+          <img src="img/cc0_by.png" alt="My Logo Alt Text" style="vertical-align:middle; height:24px;" />
+        </a>
+        Gordon Dunsire and Mirna Willer (Main design and content editors).
+      `,
+
     },
     prism: {
       theme: prismThemes.github,
