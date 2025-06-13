@@ -7,7 +7,29 @@ This directory contains detailed documentation for developers working on the IFL
 - **command-line-scripts/** - Documentation for CLI tools and build scripts
 - **sites/** - Notes about individual site configurations and customizations
 - **theme/** - Documentation about the shared theme package
+  - `configuration-consolidation.md` - How theme config is shared across sites
+  - `sass-integration.md` - SASS setup for theme components
+  - `typescript-docusaurus-issues.md` - TypeScript compatibility notes
 - **tools/** - Notes about development tools and utilities
+  - `language-checking-scripts.md` - Language validation tools
+- **vocabulary-comparison-testing.md** - Testing vocabulary server responses
+
+## Recent Updates (2025-06-13)
+
+### Theme Configuration Consolidation
+- Created `baseDocusaurusConfig` function for shared configuration
+- Simplified footer implementation across all sites
+- All sites now inherit common theme settings automatically
+
+### SASS Integration Fixed
+- Fixed ElementReference component SASS compilation
+- Added proper dependencies to theme package
+- Updated tsup.config.ts for SASS support
+
+### New Language Checking Scripts
+- Added multiple scripts for language tag validation
+- Support for markdown and AI-friendly output formats
+- Can check MDX files, vocabularies, and SKOS data
 
 ## Note Format
 
