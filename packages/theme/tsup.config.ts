@@ -23,7 +23,7 @@ export default defineConfig({
   outDir: 'dist',
   target: 'es2020', // Or your desired target
   platform: 'browser', // 'node' or 'browser' if specific, 'neutral' for libraries
-  jsx: 'react-jsx', // Handle JSX syntax
+  jsx: 'automatic', // Use the new JSX transform, defaults to React
   external: [
     'react',
     'react-dom',
