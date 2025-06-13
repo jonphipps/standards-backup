@@ -2,6 +2,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { parse } from 'csv-parse/sync';
+import { fileURLToPath } from 'node:url';
 
 interface ProfileProperty {
   propertyID: string;
@@ -194,7 +195,7 @@ function analyzeCSVFile(filePath: string): LanguageReport {
     });
 
     // Analyze each row
-    records.forEach((row, index) => {
+    records.forEach((row: { [key: string]: string }, index : number  ) => {
       // Skip ConceptScheme rows and metadata rows
       if (row['rdf:type'] === 'skos:ConceptScheme' || 
           row['uri'] === 'metadataregistry.org:uri/RegStatus/1001' ||
@@ -426,10 +427,10 @@ function generateMarkdownReport(summary: SummaryStats) {
   console.log(`\nMarkdown report saved to: ${mdPath}`);
 }
 
-// Main execution
-if (require.main === module) {
+// Main execution block
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const vocabsPath = process.argv[2] || path.join(process.cwd(), 'static/vocabs/csv');
-  
+
   if (!fs.existsSync(vocabsPath)) {
     console.error(`Error: Path "${vocabsPath}" does not exist`);
     process.exit(1);
@@ -437,16 +438,16 @@ if (require.main === module) {
 
   const summary = generateReport(vocabsPath);
   printReport(summary);
-  
+
   // Write detailed report to file
   const reportPath = path.join(process.cwd(), 'tmp/language-coverage-report.json');
   fs.mkdirSync(path.dirname(reportPath), { recursive: true });
   fs.writeFileSync(reportPath, JSON.stringify(summary, null, 2));
   console.log(`\nDetailed report saved to: ${reportPath}`);
-  
+
   // Generate markdown report
   generateMarkdownReport(summary);
-  
+
   // Exit with error code if errors were found
   if (summary.totalErrors > 0) {
     process.exit(1);
