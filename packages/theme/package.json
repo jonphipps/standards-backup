@@ -1,20 +1,24 @@
 {
   "name": "@ifla/theme",
   "version": "0.0.0",
-  "private": true,
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist",
+    "src",
+    "static"
+  ],
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
   "scripts": {
     "build": "pnpm exec tsup"
   },
-  "files": [
-    "dist",
-    "src",
-    "static",
-    "LICENSE",
-    "README.md"
-  ],
+  "devDependencies": {
+    "esbuild-sass-plugin": "^3.2.0",
+    "postcss": "^8.5.5",
+    "postcss-modules": "^6.0.1",
+    "tsup": "^8.0.0"
+  },
+  "private": true,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -70,8 +74,6 @@
     }
   },
   "gitHead": "04e45d41a75574005543a45032997cb9a32c645e",
-  "devDependencies": {
-    "postcss": "^8.5.5",
-    "postcss-modules": "^6.0.1"
-  }
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts"
 }
