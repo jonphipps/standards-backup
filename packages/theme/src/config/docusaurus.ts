@@ -1,7 +1,7 @@
 import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
 import type { NavbarItem, FooterLinkItem } from '@docusaurus/theme-common';
-import { type SiteKey, DocsEnv } from './siteConfigCore';
+import { type DocsEnv } from './siteConfigCore';
 import { getSiteUrl } from './siteConfig';
 
 /**
@@ -105,10 +105,6 @@ export const sharedThemeConfig = {
     style: 'dark',
     links: [
       {
-        title: 'Sites',
-        items: sharedFooterSiteLinks(currentEnv),
-      },
-      {
         title: 'Community',
         items: [
           {
@@ -210,9 +206,16 @@ export const baseDocusaurusConfig = (currentEnv: DocsEnv): Partial<Config> => {
         items: [], // Sites are responsible for populating this themselves
       },
       footer: {
-        ...(sharedThemeConfig.footer as any), // Spreads sharedThemeConfig.footer (e.g., style, static links, copyright)
-        // Sites are expected to merge their specific links, including sharedFooterSiteLinks(currentEnv),
-        // into the footer.links array provided by this base config.
+        ...(sharedThemeConfig.footer as any), // Spreads style, copyright, and the now static (Community, More) links
+        // Reconstruct the links array to include the dynamic 'Sites' group first,
+        // followed by the other static groups from sharedThemeConfig.footer.links.
+        links: [
+          {
+            title: 'Sites',
+            items: sharedFooterSiteLinks(currentEnv),
+          },
+          ...sharedThemeConfig.footer.links, // Appends 'Community' and 'More' groups
+        ],
       },
     },
   };

@@ -1,7 +1,6 @@
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import {
-  sharedThemeConfig,
   sharedPlugins,
   sharedThemes,
   commonDefaults,
@@ -105,10 +104,10 @@ const config: Config = {
 
   // Site-specific theme config with shared elements
   themeConfig: {
-    ...sharedThemeConfig,
+    ...(commonDefaults(currentEnv).themeConfig as any),
     
     navbar: {
-      ...sharedThemeConfig.navbar,
+      ...(commonDefaults(currentEnv).themeConfig as any)?.navbar,
       title: 'MulDiCat: RDA to MARC21 and UNIMARC',
       items: [
         {

@@ -1,7 +1,6 @@
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import {
-  sharedThemeConfig,
   sharedPlugins,
   sharedThemes,
   commonDefaults,
@@ -109,7 +108,7 @@ const config: Config = {
 
   // Site-specific theme config with shared elements
   themeConfig: {
-    ...sharedThemeConfig,
+    ...(commonDefaults(currentEnv).themeConfig as any), // Inherit full theme config from common defaults
     
     // Site-specific docs config
     docs: {
@@ -122,7 +121,7 @@ const config: Config = {
     
     // Site-specific navbar
     navbar: {
-      ...sharedThemeConfig.navbar,
+      ...(commonDefaults(currentEnv).themeConfig as any)?.navbar, // Inherit base navbar (logo, etc.)
       title: 'FR',
       items: [
         {
@@ -176,22 +175,6 @@ const config: Config = {
     },
     
     // Site-specific footer
-    footer: {
-      style: 'dark' as const,
-      links: [
-        {
-          title: 'Documentation',
-          items: [
-            {
-              label: 'Introduction',
-              to: '/docs/intro',
-            },
-          ],
-        },
-        ...(sharedThemeConfig.footer.links || []),
-      ],
-      copyright: sharedThemeConfig.footer.copyright,
-    },
   } satisfies Preset.ThemeConfig,
 };
 

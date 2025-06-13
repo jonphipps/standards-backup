@@ -2,7 +2,6 @@ import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import type { SidebarItem, SidebarItemsGeneratorArgs as DefaultSidebarItemsGeneratorArgs } from '@docusaurus/plugin-content-docs/lib/sidebars/types';
 import {
-  sharedThemeConfig,
   sharedPlugins,
   sharedThemes,
   commonDefaults,
@@ -158,7 +157,7 @@ const config: Config = {
 
   // Site-specific theme config with shared elements
   themeConfig: {
-    ...sharedThemeConfig,
+    ...(commonDefaults(currentEnv).themeConfig as any),
     
     // Site-specific docs config
     docs: {
@@ -171,7 +170,7 @@ const config: Config = {
     
     // Site-specific navbar
     navbar: {
-      ...sharedThemeConfig.navbar,
+      ...(commonDefaults(currentEnv).themeConfig as any)?.navbar,
       title: 'ISBDM',
       items: [
         {
@@ -303,27 +302,6 @@ const config: Config = {
           type: 'search',
           position: 'right',
         },
-      ],
-    },
-    
-    // Site-specific footer
-    footer: {
-      ...sharedThemeConfig.footer,
-      links: [
-        {
-          title: 'Documentation',
-          items: [
-            {
-              label: 'Introduction',
-              to: '/docs/intro',
-            },
-            {
-              label: 'Elements',
-              to: '/docs/statements',
-            },
-          ],
-        },
-        ...sharedThemeConfig.footer.links,
       ],
     },
   } satisfies Preset.ThemeConfig,
