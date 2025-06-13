@@ -1,0 +1,8 @@
+Sheet Name,Title,Description,Languages,Original CSV Path,Row Count,Status
+content-form,Content Form,ISBD Content Form vocabulary terms,"en, es",standards/isbd/csv/ns/isbd/terms/contentform.csv,13,Created
+content-form-base,Content Form Base,ISBD Content Form Base vocabulary terms,"en, es",standards/isbd/csv/ns/isbd/terms/contentformbase.csv,15,Created
+dimensionality,Dimensionality,ISBD Dimensionality vocabulary for content qualification,"en, es",standards/isbd/csv/ns/isbd/terms/contentqualification/dimensionality.csv,4,Created
+motion,Motion,ISBD Motion vocabulary for content qualification,"en, es",standards/isbd/csv/ns/isbd/terms/contentqualification/motion.csv,4,Created
+sensory-specification,Sensory Specification,ISBD Sensory Specification vocabulary for content qualification,"en, es",standards/isbd/csv/ns/isbd/terms/contentqualification/sensoryspecfication.csv,7,Created
+content-type,Content Type,ISBD Content Type vocabulary for content qualification,"en, es",standards/isbd/csv/ns/isbd/terms/contentqualification/type.csv,5,Created
+media-type,Media Type,ISBD Media Type vocabulary terms,"en, es",standards/isbd/csv/ns/isbd/terms/mediatype.csv,12,Created

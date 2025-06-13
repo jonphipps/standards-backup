@@ -1,0 +1,3 @@
+Sheet Name,Title,Description,Languages,Original CSV Path,Row Count,Status
+isbd-elements,ISBD Elements,Core ISBD elements and properties for bibliographic description,"en, es",standards/isbd/csv/ns/isbd/elements.csv,192,Created
+unconstrained-elements,Unconstrained Elements,ISBD Unconstrained Elements,"en, es",standards/isbd/csv/ns/isbd/unc/elements.csv,165,Created
