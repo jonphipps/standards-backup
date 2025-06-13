@@ -105,7 +105,7 @@ export function createIFLAConfig(
 
     // Standard plugins
     plugins: [
-      'docusaurus-plugin-sass',
+      // 'docusaurus-plugin-sass', // Removed: Already included via commonDefaults/sharedPlugins
       [
         '@docusaurus/plugin-client-redirects',
         {

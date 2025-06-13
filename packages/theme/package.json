@@ -53,6 +53,11 @@
       "import": "./dist/components/SiteLink.mjs",
       "require": "./dist/components/SiteLink.js"
     },
+    "./components/ElementReference": {
+      "types": "./dist/components/ElementReference/index.d.ts",
+      "import": "./dist/components/ElementReference/index.mjs",
+      "require": "./dist/components/ElementReference/index.js"
+    },
     "./hooks/useDocsEnv": {
       "types": "./dist/hooks/useDocsEnv.d.ts",
       "import": "./dist/hooks/useDocsEnv.mjs",
@@ -64,5 +69,9 @@
       "require": "./dist/utils/index.js"
     }
   },
-  "gitHead": "04e45d41a75574005543a45032997cb9a32c645e"
+  "gitHead": "04e45d41a75574005543a45032997cb9a32c645e",
+  "devDependencies": {
+    "postcss": "^8.5.5",
+    "postcss-modules": "^6.0.1"
+  }
 }

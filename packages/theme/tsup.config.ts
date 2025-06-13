@@ -1,5 +1,5 @@
 import { defineConfig } from 'tsup';
-import { sassPlugin } from 'esbuild-sass-plugin';
+import { sassPlugin, postcssModules } from 'esbuild-sass-plugin';
 
 export default defineConfig({
   entry: {
@@ -10,6 +10,7 @@ export default defineConfig({
     'config/siteConfig.server': 'src/config/siteConfig.server.ts',
     'config/docusaurus': 'src/config/docusaurus.ts',
     'components/SiteLink': 'src/components/SiteLink.tsx',
+    'components/ElementReference': 'src/components/ElementReference/index.tsx',
     'hooks/useDocsEnv': 'src/hooks/useDocsEnv.ts',
     'hooks/usePrevious': 'src/hooks/usePrevious.ts',
     'utils/index': 'src/utils/index.ts',
@@ -31,5 +32,5 @@ export default defineConfig({
     'clsx',
     'prism-react-renderer',
   ],
-  esbuildPlugins: [sassPlugin({})],
+  esbuildPlugins: [sassPlugin({ transform: postcssModules({}) })],
 });

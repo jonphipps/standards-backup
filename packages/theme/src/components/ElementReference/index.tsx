@@ -429,8 +429,6 @@ function generateTurtle(rdfData: RDFData): string {
   let resourceTypeDeclaration = "";
   if (type?.toLowerCase().includes("class")) {
     resourceTypeDeclaration = `a rdfs:Class, owl:Class`;
-  } else if (type?.toLowerCase().includes("object")) {
-    resourceTypeDeclaration = `a rdf:Property, owl:ObjectProperty`;
   } else {
     resourceTypeDeclaration = `a rdf:Property, owl:DatatypeProperty`;
   }
