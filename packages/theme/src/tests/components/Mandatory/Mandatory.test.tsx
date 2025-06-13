@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { expect, describe, it, vi } from 'vitest';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import { Mandatory } from '../../../components/global/Mandatory';
+import Mandatory from '../../../components/Mandatory';
 import '@testing-library/jest-dom/vitest';
 
 expect.extend(toHaveNoViolations);

@@ -2,7 +2,7 @@ import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import Figure from '../../../components/global/Figure';
+import Figure from '../../../components/Figure';
 
 expect.extend(toHaveNoViolations);
 
