@@ -71,8 +71,8 @@ const config: Config = {
       title: 'IFLA Standards Portal',
       logo: {
         alt: 'IFLA Logo',
-        src: 'img/ifla-logo-horizontal.svg',
-        srcDark: 'img/ifla-logo-horizontal-dark.svg',
+        src: 'img/logo-ifla_black.png',
+        srcDark: 'img/logo-ifla_black.png',
       },
       items: [
         {
@@ -90,49 +90,7 @@ const config: Config = {
         },
       ],
     },
-    footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'Sites',
-          items: sharedFooterSiteLinks(currentEnv),
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'IFLA Website',
-              href: 'https://www.ifla.org/',
-            },
-            {
-              label: 'IFLA Standards',
-              href: 'https://www.ifla.org/programmes/ifla-standards/',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/iflastandards/standards-dev',
-            },
-          ],
-        },
-      ],
-      copyright: `
-        Copyright © ${new Date().getFullYear()} International Federation of Library Associations and Institutions (IFLA)<br />
-        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">
-          <img src="img/cc0_by.png" alt="My Logo Alt Text" style="vertical-align:middle; height:24px;" />
-        </a>
-        Gordon Dunsire and Mirna Willer (Main design and content editors).
-      `,
-
-    },
+    // Footer is now inherited from commonDefaults(currentEnv).themeConfig
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,

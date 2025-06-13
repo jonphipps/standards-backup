@@ -59,10 +59,10 @@ export const sharedFooterSiteLinks = (currentEnv: DocsEnv): FooterLinkItem[] => 
     label: 'UNIMARC',
     href: getSiteUrl('unimarc', '/', currentEnv),
   },
-  { label: 'ISBDM (Manage)', href: getSiteUrl('ISBDM', '/manage', currentEnv) },
-  { label: 'LRM (Manage)', href: getSiteUrl('LRM', '/manage', currentEnv) },
-  { label: 'FRBR Family (Manage)', href: getSiteUrl('fr', '/manage', currentEnv) },
-  { label: 'Muldicat (Manage)', href: getSiteUrl('muldicat', '/manage', currentEnv) },
+  { label: 'ISBDM', href: getSiteUrl('ISBDM', '/', currentEnv) },
+  { label: 'LRM', href: getSiteUrl('LRM', '/', currentEnv) },
+  { label: 'FRBR Family', href: getSiteUrl('fr', '/', currentEnv) },
+  { label: 'Muldicat', href: getSiteUrl('muldicat', '/', currentEnv) },
 ];
 
 // Shared theme configuration - only truly global items
@@ -211,7 +211,7 @@ export const baseDocusaurusConfig = (currentEnv: DocsEnv): Partial<Config> => {
         // followed by the other static groups from sharedThemeConfig.footer.links.
         links: [
           {
-            title: 'Sites',
+            title: 'Sites', // Restored title
             items: sharedFooterSiteLinks(currentEnv),
           },
           ...sharedThemeConfig.footer.links, // Appends 'Community' and 'More' groups
