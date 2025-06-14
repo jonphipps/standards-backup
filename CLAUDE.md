@@ -6,6 +6,8 @@
 - we're using vitest as a test runner
 - use puppeteer for interface testing when useful
 - when you're searching for missing code, recursively search /Users/jonphipps/Code/IFLA/standards-dev first, then search the git repo history and and branches, then recuresively search /Users/jonphipps/Code/IFLA/
+- when writing scripts that need to use the url of a site for navigation, validation, or any purpose that equates a site with a url, use the configuration from this file: /Users/jonphipps/Code/IFLA/standards-dev/packages/theme/src/config/siteConfigCore.ts
+- if you need to start a server or build ask me to do it and tell you when it's running so you don't waste time waiting for it to load and timeout
 
 # IFLA Standards Development Project Context
 
