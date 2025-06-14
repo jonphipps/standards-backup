@@ -1,5 +1,6 @@
 #!/usr/bin/env tsx
 // scripts/populate-isbd-sheets.ts
+import 'dotenv/config';
 import * as fs from 'fs';
 import * as path from 'path';
 import { parse } from 'csv-parse/sync';

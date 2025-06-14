@@ -149,6 +149,7 @@
     "util": "^0.12.5",
     "vite": "^6.3.5",
     "vite-tsconfig-paths": "^5.1.4",
+    "xlsx": "^0.18.5",
     "yaml": "^2.8.0"
   },
   "devDependencies": {
