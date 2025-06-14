@@ -7,7 +7,7 @@
   "author": "",
   "main": "index.js",
   "scripts": {
-    "build": "docusaurus build",
+    "build": "echo 'Please specify a site to build using: pnpm build:{site}' && exit 1",
     "build-env": "node scripts/build-with-env.js",
     "build:all": "concurrently \"pnpm run build:portal\" \"pnpm run build:isbdm\" \"pnpm run build:lrm\" \"pnpm run build:fr\" \"pnpm run build:isbd\" \"pnpm run build:muldicat\" \"pnpm run build:unimarc\" \"pnpm run build:theme\"",
     "build:fr": "docusaurus build standards/fr",
@@ -78,6 +78,8 @@
     "validate:navigation": "node scripts/validate-navigation-urls.js",
     "validate:navigation:show": "node scripts/validate-navigation-urls.js show",
     "validate:site-links": "node scripts/validate-site-links.js",
+    "validate:built-site": "node scripts/validate-built-site-links.js",
+    "validate:env-urls": "node scripts/validate-environment-urls.js",
     "vocab:release": "node scripts/release-vocab.js",
     "vocabulary:create": "tsx scripts/create-vocabulary-sheet.ts",
     "vocabulary:create-action": "tsx scripts/create-vocabulary-sheet-action.ts",
@@ -151,6 +153,7 @@
     "vite": "^6.3.5",
     "vite-tsconfig-paths": "^5.1.4",
     "xlsx": "^0.18.5",
+    "xml2js": "^0.6.2",
     "yaml": "^2.8.0"
   },
   "devDependencies": {
