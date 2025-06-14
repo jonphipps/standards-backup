@@ -12,3 +12,5 @@ dist/
 /output
 /*.png
 /*.html
+# generated output files
+/output/
