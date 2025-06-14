@@ -54,10 +54,5 @@ export const THEME_NAME = 'IFLA Theme';
  */
 export function initializeIFLATheme(options: Partial<Types.IFLAThemeConfig> = {}) {
   // Add any global initialization logic here
-  if (typeof window !== 'undefined') {
-    // Browser-only initialization
-    console.info(`${THEME_NAME} v${VERSION} initialized`);
-  }
-  
   return options;
 }

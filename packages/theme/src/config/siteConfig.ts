@@ -21,46 +21,19 @@ export function getSiteUrl(
   let resolvedEnv = targetEnv;
 
   if (typeof targetEnv === 'undefined') {
-    // Downgrade from critical error/trace to a warning, as fallback is attempted.
-    console.warn(
-      `[siteConfig.ts] getSiteUrl WARNING: called with undefined targetEnv! toSiteKey: ${toSiteKey}, path: ${path}. Attempting fallback. Stack trace for info:`,
-    );
-    console.trace(); // Keep trace for informational purposes if needed for future debugging
-    
-    const fallbackEnv = getCurrentEnv(); 
-    console.warn(
-      `[siteConfig.ts] getSiteUrl: Using fallback environment '${fallbackEnv}' due to undefined targetEnv.`
-    );
+    const fallbackEnv = getCurrentEnv();
     resolvedEnv = fallbackEnv;
   }
 
-  console.log(
-    `[siteConfig.ts] getSiteUrl CALLED with toSiteKey: ${toSiteKey}, path: ${path}, original targetEnv: ${targetEnv} (type: ${typeof targetEnv}), resolvedEnv: ${resolvedEnv} (type: ${typeof resolvedEnv})`
-  );
 
   // Validate resolvedEnv (could be original targetEnv or fallbackEnv)
   if (!resolvedEnv || !Object.values(DocsEnv).includes(resolvedEnv)) {
-    console.error(
-      `[siteConfig.ts] getSiteUrl: Invalid resolvedEnv! Value: ${JSON.stringify(resolvedEnv)}, Type: ${typeof resolvedEnv}. Original targetEnv was ${JSON.stringify(targetEnv)}.`
-    );
-    // If targetEnv was undefined, we already traced. If it was defined but invalid, trace now.
-    if (typeof targetEnv !== 'undefined') {
-        console.trace("[siteConfig.ts] Trace for invalid (but defined) targetEnv leading to invalid resolvedEnv.");
-    }
     return `#ERROR_INVALID_RESOLVED_ENV_FOR_${toSiteKey}`;
   }
 
   const siteConfig = sites[toSiteKey]?.[resolvedEnv];
 
   if (!siteConfig) {
-    console.error(
-      `[siteConfig.ts] getSiteUrl: URL generation failed: Config for site '${toSiteKey}' in resolvedEnv '${String(resolvedEnv)}' (type: ${typeof resolvedEnv}) not found.`
-    );
-    if (sites[toSiteKey]) {
-      console.error(`[siteConfig.ts] Available envs for ${toSiteKey}: ${Object.keys(sites[toSiteKey]!).join(', ')}`);
-    } else {
-      console.error(`[siteConfig.ts] SiteKey ${toSiteKey} not found in sites configuration.`);
-    }
     return '#ERROR_SITE_CONFIG_NOT_FOUND';
   }
 

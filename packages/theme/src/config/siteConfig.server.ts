@@ -8,30 +8,19 @@ import { DocsEnv, type SiteKey, sites } from './siteConfigCore';
  */
 export function getCurrentEnv(): DocsEnv {
   const docsEnv = process.env.DOCS_ENV;
-  console.log('[siteConfig.server.ts] getCurrentEnv CALLED. process.env.DOCS_ENV:', docsEnv);
-  console.log('[siteConfig.server.ts] DocsEnv imported in siteConfig.server.ts:', JSON.stringify(DocsEnv));
 
   if (docsEnv && DocsEnv && Object.values(DocsEnv).includes(docsEnv as DocsEnv)) {
-    console.log('[siteConfig.server.ts] Returning from DOCS_ENV:', docsEnv as DocsEnv);
     return docsEnv as DocsEnv;
   }
 
   // Fallback to NODE_ENV if DOCS_ENV is not set or invalid
   const nodeEnv = process.env.NODE_ENV;
-  console.log('[siteConfig.server.ts] Fallback. process.env.NODE_ENV:', nodeEnv);
 
-  if (!DocsEnv) {
-    console.error('[siteConfig.server.ts] FATAL: DocsEnv is undefined before fallback logic!');
-    // This case should ideally not happen if imports work correctly.
-    // Returning a hardcoded default or throwing might be options, but let's see the logs.
-  }
 
   if (nodeEnv === 'development') {
-    console.log('[siteConfig.server.ts] Returning from NODE_ENV (development):', DocsEnv?.Localhost);
     return DocsEnv?.Localhost as DocsEnv; // Added optional chaining and cast for safety
   }
 
-  console.log('[siteConfig.server.ts] Returning from NODE_ENV (default):', DocsEnv?.Production);
   return DocsEnv?.Production as DocsEnv; // Added optional chaining and cast for safety
 }
 

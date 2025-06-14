@@ -3,7 +3,6 @@ export enum DocsEnv {
   Preview = 'preview',
   Production = 'production',
 }
-console.log('[siteConfigCore.ts] DocsEnv defined:', JSON.stringify(DocsEnv));
 
 export type SiteKey = 'portal' | 'ISBDM' | 'LRM' | 'fr' | 'isbd' | 'muldicat' | 'unimarc' | 'github';
 
