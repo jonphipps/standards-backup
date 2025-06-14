@@ -9,7 +9,7 @@
 
 /* Management menu - hidden by default, shown for authorized users */
 .navbar__item--management {
-  display: none;
+  display: flex;
 }
 
 /* Show management menu for authorized users */
