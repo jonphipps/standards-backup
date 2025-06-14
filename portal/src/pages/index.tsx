@@ -8,8 +8,8 @@ export default function Home(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`IFLA Standards Workspace`}
-      description="A collaborative platform for IFLA Review Group members and editors">
+      title={`IFLA Standards Portal`}
+      description="Access authoritative bibliographic standards developed by the International Federation of Library Associations and Institutions">
       <Hero />
       <main>
         <HomepageFeatures />

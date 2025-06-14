@@ -82,6 +82,12 @@ const config: Config = {
           label: 'Documentation',
         },
         {to: '/blog', label: 'Blog', position: 'left'},
+        {
+          to: '/manage',
+          label: 'Management',
+          position: 'left',
+          className: 'navbar__item--management',
+        },
         standardsDropdown(currentEnv),
         {
           href: 'https://github.com/iflastandards/standards-dev',
