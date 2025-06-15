@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {JSX} from 'react';
 import Layout from '@theme/Layout';
-import {useAllDocsData} from '@docusaurus/plugin-content-docs/client';
+import {useAllDocsData} from '@docusaurus/plugin-content-docs/lib/client';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './sitemap.module.scss';
@@ -8,15 +8,12 @@ import styles from './sitemap.module.scss';
 interface DocItem {
   id: string;
   path: string;
-  title: string;
+  title?: string; // Make title optional
   sidebar?: string;
+  // Add any other properties that might be in the GlobalDoc type
 }
 
-interface DocVersion {
-  docs: DocItem[];
-  label: string;
-  path: string;
-}
+// Removing unused interface
 
 export default function Sitemap(): JSX.Element {
   const allDocsData = useAllDocsData();
@@ -107,7 +104,7 @@ export default function Sitemap(): JSX.Element {
             const latestVersion = pluginData.versions.find(v => v.isLast);
             if (!latestVersion) return null;
             
-            const categories = organizeDocsByCategory(latestVersion.docs);
+            const categories = organizeDocsByCategory(latestVersion.docs as unknown as DocItem[]);
             
             return (
               <div key={pluginId} className={styles.versionSection}>
