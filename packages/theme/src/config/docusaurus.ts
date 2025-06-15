@@ -179,7 +179,7 @@ export const staticBaseSettings: Partial<Config> = {
   favicon: 'img/favicon.ico',
   // url: 'https://iflastandards.github.io', // Site-specific, so remove from base
   organizationName: 'iflastandards', // Common organization name
-  trailingSlash: true, // Default, can be overridden by sites or env
+  trailingSlash: false, // Default, can be overridden by sites or env
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   onBrokenAnchors: 'warn',
