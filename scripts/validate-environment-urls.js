@@ -789,6 +789,7 @@ async function getMainContentChecksum(page) {
 
 // Comprehensive sitemap-based link validation with caching and reporting
 async function validateLinksFromSitemap(siteKey, baseUrl, environment = 'unknown') {
+  const startTime = Date.now();
   console.log(`\n🗺️  Starting sitemap-based link validation for ${siteKey}...`);
   
   // Step 1: Get all URLs from sitemap (with caching)
@@ -805,42 +806,70 @@ async function validateLinksFromSitemap(siteKey, baseUrl, environment = 'unknown
   let changedPages = 0;
   let newPages = 0;
   
+  // Performance-optimized Puppeteer launch
   const browser = await puppeteer.launch({ 
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-web-security',
+      '--disable-extensions',
+      '--disable-plugins',
+      '--disable-background-timer-throttling',
+      '--disable-backgrounding-occluded-windows',
+      '--disable-renderer-backgrounding'
+    ]
   });
   
   const page = await browser.newPage();
+  
+  // Block unnecessary resources for faster loading
+  await page.setRequestInterception(true);
+  page.on('request', request => {
+    const resourceType = request.resourceType();
+    if (resourceType === 'image' || 
+        resourceType === 'font' ||
+        resourceType === 'stylesheet' ||
+        resourceType === 'media') {
+      request.abort();
+    } else {
+      request.continue();
+    }
+  });
   
   const allLinks = new Set();
   const allAnchors = new Map(); // URL -> Set of anchors
   const pageDetails = []; // Detailed page information for reporting
   const linksByPage = new Map(); // Page URL -> links found on that page
   
+  let pageTimes = [];
+  
   try {
     // Step 2: Visit each page and extract links
     for (let i = 0; i < sitemapUrls.length; i++) {
       const pageUrl = sitemapUrls[i];
+      const pageStartTime = Date.now();
       
       try {
-        await page.goto(pageUrl, { waitUntil: 'networkidle0', timeout: 30000 });
+        // Optimized page loading - wait for DOM instead of network idle
+        await page.goto(pageUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
         
-        // Wait for content to load
-        await page.waitForFunction(() => {
-          return document.querySelector('main, [role="main"], .main-wrapper') !== null;
-        }, { timeout: 10000 }).catch(() => {});
+        // Wait specifically for main content, but with shorter timeout
+        await page.waitForSelector('main, [role="main"], .main-wrapper', { timeout: 5000 }).catch(() => {});
         
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Get content checksum
+        // Get content checksum immediately
         const currentChecksum = await getMainContentChecksum(page);
         const cachedPageData = contentCache[pageUrl];
+        
+        const pageTime = Date.now() - pageStartTime;
         
         // Check if page content has changed
         if (cachedPageData && cachedPageData.checksum === currentChecksum) {
           // Page hasn't changed - use cached data
-          console.log(`📄 Processing ${i + 1}/${sitemapUrls.length}: ${pageUrl} [⏭️  SKIPPED - no changes]`);
+          console.log(`📄 Processing ${i + 1}/${sitemapUrls.length}: ${pageUrl} [⏭️  SKIPPED - no changes] (${pageTime}ms)`);
           skippedPages++;
+          pageTimes.push(pageTime);
           
           // Restore cached data
           if (cachedPageData.links) {
@@ -864,7 +893,11 @@ async function validateLinksFromSitemap(siteKey, baseUrl, environment = 'unknown
         } else {
           // Page is new or changed - process it
           const status = cachedPageData ? '🔄 CHANGED' : '🆕 NEW';
-          console.log(`📄 Processing ${i + 1}/${sitemapUrls.length}: ${pageUrl} [${status}]`);
+          
+          pageTimes.push(pageTime);
+          
+          // Show timing for changed/new pages
+          console.log(`📄 Processing ${i + 1}/${sitemapUrls.length}: ${pageUrl} [${status}] (${pageTime}ms)`);
           
           if (cachedPageData) changedPages++;
           else newPages++;
@@ -986,6 +1019,12 @@ async function validateLinksFromSitemap(siteKey, baseUrl, environment = 'unknown
     savePageContentCache(siteKey, contentCache);
     console.log(`💾 Saved content cache for future runs`);
     
+    // Calculate timing statistics
+    const totalTime = Date.now() - startTime;
+    const avgPageTime = pageTimes.length > 0 ? Math.round(pageTimes.reduce((a, b) => a + b, 0) / pageTimes.length) : 0;
+    const minPageTime = pageTimes.length > 0 ? Math.min(...pageTimes) : 0;
+    const maxPageTime = pageTimes.length > 0 ? Math.max(...pageTimes) : 0;
+    
     console.log(`\n📊 Validation Results:`);
     console.log(`   📋 Sitemap pages: ${sitemapUrls.length}`);
     console.log(`   ⏭️  Skipped pages (unchanged): ${skippedPages}`);
@@ -994,6 +1033,13 @@ async function validateLinksFromSitemap(siteKey, baseUrl, environment = 'unknown
     console.log(`   🔗 Internal links found: ${allLinks.size}`);
     console.log(`   ❌ Missing pages: ${missingPages.size}`);
     console.log(`   ⚓ Missing anchors: ${missingAnchors.size}`);
+    
+    console.log(`\n⏱️  Performance Metrics:`);
+    console.log(`   🕒 Total time: ${Math.round(totalTime / 1000)}s (${totalTime}ms)`);
+    console.log(`   📄 Average page time: ${avgPageTime}ms`);
+    console.log(`   ⚡ Fastest page: ${minPageTime}ms`);
+    console.log(`   🐌 Slowest page: ${maxPageTime}ms`);
+    console.log(`   📈 Pages per second: ${Math.round((sitemapUrls.length / totalTime) * 1000 * 10) / 10}`);
     
     // Generate HTML report
     const reportFile = generateHtmlReport(siteKey, baseUrl, results, pageDetails, environment);
