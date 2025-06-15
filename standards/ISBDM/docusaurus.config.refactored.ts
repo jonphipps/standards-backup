@@ -16,8 +16,8 @@ const isbdmSidebarGenerator = async (generatorArgs: SidebarItemsGeneratorArgs) =
       .filter((item: NormalizedSidebarItem) => {
         if (item.type === 'doc') {
           const docId = item.id || (item as any).docId || '';
-          if (docId === 'index' ||
-              docId.endsWith('/index') ||
+          if (docId === 'index' || 
+              docId.endsWith('/index') || 
               docId.split('/').pop() === 'index') {
             return false;
           }
@@ -43,7 +43,7 @@ const config = createStandardSiteConfig({
   title: 'ISBD for Manifestation',
   tagline: 'International Standard Bibliographic Description for Manifestation',
   projectName: 'ISBDM',
-
+  
   // ISBDM-specific vocabulary configuration
   vocabularyDefaults: {
     prefix: "isbdm",
@@ -54,17 +54,17 @@ const config = createStandardSiteConfig({
       profile: "isbdm-elements-profile.csv",
     }
   },
-
+  
   // GitHub configuration
   editUrl: 'https://github.com/iflastandards/ISBDM/tree/main/',
-
+  
   // Override settings for ISBDM
   overrides: {
     onBrokenLinks: 'ignore', // Override: ignore generated element links
     onBrokenAnchors: 'ignore', // Override: ignore generated anchor links
   },
-
-  // ISBDM-specific navbar items (no generic Documentation item)
+  
+  // ISBDM-specific navbar items
   navbar: {
     items: [
       {
@@ -157,21 +157,7 @@ const config = createStandardSiteConfig({
       },
     ],
   },
-
-  // Navigation customization
-  navigation: {
-    hideCurrentSiteFromStandardsDropdown: true,
-    standardsDropdownPosition: 'right',
-    includeResourcesDropdown: false,
-    includeDocumentationItem: false, // ISBDM has custom navigation structure
-  },
-
-  // Footer customization
-  footer: {
-    useResourcesInsteadOfSites: true,
-    additionalResourceLinks: [],
-  },
-
+  
   // Custom redirects for ISBDM
   redirects: {
     redirects: [],
@@ -185,7 +171,7 @@ const config = createStandardSiteConfig({
       return undefined;
     },
   },
-
+  
   // Use custom sidebar generator
   customSidebarGenerator: true,
 });

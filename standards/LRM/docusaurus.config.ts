@@ -1,124 +1,55 @@
-import type { Config } from '@docusaurus/types';
-import type * as Preset from '@docusaurus/preset-classic';
-import {
-  sharedPlugins,
-  sharedThemes,
-  commonDefaults,
-  getSiteDocusaurusConfig, // Import from main config barrel
-  getCurrentEnv,           // Import getCurrentEnv
-  type SiteKey,             // Import SiteKey type
-  type DocsEnv              // Import DocsEnv type
-} from '@ifla/theme/config';
+import { createStandardSiteConfig } from '@ifla/theme/config';
 
-const siteKey: SiteKey = 'LRM';
-const currentEnv: DocsEnv = getCurrentEnv();
-const currentSiteConfig = getSiteDocusaurusConfig(siteKey, currentEnv);
-
-const config: Config = {
-  ...commonDefaults(currentEnv),
-  url: currentSiteConfig.url,
+const config = createStandardSiteConfig({
+  siteKey: 'LRM',
   title: 'IFLA LRM',
   tagline: 'Library Reference Model',
-  baseUrl: currentSiteConfig.baseUrl,
   projectName: 'LRM',
 
-  customFields: {
-    vocabularyDefaults: {
-      prefix: "lrm",
-      startCounter: 1000,
-      uriStyle: "numeric",
-      numberPrefix: "E",
-      caseStyle: "kebab-case",
-      showFilter: true,
-      filterPlaceholder: "Filter vocabulary terms...",
-      showTitle: false,
-      showURIs: true,
-      showCSVErrors: false,
-      profile: "lrm-values-profile.csv",
-      profileShapeId: "Concept",
-      RDF: {
-        "rdf:type": ["skos:ConceptScheme"]
-      },
-      elementDefaults: {
-        uri: "https://www.iflastandards.info/LRM/elements",
-        classPrefix: "C",
-        propertyPrefix: "P",
-        profile: "lrm-elements-profile.csv",
-        profileShapeId: "Element",
-      }
+  // LRM-specific vocabulary configuration
+  vocabularyDefaults: {
+    prefix: "lrm",
+    numberPrefix: "E", // Override default "T" with "E" for LRM
+    profile: "lrm-values-profile.csv",
+    elementDefaults: {
+      uri: "https://www.iflastandards.info/LRM/elements",
+      profile: "lrm-elements-profile.csv",
     }
   },
 
-  // Site-specific i18n
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
-    localeConfigs: {
-      en: {
-        label: 'English',
+  // GitHub configuration
+  editUrl: 'https://github.com/iflastandards/LRM/tree/main/',
+
+  // Custom navbar items (will be merged with standard items)
+  navbar: {
+    items: [
+      {
+        type: 'doc',
+        docId: 'intro/intro',
+        position: 'left',
+        label: 'Introduction',
       },
-    },
+    ],
   },
 
-  // Site-specific plugins (shared ones and redirects)
-  plugins: [
-    ...sharedPlugins,
-    [
-      '@docusaurus/plugin-client-redirects',
-      {
-        redirects: [],
-        createRedirects(_existingPath: string) {
-          return undefined;
-        },
-      },
-    ],
-  ],
+  // Navigation customization
+  navigation: {
+    hideCurrentSiteFromStandardsDropdown: true,
+    standardsDropdownPosition: 'right',
+    includeResourcesDropdown: false,
+  },
 
-  // Site-specific presets
-  presets: [
-    [
-      'classic',
-      {
-        docs: {
-          sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com/iflastandards/LRM/tree/main/',
-        },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          editUrl: 'https://github.com/iflastandards/LRM/tree/main/',
-        },
-        theme: {
-          customCss: './src/css/custom.css',
-        },
-      } satisfies Preset.Options,
-    ],
-  ],
+  // Footer customization
+  footer: {
+    useResourcesInsteadOfSites: true,
+    additionalResourceLinks: [], // Can add more later
+  },
 
-  // Shared themes
-  themes: sharedThemes,
-
-  // Site-specific theme config with shared elements
-  themeConfig: {
-    ...(commonDefaults(currentEnv).themeConfig as any),
-    
-    navbar: {
-      ...(commonDefaults(currentEnv).themeConfig as any)?.navbar,
-      title: 'IFLA LRM',
-      items: [
-        {
-          type: 'doc',
-          docId: 'intro/intro',
-          position: 'left',
-          label: 'Introduction',
-        },
-        {to: '/blog', label: 'Blog', position: 'right'},
-      ],
-    },
-  } satisfies Preset.ThemeConfig,
-};
+  // Enable redirects
+  redirects: {
+    redirects: [],
+    createRedirects: (_existingPath: string) => undefined,
+  },
+});
 
 export default config;

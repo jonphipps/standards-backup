@@ -1,181 +1,37 @@
-import type { Config } from '@docusaurus/types';
-import type * as Preset from '@docusaurus/preset-classic';
-import {
-  sharedPlugins,
-  sharedThemes,
-  commonDefaults,
-  getSiteDocusaurusConfig,
-  getCurrentEnv,
-  type SiteKey,
-  type DocsEnv
-} from '@ifla/theme/config';
+import { createStandardSiteConfig } from '@ifla/theme/config';
 
-const siteKey: SiteKey = 'fr';
-const currentEnv: DocsEnv = getCurrentEnv();
-const currentSiteConfig = getSiteDocusaurusConfig(siteKey, currentEnv);
-
-const config: Config = {
-  ...commonDefaults(currentEnv),
-  
-  url: currentSiteConfig.url,
+const config = createStandardSiteConfig({
+  siteKey: 'fr',
   title: 'IFLA FR Family of Models',
   tagline: 'Conceptual Models for Bibliographic Information',
-  baseUrl: currentSiteConfig.baseUrl,
   projectName: 'fr',
 
-  customFields: {
-    vocabularyDefaults: {
-      prefix: "ifla",
-      startCounter: 1000,
-      uriStyle: "numeric",
-      numberPrefix: "T",
-      caseStyle: "kebab-case",
-      showFilter: true,
-      filterPlaceholder: "Filter vocabulary terms...",
-      showTitle: false,
-      showURIs: true,
-      showCSVErrors: false,
-      profile: "vocabulary-profile.csv",
-      profileShapeId: "Concept",
-      RDF: {
-        "rdf:type": ["skos:ConceptScheme"]
-      },
-      elementDefaults: {
-        uri: "https://www.iflastandards.info/elements",
-        classPrefix: "C",
-        propertyPrefix: "P",
-        profile: "elements-profile.csv",
-        profileShapeId: "Element",
-      }
+  // FR-specific vocabulary configuration
+  vocabularyDefaults: {
+    prefix: "ifla",
+    numberPrefix: "T",
+    profile: "vocabulary-profile.csv",
+    elementDefaults: {
+      uri: "https://www.iflastandards.info/elements",
+      profile: "elements-profile.csv",
     }
   },
 
-  // Site-specific i18n
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
-    localeConfigs: {
-      en: {
-        label: 'English',
-      },
-    },
+  // GitHub configuration
+  editUrl: 'https://github.com/iflastandards/FR/tree/main/',
+
+  // Navigation customization
+  navigation: {
+    hideCurrentSiteFromStandardsDropdown: true,
+    standardsDropdownPosition: 'right',
+    includeResourcesDropdown: false,
   },
 
-  // Site-specific plugins (shared ones)
-  plugins: [
-    ...sharedPlugins,
-  ],
-
-  // Site-specific presets
-  presets: [
-    [
-      'classic',
-      {
-        docs: {
-          sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com/iflastandards/FR/tree/main/',
-          showLastUpdateAuthor: true,
-          showLastUpdateTime: true,
-          versions: {
-            current: {
-              label: 'Latest',
-              path: '',
-            },
-          },
-          lastVersion: 'current',
-          onlyIncludeVersions: ['current'],
-        },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          editUrl: 'https://github.com/iflastandards/FR/tree/main/',
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
-        theme: {
-          customCss: './src/css/custom.css',
-        },
-      } satisfies Preset.Options,
-    ],
-  ],
-
-  // Shared themes
-  themes: sharedThemes,
-
-  // Site-specific theme config with shared elements
-  themeConfig: {
-    ...(commonDefaults(currentEnv).themeConfig as any), // Inherit full theme config from common defaults
-    
-    // Site-specific docs config
-    docs: {
-      sidebar: {
-        hideable: true,
-        autoCollapseCategories: true,
-      },
-      versionPersistence: 'localStorage',
-    },
-    
-    // Site-specific navbar
-    navbar: {
-      ...(commonDefaults(currentEnv).themeConfig as any)?.navbar, // Inherit base navbar (logo, etc.)
-      title: 'FR',
-      items: [
-        {
-          type: 'doc',
-          position: 'left',
-          docId: 'index',
-          label: 'Documentation',
-        },
-        {
-          label: 'Resources',
-          position: 'right',
-          type: 'dropdown',
-          items: [
-            {
-              label: 'RDF Downloads',
-              href: './rdf/',
-            },
-            {
-              label: 'Vocabulary Server',
-              href: 'https://iflastandards.info/',
-            },
-            {
-              label: 'IFLA Website',
-              href: 'https://www.ifla.org/',
-            },
-            {
-              label: 'GitHub Repository',
-              href: 'https://github.com/iflastandards/standards-dev',
-              'aria-label': 'GitHub repository',
-            },
-            {
-              label: 'Portal',
-              href: process.env.NODE_ENV === 'production' ? '../portal/' : '/portal/',
-            },
-          ],
-        },
-        {to: '/blog', label: 'Blog', position: 'right'},
-        {
-          type: 'docsVersionDropdown',
-          position: 'right',
-        },
-        {
-          type: 'localeDropdown',
-          position: 'right',
-        },
-        {
-          type: 'search',
-          position: 'right',
-        },
-      ],
-    },
-    
-    // Site-specific footer
-  } satisfies Preset.ThemeConfig,
-};
+  // Footer customization
+  footer: {
+    useResourcesInsteadOfSites: true,
+    additionalResourceLinks: [],
+  },
+});
 
 export default config;
