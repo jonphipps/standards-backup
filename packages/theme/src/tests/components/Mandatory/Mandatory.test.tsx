@@ -24,7 +24,7 @@ describe('Mandatory component', () => {
 
     // Check link
     const link = screen.getByRole('link');
-    expect(link).toHaveAttribute('href', 'docs/intro/i022');
+    expect(link).toHaveAttribute('href', 'docs/intro/index#i022');
     expect(link).toHaveTextContent('✽');
     expect(link).toHaveAttribute('aria-label', 'Mandatory - click for more information');
   });

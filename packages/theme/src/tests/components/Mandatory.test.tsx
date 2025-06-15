@@ -18,7 +18,7 @@ describe('Mandatory Component', () => {
     
     const link = screen.getByRole('link', { name: 'Mandatory - click for more information' });
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', '/docs/intro/i022');
+    expect(link).toHaveAttribute('href', '/docs/intro/index#i022');
     expect(link).toHaveAttribute('aria-label', 'Mandatory - click for more information');
   });
   
@@ -43,10 +43,10 @@ describe('Mandatory Component', () => {
   });
   
   it('processes link through useBaseUrl', () => {
-    render(<Mandatory link="docs/intro/i022" />);
+    render(<Mandatory link="docs/intro/index#i022" />);
     
     const link = screen.getByRole('link', { name: 'Mandatory - click for more information' });
-    expect(link).toHaveAttribute('href', '/docs/intro/i022');
+    expect(link).toHaveAttribute('href', '/docs/intro/index#i022');
   });
   
   it('has proper accessibility attributes', () => {

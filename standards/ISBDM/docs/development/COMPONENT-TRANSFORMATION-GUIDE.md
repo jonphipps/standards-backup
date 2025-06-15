@@ -111,11 +111,11 @@ RDF:
 ```jsx
 // Before (HTML):
 <span class="mandatory" title="Mandatory">
-  <a href="/ISBDM/docs/intro/i022.html">&#10045;</a>
+  <a href="/ISBDM/docs/intro/index#i022.html">&#10045;</a>
 </span>
 
 // After (MDX):
-<Mandatory link="/docs/intro/i022" symbol="✽" tooltipText="Mandatory" />
+<Mandatory link="/docs/intro/index#i022" symbol="✽" tooltipText="Mandatory" />
 // Or simplest form with defaults:
 <Mandatory />
 ```
@@ -150,7 +150,7 @@ RDF:
 
 // After (MDX):
 <SeeAlso>
-  <InLink href="/docs/assess/p016">Related page</InLink>
+  <InLink href="/docs/assess#p016">Related page</InLink>
 </SeeAlso>
 ```
 

@@ -1,0 +1,40 @@
+---
+sidebar_class_name: menu-item-html-level-1 sidebar-level-1
+sidebar_label: ISBDM Designation of Sound Channels value vocabulary
+sidebar_level: 1
+sidebar_position: 5
+vocabularyId: '1285'
+title: ISBDM Designation of Sound Channels value vocabulary
+uri: http://iflastandards.info/ns/isbdm/values/1285
+description: This value vocabulary is a source of values for a has designation of number of sound channels element.
+isDefinedBy: http://iflastandards.info/ns/isbdm/values/1285
+scopeNote: The vocabulary covers the full scope of the element and will not be extended with additional values.
+concepts:
+- value: mono
+  definition: A designation of sound channels that is a single channel for monophonic sound.
+  scopeNote: ''
+- value: quadraphonic
+  definition: A designation of sound channels that is four channels for quadraphonic sound.
+  scopeNote: ''
+- value: stereo
+  definition: A designation of sound channels that is two channels for stereophonic sound.
+  scopeNote: ''
+- value: surround
+  definition: A designation of sound channels that is more than four channels for surround sound.
+  scopeNote: ''
+---
+import { VocabularyTable } from '@ifla/theme';
+
+# {frontMatter.title}
+
+For use with element: [has designation of number of sound channels](/docs/attributes/1285)
+
+<VocabularyTable 
+  {...frontMatter} 
+  showTitle={false}
+  filterPlaceholder="Filter vocabulary terms..."
+/>
+
+The values, definitions, and scope notes in this vocabulary are derived from the [RDA Configuration of Playback Channels](https://www.rdaregistry.info/termList/configPlayback/) value vocabulary licensed under a Creative Commons Attribution 4.0 International License, copyright © 2020 American Library Association, Canadian Federation of Library Associations, and CILIP: Chartered Institute of Library and Information Professionals.
+
+export const toc = VocabularyTable.generateTOC(frontMatter);
