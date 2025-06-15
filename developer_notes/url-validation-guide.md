@@ -216,6 +216,17 @@ pnpm run validate:built-site -- --site ISBDM --port 3001 --include-generated
 
 ## 🚨 **Common Issues & Solutions**
 
+### **"0 internal links found" or slow page loads (5+ seconds)**
+- **Cause**: Page loading errors, JavaScript crashes, or empty content
+- **Fix**: Check if site is properly built and served
+- **Enhanced Detection**: The validator now detects:
+  - React error boundaries and component crashes
+  - 404/Not Found pages
+  - Docusaurus build errors
+  - Empty main content areas
+  - JavaScript console errors
+- **Test**: `validate:env-urls --env localhost --type comprehensive`
+
 ### **"Hardcoded localhost URLs detected"**
 - **Cause**: Components generating localhost URLs in non-localhost builds
 - **Fix**: Check component logic using `useDocsEnv()` hook
@@ -235,6 +246,14 @@ pnpm run validate:built-site -- --site ISBDM --port 3001 --include-generated
 - **Cause**: Built site not being served
 - **Fix**: `cd standards/SITENAME && pnpm run serve --port 300X`
 - **Test**: Check port number matches site configuration
+
+### **"Page load errors detected"**
+- **Cause**: JavaScript errors, React crashes, or build issues
+- **Enhanced Reporting**: The validator now shows:
+  - Specific error messages from the page
+  - Load times for problematic pages
+  - Content availability status
+- **Fix**: Check browser console for errors, rebuild site if necessary
 
 ## 🔧 **Environment Variables**
 

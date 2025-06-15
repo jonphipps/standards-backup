@@ -114,13 +114,48 @@ function getSitemapUrls(siteKey, baseUrl) {
 async function extractMainContentLinks(page, baseUrl) {
   return await page.evaluate((baseUrl) => {
     const links = [];
+    const debug = {
+      totalAnchors: 0,
+      mainFound: false,
+      selectors: []
+    };
     
-    // Focus on main content area
-    const mainElement = document.querySelector('main, [role="main"], .main-wrapper, .theme-doc-markdown');
+    // Try multiple selectors for main content
+    const contentSelectors = [
+      'main',
+      '[role="main"]',
+      '.main-wrapper',
+      '.theme-doc-markdown',
+      '.markdown',
+      'article',
+      '.docMainContainer',
+      '.container.mainContainer',
+      '.docsContainer'
+    ];
+    
+    let mainElement = null;
+    for (const selector of contentSelectors) {
+      mainElement = document.querySelector(selector);
+      if (mainElement) {
+        debug.mainFound = true;
+        debug.selectors.push(selector);
+        break;
+      }
+    }
+    
+    // If no main element found, search the entire document but exclude navigation
     const elementsToSearch = mainElement ? [mainElement] : [document];
     
     elementsToSearch.forEach(container => {
-      container.querySelectorAll('a[href]').forEach(el => {
+      const anchors = container.querySelectorAll('a[href]');
+      debug.totalAnchors = anchors.length;
+      
+      anchors.forEach(el => {
+        // Skip navigation links if searching entire document
+        if (!mainElement && el.closest('nav, header, .navbar, .footer, [class*="sidebar"]')) {
+          return;
+        }
+        
         const href = el.getAttribute('href');
         // Skip placeholder links and empty hrefs
         if (href && href !== '#' && href.trim() !== '') {
@@ -149,6 +184,11 @@ async function extractMainContentLinks(page, baseUrl) {
         }
       });
     });
+    
+    // Log debug info if no links found
+    if (links.length === 0 && debug.totalAnchors > 0) {
+      console.warn('Debug: Found anchors but no valid links', debug);
+    }
     
     return links;
   }, baseUrl);
@@ -571,8 +611,13 @@ function updateValidationIndex(siteKey, reportFilename, results, environment, ti
   // Save updated index data
   fs.writeFileSync(indexDataFile, JSON.stringify(indexData, null, 2));
   
-  // Generate HTML index
-  generateValidationIndexHtml(indexData, validationDir);
+  // Also generate JavaScript version for direct HTML inclusion
+  const indexJsFile = path.join(validationDir, 'index-data.js');
+  const jsContent = `// Auto-generated validation report data
+window.validationReports = ${JSON.stringify(indexData, null, 2)};`;
+  fs.writeFileSync(indexJsFile, jsContent);
+  
+  console.log(`📋 Updated validation index data: ${indexDataFile}`);
 }
 
 // Generate the HTML index file
@@ -824,18 +869,26 @@ async function validateLinksFromSitemap(siteKey, baseUrl, environment = 'unknown
   
   const page = await browser.newPage();
   
-  // Block unnecessary resources for faster loading
+  // Block unnecessary resources for faster loading (but keep CSS for proper rendering)
   await page.setRequestInterception(true);
   page.on('request', request => {
     const resourceType = request.resourceType();
     if (resourceType === 'image' || 
         resourceType === 'font' ||
-        resourceType === 'stylesheet' ||
         resourceType === 'media') {
       request.abort();
     } else {
       request.continue();
     }
+  });
+  
+  // Listen for page errors
+  page.on('error', error => {
+    console.error(`   ❌ Page crashed: ${error.message}`);
+  });
+  
+  page.on('pageerror', error => {
+    console.error(`   ❌ Page error: ${error.message}`);
   });
   
   const allLinks = new Set();
@@ -853,10 +906,41 @@ async function validateLinksFromSitemap(siteKey, baseUrl, environment = 'unknown
       
       try {
         // Optimized page loading - wait for DOM instead of network idle
-        await page.goto(pageUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+        await page.goto(pageUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
         
         // Wait specifically for main content, but with shorter timeout
         await page.waitForSelector('main, [role="main"], .main-wrapper', { timeout: 5000 }).catch(() => {});
+        
+        // Check for page errors
+        const pageErrors = await page.evaluate(() => {
+          const errors = [];
+          // Check for React error boundaries
+          const errorBoundary = document.querySelector('.error-boundary, [data-error], .error-message');
+          if (errorBoundary) {
+            errors.push(`React Error: ${errorBoundary.textContent}`);
+          }
+          // Check for 404 pages
+          const title = document.title.toLowerCase();
+          if (title.includes('404') || title.includes('not found') || title.includes('page not found')) {
+            errors.push(`404 Page: ${document.title}`);
+          }
+          // Check for Docusaurus error pages
+          const docusaurusError = document.querySelector('.theme-doc-version-banner--error, .theme-doc-version-badge--error');
+          if (docusaurusError) {
+            errors.push(`Docusaurus Error: ${docusaurusError.textContent}`);
+          }
+          // Check if main content is empty
+          const mainContent = document.querySelector('main, [role="main"], .main-wrapper, .theme-doc-markdown');
+          if (!mainContent || mainContent.textContent.trim().length < 50) {
+            errors.push('Page appears to have no main content');
+          }
+          return errors;
+        });
+        
+        if (pageErrors.length > 0) {
+          console.warn(`   ⚠️  Page load errors on ${pageUrl}:`);
+          pageErrors.forEach(err => console.warn(`      - ${err}`));
+        }
         
         // Get content checksum immediately
         const currentChecksum = await getMainContentChecksum(page);
@@ -942,17 +1026,34 @@ async function validateLinksFromSitemap(siteKey, baseUrl, environment = 'unknown
           });
           
           console.log(`   📎 Found ${internalLinks.length} internal links, ${pageAnchors.length} anchors`);
+          
+          // If no links found, log warning
+          if (internalLinks.length === 0) {
+            console.warn(`   ⚠️  WARNING: No internal links found on ${pageUrl}`);
+            console.warn(`      - Total links on page: ${pageLinks.length}`);
+            console.warn(`      - Page errors: ${pageErrors.length > 0 ? pageErrors.join(', ') : 'None detected'}`);
+          }
         }
         
       } catch (error) {
-        console.warn(`   ⚠️  Failed to process ${pageUrl}: ${error.message}`);
+        console.error(`   ❌ Failed to process ${pageUrl}: ${error.message}`);
+        const pageTime = Date.now() - pageStartTime;
+        pageTimes.push(pageTime);
+        
+        // Try to get more details about the error
+        let errorDetails = error.message;
+        if (error.name === 'TimeoutError') {
+          errorDetails = `Page load timeout after ${pageTime}ms`;
+        }
+        
         pageDetails.push({
           url: pageUrl,
           title: 'Failed to Load',
           linkCount: 0,
           anchorCount: 0,
           links: [],
-          error: error.message
+          error: errorDetails,
+          loadTime: pageTime
         });
       }
     }
