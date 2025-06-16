@@ -8,16 +8,16 @@ The following placeholders are used throughout the template files and should be 
 
 ### Required Placeholders
 
-- `test` - The short code for the standard (e.g., "LRM", "ISBDM", "fr")
-- `__LOWERCASE_CODE__` - The lowercase version of the code (e.g., "lrm", "isbdm", "fr")
+- `TEST` - The short code for the standard (e.g., "LRM", "ISBDM", "fr")
+- `test` - The lowercase version of the code (e.g., "lrm", "isbdm", "fr")
 - `Test Standard` - The full title of the standard (e.g., "IFLA LRM", "ISBD for Manifestation")
-- `__TAGLINE__` - A brief description/tagline for the standard
-- `__PREFIX__` - The vocabulary prefix (e.g., "lrm", "isbdm", "ifla")
-- `__NUMBER_PREFIX__` - The element number prefix (e.g., "E", "T")
-- `__PROFILE__` - The main vocabulary profile CSV filename
-- `__ELEMENTS_URI__` - The base URI for elements
-- `__ELEMENTS_PROFILE__` - The elements profile CSV filename
-- `__EDIT_URL__` - The GitHub edit URL for the standard
+- `A test standard for validation` - A brief description/tagline for the standard
+- `test` - The vocabulary prefix (e.g., "lrm", "isbdm", "ifla")
+- `E` - The element number prefix (e.g., "E", "T")
+- `test-values.csv` - The main vocabulary profile CSV filename
+- `https://test.example.com/elements` - The base URI for elements
+- `test-elements.csv` - The elements profile CSV filename
+- `https://github.com/test/test/tree/main/` - The GitHub edit URL for the standard
 
 ## Template Files
 
