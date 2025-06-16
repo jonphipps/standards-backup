@@ -40,6 +40,13 @@ program
   .name('create-ifla-standard')
   .argument('<code>', 'lower‑case short code, e.g. ISBDM')
   .option('-n, --name <title>', 'Human‑readable title')
+  .option('-t, --tagline <tagline>', 'Brief description/tagline')
+  .option('-p, --prefix <prefix>', 'Vocabulary prefix (defaults to code)')
+  .option('--number-prefix <prefix>', 'Element number prefix (T or E)', 'T')
+  .option('--profile <filename>', 'Main vocabulary profile CSV filename')
+  .option('--elements-uri <uri>', 'Base URI for elements')
+  .option('--elements-profile <filename>', 'Elements profile CSV filename')
+  .option('--edit-url <url>', 'GitHub edit URL for the standard')
   .option('--skip-github', 'Skip GitHub API calls (offline)')
   .parse(process.argv);
 
@@ -48,23 +55,54 @@ const code = program.args[0]?.toLowerCase();
 assert(code, 'Standard code is required');
 
 const TITLE = opts.name ?? code.toUpperCase();
+const TAGLINE = opts.tagline ?? `${TITLE} Standard`;
+const PREFIX = opts.prefix ?? code.toLowerCase();
+const NUMBER_PREFIX = opts.numberPrefix ?? 'T';
+const PROFILE = opts.profile ?? `${code.toLowerCase()}-values-profile.csv`;
+const ELEMENTS_URI = opts.elementsUri ?? `https://www.iflastandards.info/${code.toUpperCase()}/elements`;
+const ELEMENTS_PROFILE = opts.elementsProfile ?? `${code.toLowerCase()}-elements-profile.csv`;
+const EDIT_URL = opts.editUrl ?? `https://github.com/iflastandards/${code.toUpperCase()}/tree/main/`;
 const ROOT = path.resolve(process.cwd(), 'standards', code);
 
 const TEMPLATE_DIR = path.join(__dirname, 'scaffold-template');
 
 async function copyTemplate() {
   await fs.mkdir(ROOT, { recursive: true });
-  const entries = await fs.readdir(TEMPLATE_DIR, { withFileTypes: true });
+  await copyAndProcessDirectory(TEMPLATE_DIR, ROOT);
+}
+
+async function copyAndProcessDirectory(srcDir: string, destDir: string) {
+  const entries = await fs.readdir(srcDir, { withFileTypes: true });
   for (const entry of entries) {
-    const src = path.join(TEMPLATE_DIR, entry.name);
-    const dest = path.join(ROOT, entry.name);
+    const src = path.join(srcDir, entry.name);
+    const dest = path.join(destDir, entry.name);
+
     if (entry.isDirectory()) {
-      await fs.cp(src, dest, { recursive: true });
+      await fs.mkdir(dest, { recursive: true });
+      await copyAndProcessDirectory(src, dest);
     } else {
-      let data = await fs.readFile(src, 'utf8');
-      // Replace placeholders
-      data = data.replace(/__CODE__/g, code).replace(/__TITLE__/g, TITLE);
-      await fs.writeFile(dest, data);
+      // Process text files for placeholder replacement
+      const isTextFile = /\.(ts|js|tsx|jsx|md|mdx|json|yaml|yml|txt|csv)$/i.test(entry.name);
+
+      if (isTextFile) {
+        let data = await fs.readFile(src, 'utf8');
+        // Replace all placeholders
+        data = data
+          .replace(/__CODE__/g, code.toUpperCase())
+          .replace(/__LOWERCASE_CODE__/g, code.toLowerCase())
+          .replace(/__TITLE__/g, TITLE)
+          .replace(/__TAGLINE__/g, TAGLINE)
+          .replace(/__PREFIX__/g, PREFIX)
+          .replace(/__NUMBER_PREFIX__/g, NUMBER_PREFIX)
+          .replace(/__PROFILE__/g, PROFILE)
+          .replace(/__ELEMENTS_URI__/g, ELEMENTS_URI)
+          .replace(/__ELEMENTS_PROFILE__/g, ELEMENTS_PROFILE)
+          .replace(/__EDIT_URL__/g, EDIT_URL);
+        await fs.writeFile(dest, data);
+      } else {
+        // Copy binary files as-is
+        await fs.copyFile(src, dest);
+      }
     }
   }
 }

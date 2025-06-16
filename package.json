@@ -19,6 +19,7 @@
     "build:portal": "docusaurus build portal",
     "build:theme": "cd packages/theme && pnpm run build",
     "build:unimarc": "docusaurus build standards/unimarc",
+
     "check:language-tags": "node scripts/check-mediatype-languages.mjs",
     "check:language-tags:ai": "node scripts/check-mediatype-languages.mjs --ai",
     "check:language-tags:ai:md": "node scripts/check-mediatype-languages.mjs --ai --markdown",
@@ -76,6 +77,7 @@
     "start:muldicat": "docusaurus start standards/muldicat --port 3005",
     "start:portal": "docusaurus start portal --port 3000",
     "start:unimarc": "docusaurus start standards/unimarc --port 3006",
+
     "stop:all": "pkill -f 'docusaurus start' || true",
     "swizzle": "docusaurus swizzle",
     "test": "vitest",

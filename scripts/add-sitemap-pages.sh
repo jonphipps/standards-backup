@@ -1,3 +1,31 @@
+#!/bin/bash
+
+# Script to add sitemap pages to IFLA standards sites that don't have them
+
+# Sites that need sitemap pages
+SITES=("fr" "isbd" "muldicat" "unimarc")
+
+# Site titles mapping
+declare -A SITE_TITLES
+SITE_TITLES["fr"]="IFLA FR"
+SITE_TITLES["isbd"]="ISBD"
+SITE_TITLES["muldicat"]="MULDICAT"
+SITE_TITLES["unimarc"]="UNIMARC"
+
+echo "Adding sitemap pages to IFLA standards sites..."
+
+for site in "${SITES[@]}"; do
+    site_dir="standards/$site"
+    pages_dir="$site_dir/src/pages"
+    title="${SITE_TITLES[$site]}"
+    
+    echo "Processing $site ($title)..."
+    
+    # Create pages directory if it doesn't exist
+    mkdir -p "$pages_dir"
+    
+    # Create sitemap.tsx
+    cat > "$pages_dir/sitemap.tsx" << EOF
 import React, {JSX} from 'react';
 import Layout from '@theme/Layout';
 import {useAllDocsData} from '@docusaurus/plugin-content-docs/lib/client';
@@ -63,12 +91,12 @@ export default function Sitemap(): JSX.Element {
   return (
     <Layout
       title="Sitemap"
-      description="Complete sitemap of Test Standard documentation"
+      description="Complete sitemap of $title documentation"
     >
       <main className={styles.sitemapContainer}>
         <div className={styles.sitemapHeader}>
           <h1>Sitemap</h1>
-          <p>Complete overview of all pages in Test Standard documentation</p>
+          <p>Complete overview of all pages in $title documentation</p>
         </div>
         
         <div className={styles.sitemapContent}>
@@ -112,3 +140,17 @@ export default function Sitemap(): JSX.Element {
     </Layout>
   );
 }
+EOF
+    
+    # Copy SCSS file
+    cp "scripts/scaffold-template/src/pages/sitemap.module.scss" "$pages_dir/"
+    
+    echo "✅ Added sitemap page to $site"
+done
+
+echo "🎉 All sitemap pages added successfully!"
+echo ""
+echo "Sites updated:"
+for site in "${SITES[@]}"; do
+    echo "  - $site (${SITE_TITLES[$site]})"
+done
