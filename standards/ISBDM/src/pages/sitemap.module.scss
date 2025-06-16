@@ -7,28 +7,29 @@ $ifla-light-blue: #4a90e2;
 .sitemapContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   min-height: calc(100vh - 300px);
 }
 
 .sitemapHeader {
   text-align: center;
-  margin-bottom: 3rem;
-  
+  margin-bottom: 1.5rem;
+
   h1 {
     color: $ifla-navy;
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-    
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+
     [data-theme='dark'] & {
       color: $ifla-gold;
     }
   }
-  
+
   p {
     color: #666;
-    font-size: 1.1rem;
-    
+    font-size: 1rem;
+    margin-bottom: 0;
+
     [data-theme='dark'] & {
       color: #aaa;
     }
@@ -36,55 +37,59 @@ $ifla-light-blue: #4a90e2;
 }
 
 .sitemapContent {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .versionSection {
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
 }
 
 .categoryGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  margin-bottom: 3rem;
-  
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 .categorySection {
   background: #f8f9fa;
   border: 1px solid #e9ecef;
-  border-radius: 8px;
-  padding: 1.5rem;
+  border-radius: 4px;
+  padding: 0.75rem;
   transition: all 0.2s ease;
-  
+
   [data-theme='dark'] & {
     background: #1e1e1e;
     border-color: #333;
   }
-  
+
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
-    
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+
     [data-theme='dark'] & {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
   }
 }
 
 .categoryTitle {
   color: $ifla-navy;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid $ifla-gold;
-  
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid $ifla-gold;
+
   [data-theme='dark'] & {
     color: $ifla-gold;
     border-bottom-color: $ifla-blue;
@@ -95,51 +100,54 @@ $ifla-light-blue: #4a90e2;
   list-style: none;
   padding: 0;
   margin: 0;
-  
+
   li {
-    margin-bottom: 0.5rem;
-    
+    margin-bottom: 0.15rem;
+
     &:last-child {
       margin-bottom: 0;
     }
-    
+
     a {
       color: $ifla-blue;
       text-decoration: none;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       display: block;
-      padding: 0.25rem 0;
+      padding: 0.1rem 0;
       transition: all 0.2s ease;
       position: relative;
-      
+      line-height: 1.3;
+
       [data-theme='dark'] & {
         color: $ifla-light-blue;
       }
-      
+
       &:hover {
         color: $ifla-navy;
         padding-left: 0.5rem;
-        
+
         [data-theme='dark'] & {
           color: $ifla-gold;
         }
-        
+
         &::before {
           content: '→';
           position: absolute;
-          left: -1rem;
+          left: -0.75rem;
           opacity: 1;
+          font-size: 0.75rem;
         }
       }
-      
+
       &::before {
         content: '→';
         position: absolute;
-        left: -1rem;
+        left: -0.75rem;
         opacity: 0;
         transition: opacity 0.2s ease;
+        font-size: 0.75rem;
       }
-      
+
       &:focus {
         outline: 2px solid $ifla-gold;
         outline-offset: 2px;
@@ -151,36 +159,41 @@ $ifla-light-blue: #4a90e2;
 
 .additionalLinks {
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 8px;
-  padding: 2rem;
-  margin-top: 3rem;
-  
+  border-radius: 4px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+
   [data-theme='dark'] & {
     background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
   }
-  
+
   h2 {
     color: $ifla-navy;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+
     [data-theme='dark'] & {
       color: $ifla-gold;
     }
   }
-  
+
   .docsList {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
-    
+
     @media (max-width: 768px) {
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.25rem;
     }
-    
+
     li {
       margin-bottom: 0;
+
+      a {
+        font-size: 0.9rem;
+        padding: 0.15rem 0;
+      }
     }
   }
 }
