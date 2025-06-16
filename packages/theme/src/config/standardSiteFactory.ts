@@ -134,6 +134,10 @@ function createCustomFooterResources(currentEnv: DocsEnv, additionalLinks: Array
       label: 'RDF Downloads',
       href: './rdf/',
     },
+    {
+      label: 'Sitemap',
+      href: './sitemap.xml',
+    },
     ...additionalLinks,
   ];
 }
