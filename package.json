@@ -9,7 +9,8 @@
   "scripts": {
     "build": "echo 'Please specify a site to build using: pnpm build:{site}' && exit 1",
     "build-env": "node scripts/build-with-env.js",
-    "build:all": "concurrently \"pnpm run build:portal\" \"pnpm run build:isbdm\" \"pnpm run build:lrm\" \"pnpm run build:fr\" \"pnpm run build:isbd\" \"pnpm run build:muldicat\" \"pnpm run build:unimarc\" \"pnpm run build:theme\"",
+    "build:all": "pnpm run build:theme && concurrently \"pnpm run build:portal\" \"pnpm run build:isbdm\" \"pnpm run build:lrm\" \"pnpm run build:fr\" \"pnpm run build:isbd\" \"pnpm run build:muldicat\" \"pnpm run build:unimarc\"",
+    "build:all:safe": "pnpm clear:all && pnpm build:theme && pnpm build:all",
     "build:fr": "docusaurus build standards/fr",
     "build:isbd": "docusaurus build standards/isbd",
     "build:isbdm": "docusaurus build standards/ISBDM",
