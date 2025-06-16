@@ -176,12 +176,17 @@ const config = createStandardSiteConfig({
   redirects: {
     redirects: [],
     createRedirects: (existingPath: string) => {
-      // Check if this is an element path that needs redirection
+      // Only process element paths - be very specific to avoid interfering with other routes
+      // This regex specifically matches element paths with numeric IDs only
       const elementMatch = existingPath.match(/^\/docs\/(attributes|statements|notes|relationships)\/(\d+)$/);
       if (elementMatch) {
         const elementId = elementMatch[2];
-        return [`/docs/elements/${elementId}`];
+        // Only create redirect if it's a valid numeric element ID
+        if (/^\d+$/.test(elementId)) {
+          return [`/docs/elements/${elementId}`];
+        }
       }
+      // Don't redirect anything else - this prevents interference with other routes
       return undefined;
     },
   },

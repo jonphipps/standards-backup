@@ -21,7 +21,7 @@ export const Mandatory: React.FC<MandatoryProps> = ({
   className,
 }) => {
   const defaultTooltipText = 'Mandatory';
-  const linkPathRaw = rawLink ?? 'docs/intro/index#i022';
+  const linkPathRaw = rawLink ?? 'docs/intro#i022';
   const tooltipText = rawTooltipText ?? defaultTooltipText;
   const symbol = rawSymbol ?? '✽';
 
