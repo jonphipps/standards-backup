@@ -136,7 +136,7 @@ function createCustomFooterResources(currentEnv: DocsEnv, additionalLinks: Array
     },
     {
       label: 'Sitemap',
-      href: './sitemap.xml',
+      to: '/sitemap.xml',
     },
     ...additionalLinks,
   ];
