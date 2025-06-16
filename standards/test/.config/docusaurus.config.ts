@@ -1,24 +1,24 @@
 import { createStandardSiteConfig } from '@ifla/theme/config';
 
 const config = createStandardSiteConfig({
-  siteKey: '__CODE__',
-  title: '__TITLE__',
-  tagline: '__TAGLINE__',
-  projectName: '__CODE__',
+  siteKey: 'TEST',
+  title: 'Test Standard',
+  tagline: 'A test standard for validation',
+  projectName: 'TEST',
 
-  // __CODE__-specific vocabulary configuration
+  // TEST-specific vocabulary configuration
   vocabularyDefaults: {
-    prefix: "__PREFIX__",
-    numberPrefix: "__NUMBER_PREFIX__",
-    profile: "__PROFILE__",
+    prefix: "test",
+    numberPrefix: "E",
+    profile: "test-values.csv",
     elementDefaults: {
-      uri: "__ELEMENTS_URI__",
-      profile: "__ELEMENTS_PROFILE__",
+      uri: "https://test.example.com/elements",
+      profile: "test-elements.csv",
     }
   },
 
   // GitHub configuration
-  editUrl: '__EDIT_URL__',
+  editUrl: 'https://github.com/test/test/tree/main/',
 
   // Navigation customization
   navigation: {
